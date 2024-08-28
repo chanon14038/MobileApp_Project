@@ -114,7 +114,7 @@ async def update(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect password",
         )
-
+    db_user.sqlmodel_update(user_update)
     await db_user.set_password(password_update.new_password)
     session.add(db_user)
     await session.commit()
