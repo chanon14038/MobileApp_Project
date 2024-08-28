@@ -44,8 +44,12 @@ class ResetedPassword(BaseModel):
     email: EmailStr
     citizen_id: str
 
-class UpdatedUser(BaseUser):
-    model_config = ConfigDict(exclude={'username'})
+class UpdatedUser(BaseModel):
+    first_name: str = pydantic.Field(example="Firstname")
+    last_name: str = pydantic.Field(example="Lastname")
+    year: int = pydantic.Field(example=1)
+    room: int = pydantic.Field(example=1)
+    subject: str = pydantic.Field(example="Thai")
 
 
 class Token(BaseModel):
