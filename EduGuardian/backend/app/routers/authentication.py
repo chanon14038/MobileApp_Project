@@ -33,7 +33,7 @@ async def authentication(
 
     if not user:
         result = await session.exec(
-            select(models.DBUser).where(models.DBUser.email == form_data.username)
+            select(models.DBUser).where(models.DBUser.username == form_data.username)
         )
         user = result.one_or_none()
 
