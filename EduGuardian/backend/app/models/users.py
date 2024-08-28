@@ -45,7 +45,7 @@ class ResetedPassword(BaseModel):
     citizen_id: str
 
 class UpdatedUser(BaseUser):
-    pass
+    model_config = ConfigDict(exclude={'username'})
 
 
 class Token(BaseModel):
