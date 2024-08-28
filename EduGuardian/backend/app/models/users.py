@@ -47,6 +47,17 @@ class ResetedPassword(BaseModel):
 class UpdatedUser(BaseUser):
     pass
 
+
+class Token(BaseModel):
+    access_token: str
+    refresh_token: str
+    token_type: str
+    expires_in: int
+    expires_at: datetime.datetime
+    scope: str
+    issued_at: datetime.datetime
+    user_id: int | None = None
+
 class DBUser(User,SQLModel,table=True):
     __tablename__ = 'db_users'
     id: int | None = sqlmodel.Field(default=None, primary_key=True)
