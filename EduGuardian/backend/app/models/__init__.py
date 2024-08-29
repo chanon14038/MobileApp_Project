@@ -8,6 +8,7 @@ from sqlalchemy.orm import sessionmaker
 
 from .users import *
 from .students import *
+from .teachings import *
 
 connect_args = {}
 
@@ -26,7 +27,7 @@ def init_db(settings):
 
 async def create_all():
     async with engine.begin() as conn:
-        # await conn.run_sync(SQLModel.metadata.drop_all)
+        await conn.run_sync(SQLModel.metadata.drop_all)
         await conn.run_sync(SQLModel.metadata.create_all)
 
 
