@@ -35,7 +35,7 @@ class DBStudent(BaseStudent, SQLModel, table=True):
     
     classroom: ClassRoom = Field(default=None)
     
-    description: Optional[List[str]] = Field(default=None, sa_column=Column(MutableList.as_mutable(JSON)))
+    description: Optional[List[str]] = Field(default=[], sa_column=Column(MutableList.as_mutable(JSON)))
 
 
 class StudentList(BaseModel):

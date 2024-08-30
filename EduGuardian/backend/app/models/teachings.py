@@ -9,7 +9,6 @@ from sqlmodel import SQLModel, Field
 
 from .classrooms import ClassRoom
 
-from .classrooms import ClassRoom
 
 class BaseTeaching(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -33,7 +32,8 @@ class DBTeaching(BaseTeaching, SQLModel, table=True):
     
     id: int | None = Field(default=None, primary_key=True)
     
-    students_id: Optional[List[str]] = Field(default=None, sa_column=Column(MutableList.as_mutable(JSON)))
+    # students_id: Optional[List[str]] = Field(default=None, sa_column=Column(MutableList.as_mutable(JSON)))
+    students_id: Optional[List[str]] = Field(default_factory=list, sa_column=Column(JSON))
 
 
 class TeachingList(BaseModel):
