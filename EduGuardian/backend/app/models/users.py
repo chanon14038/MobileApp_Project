@@ -63,7 +63,7 @@ class Token(BaseModel):
 
 class DBUser(User,SQLModel,table=True):
     __tablename__ = 'db_users'
-    id: int | None = sqlmodel.Field(default=None, primary_key=True)
+    id: int = sqlmodel.Field(default=None, primary_key=True)
 
     password : str
 

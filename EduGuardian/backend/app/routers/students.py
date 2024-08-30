@@ -59,10 +59,10 @@ async def create(
 
     return dbstudent
 
-@router.put("/add_description")
-async def add_description(
+@router.put("/update_student")
+async def update_student(
+    info: models.UpdatedStudent,
     student_id: str,
-    description: str,
     session: Annotated[AsyncSession, Depends(models.get_session)],
 ):
     result = await session.exec(
@@ -71,13 +71,10 @@ async def add_description(
     db_student = result.one_or_none()
     
     if db_student:
-        
-        db_student.description.append(description)
-        
-        db_student.sqlmodel_update(db_student)
+        db_student.sqlmodel_update(info)
         session.add(db_student)
         await session.commit()
         await session.refresh(db_student)
         
         return db_student
-    raise HTTPException(status_code=404, detail="Item not found")
+    raise HTTPException(status_code=404, detail="not found Student")

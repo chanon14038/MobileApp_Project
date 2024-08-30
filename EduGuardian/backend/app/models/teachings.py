@@ -25,12 +25,11 @@ class UpdatedTeaching(BaseTeaching):
 
 class Teaching(BaseTeaching):
     students: list[str] | None
-    pass
     
 class DBTeaching(BaseTeaching, SQLModel, table=True):
     __tablename__ = "teachings"
     
-    id: int | None = Field(default=None, primary_key=True)
+    id: int = Field(default=None, primary_key=True)
     
     # students_id: Optional[List[str]] = Field(default=None, sa_column=Column(MutableList.as_mutable(JSON)))
     students_id: Optional[List[str]] = Field(default_factory=list, sa_column=Column(JSON))
