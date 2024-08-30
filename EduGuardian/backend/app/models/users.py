@@ -15,12 +15,11 @@ class BaseUser(BaseModel):
     username: str = pydantic.Field(example="somsri")
     first_name: str = pydantic.Field(example="Firstname")
     last_name: str = pydantic.Field(example="Lastname")
-    year: int = pydantic.Field(example=1)
-    room: int = pydantic.Field(example=1)
     subject: str = pydantic.Field(example="Thai")
 
 class User(BaseUser):
     id: int
+
     
     last_login_date: datetime.datetime | None = pydantic.Field(default=None)
     register_date: datetime.datetime = pydantic.Field(default_factory=datetime.datetime.now)
