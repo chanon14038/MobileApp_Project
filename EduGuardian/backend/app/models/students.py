@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 from sqlalchemy import Column, Integer
 
 from sqlalchemy.ext.mutable import MutableList
@@ -7,7 +7,8 @@ from sqlalchemy.types import JSON
 from pydantic import BaseModel, ConfigDict
 from sqlmodel import SQLModel, Field, Relationship
 
-from .classrooms import ClassRoom
+from .class_rooms import ClassRoom
+from .classrooms import DBClassroom
 
 class BaseStudent(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -37,7 +38,11 @@ class DBStudent(BaseStudent, SQLModel, table=True):
     
     classroom: ClassRoom = Field(default=None)
     
-    descriptions: List["DBDescription"] = Relationship(back_populates="student")
+    descriptions: list["DBDescription"] = Relationship(back_populates="student")
+    
+    classroom: ClassRoom = Field(default=None)
+    # classroom_id: int = Field(default=None, foreign_key="classrooms.id")
+    classroom: DBClassroom = Relationship(back_populates="user")
 
 class StudentList(BaseModel):
     model_config = ConfigDict(from_attributes=True)

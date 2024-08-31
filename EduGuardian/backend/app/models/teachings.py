@@ -7,7 +7,7 @@ from sqlalchemy.types import JSON
 from pydantic import BaseModel, ConfigDict
 from sqlmodel import SQLModel, Field
 
-from .classrooms import ClassRoom
+from .class_rooms import ClassRoom
 
 
 class BaseTeaching(BaseModel):

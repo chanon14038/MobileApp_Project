@@ -34,14 +34,15 @@ async def get(
 @router.post("/create")
 async def create(
     user_info: models.RegisteredUser,
+    # classroom: models.ClassRoomInfo,
     session: Annotated[AsyncSession, Depends(models.get_session)],
 ) -> models.User:
 
     result = await session.exec(
         select(models.DBUser).where(models.DBUser.username == user_info.username)
     )
-
     user = result.one_or_none()
+    
 
     if user:
         raise HTTPException(
@@ -49,12 +50,22 @@ async def create(
             detail="This username is exists.",
         )
 
-    user = models.DBUser.from_orm(user_info)
-    await user.set_password(user_info.password)
-    session.add(user)
-    await session.commit()
+    result = await session.exec(
+        select(models.DBClassroom).where(models.DBClassroom.classroom == user_info.classroom)
+    )
+    dbclassroom = result.one_or_none()
 
-    return user
+    dbuser = models.DBUser.model_validate(user_info)
+    
+    dbuser.classrooms = dbclassroom
+    dbuser.classroom = dbclassroom.classroom
+    await dbuser.set_password(user_info.password)
+    
+    session.add(dbuser)
+    await session.commit()
+    await session.refresh(dbuser)
+
+    return dbuser
 
 @router.put("/change_password")
 async def change_password(

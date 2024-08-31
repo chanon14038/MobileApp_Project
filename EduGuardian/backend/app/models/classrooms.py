@@ -1,21 +1,44 @@
-from enum import Enum
+from typing import Optional, List
+from sqlalchemy import Column
 
-class ClassRoom(int, Enum):
-    one_one = 101
-    one_two = 102
-    one_three = 103
-    two_one = 201
-    two_two = 202
-    two_three = 203
-    three_one = 301
-    three_two = 302
-    three_three = 303
-    four_one = 401
-    four_two = 402
-    four_three = 403
-    five_one = 501
-    five_two = 502
-    five_three = 503
-    six_one = 601
-    six_two = 602
-    six_three = 603
+from sqlalchemy.ext.mutable import MutableList
+from sqlalchemy.types import JSON
+
+from pydantic import BaseModel, ConfigDict
+from sqlmodel import SQLModel, Field, Relationship
+
+from .class_rooms import ClassRoom
+
+class BaseClassroom(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    classroom: ClassRoom
+    
+class CreatedClassroom(BaseClassroom):
+    teacher_id: int
+    pass
+
+class UpdatedClassroom(BaseClassroom):
+    pass
+
+class Classroom(BaseClassroom):
+    students: list[str] | None
+    
+class DBClassroom(BaseClassroom, SQLModel, table=True):
+    __tablename__ = "classrooms"
+    
+    id: int = Field(default=None, primary_key=True)
+    
+    students_id: Optional[List[str]] = Field(default_factory=list, sa_column=Column(JSON))
+    
+    user: "DBUser" = Relationship(back_populates="classrooms")
+    
+
+
+class ClassroomList(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    
+    Classrooms: list[Classroom]
+    page: int
+    page_size: int
+    size_per_page: int

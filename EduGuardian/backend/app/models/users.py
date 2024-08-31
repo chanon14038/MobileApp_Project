@@ -7,8 +7,10 @@ import pydantic
 from pydantic import BaseModel, ConfigDict, EmailStr
 
 import sqlmodel
-from sqlmodel import SQLModel
+from sqlmodel import SQLModel, Relationship
 
+from .class_rooms import ClassRoom
+from .classrooms import DBClassroom
 
 class BaseUser(BaseModel):
     model_config = ConfigDict(from_attributes=True, populate_by_name=True)
@@ -16,9 +18,11 @@ class BaseUser(BaseModel):
     first_name: str = pydantic.Field(example="Firstname")
     last_name: str = pydantic.Field(example="Lastname")
     subject: str = pydantic.Field(example="Thai")
+    
 
 class User(BaseUser):
     id: int
+    classroom_id: int
 
     
     last_login_date: datetime.datetime | None = pydantic.Field(default=None)
@@ -30,6 +34,11 @@ class UserList(BaseModel):
     
 class RegisteredUser(BaseUser):
     password: str = pydantic.Field(example="somsri")
+    classroom: ClassRoom = pydantic.Field(example=101)
+    
+# class ClassRoomInfo(BaseModel):
+#     classroom: ClassRoom
+
 
 class Login(BaseModel):
     username: str
@@ -46,8 +55,6 @@ class ResetedPassword(BaseModel):
 class UpdatedUser(BaseModel):
     first_name: str = pydantic.Field(example="Firstname")
     last_name: str = pydantic.Field(example="Lastname")
-    year: int = pydantic.Field(example=1)
-    room: int = pydantic.Field(example=1)
     subject: str = pydantic.Field(example="Thai")
 
 
@@ -62,13 +69,17 @@ class Token(BaseModel):
     user_id: int | None = None
 
 class DBUser(User,SQLModel,table=True):
-    __tablename__ = 'db_users'
+    __tablename__ = 'users'
     id: int = sqlmodel.Field(default=None, primary_key=True)
 
     password : str
 
+    classroom: ClassRoom = sqlmodel.Field(default=None)
+    classroom_id: int = sqlmodel.Field(default=None, foreign_key="classrooms.id")
+    classrooms: DBClassroom = Relationship(back_populates="user")
+    
     updated_date: datetime.datetime = sqlmodel.Field(default_factory=datetime.datetime.now)
-
+    
     async def get_encrypted_password(self, plain_password):
         return bcrypt.hashpw(
             plain_password.encode("utf-8"), salt=bcrypt.gensalt()
