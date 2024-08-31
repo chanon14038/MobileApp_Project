@@ -4,6 +4,7 @@ from . import users
 from . import students
 from . import teachings
 from . import descriptions
+from. import classrooms
 
 def init_router(app):
     app.include_router(root.router)
@@ -12,3 +13,4 @@ def init_router(app):
     app.include_router(students.router)
     app.include_router(teachings.router)
     app.include_router(descriptions.router)
+    app.include_router(classrooms.router)

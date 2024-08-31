@@ -10,7 +10,6 @@ import sqlmodel
 from sqlmodel import SQLModel, Relationship
 
 from .rooms import Room
-from .classrooms import DBClassroom
 
 class BaseUser(BaseModel):
     model_config = ConfigDict(from_attributes=True, populate_by_name=True)
@@ -75,7 +74,7 @@ class DBUser(User,SQLModel,table=True):
 
     classroom: Room | None = sqlmodel.Field(default=None)
     classroom_id: int | None = sqlmodel.Field(default=None, foreign_key="classrooms.id")
-    db_classroom: DBClassroom | None = Relationship(back_populates="teacher")
+    db_classroom: Optional["DBClassroom"] = Relationship(back_populates="teacher")
     
 
     updated_date: datetime.datetime = sqlmodel.Field(default_factory=datetime.datetime.now)
