@@ -1,20 +1,24 @@
-from tests import client
+from fastapi.testclient import TestClient
+from app import models 
+import pytest
 
-def test_get_me():
-    response = client.get("/users/me")
+client = TestClient()
+@pytest.mark.asyncio
+async def test_get_me():
+    response = await client.get("/users/me")
     assert response.status_code == 200
-    # ตรวจสอบว่าข้อมูลที่ได้ถูกต้อง
     assert "username" in response.json()
 
-def test_get_user_by_id():
+@pytest.mark.asyncio
+async def test_get_user_by_id():
     user_id = 1  # กำหนด ID ที่ต้องการทดสอบ
-    response = client.get(f"/users/{user_id}")
+    response = await client.get(f"/users/{user_id}")
+    assert response.status_code in [200, 404]
     if response.status_code == 200:
         assert response.json()["id"] == user_id
-    else:
-        assert response.status_code == 404
 
-def test_create_user():
+@pytest.mark.asyncio
+async def test_create_user():
     user_data = {
         "username": "testuser",
         "first_name": "Test",
@@ -22,25 +26,25 @@ def test_create_user():
         "subject": "Math",
         "password": "testpassword",
     }
-    response = client.post("/users/create", json=user_data)
+    response = await client.post("/users/create", json=user_data)
     assert response.status_code == 200
     assert response.json()["username"] == "testuser"
 
-def test_change_password():
+@pytest.mark.asyncio
+async def test_change_password():
     password_data = {
         "current_password": "oldpassword",
         "new_password": "newpassword"
     }
-    response = client.put("/users/change_password", json=password_data)
+    response = await client.put("/users/change_password", json=password_data)
+    assert response.status_code in [200, 401]
     if response.status_code == 200:
         assert response.json()["id"] == 1  # ตรวจสอบ ID ของผู้ใช้
-    else:
-        assert response.status_code == 401
 
-def test_delete_user():
+@pytest.mark.asyncio
+async def test_delete_user():
     user_id = 1  # กำหนด ID ที่ต้องการลบ
-    response = client.delete(f"/users/{user_id}")
+    response = await client.delete(f"/users/{user_id}")
+    assert response.status_code in [200, 404]
     if response.status_code == 200:
         assert response.json()["message"] == "delete success"
-    else:
-        assert response.status_code == 404
