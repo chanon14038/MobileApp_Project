@@ -56,7 +56,7 @@ async def create(
         )
         dbclassroom = result.one_or_none()
 
-        dbuser.dbclassroom = dbclassroom
+        dbuser.db_classroom = dbclassroom
         # dbuser.classroom = dbclassroom.classroom
         
     await dbuser.set_password(user_info.password)
