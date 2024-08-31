@@ -52,6 +52,12 @@ async def create(
     
     dbstudent = models.DBStudent.model_validate(student_info)
     
+    result = await session.exec(
+        select(models.DBClassroom).where(models.DBClassroom.classroom == student_info.classroom)
+    )
+    dbclassroom = result.one_or_none()
+    
+    dbstudent.db_classroom = dbclassroom
     session.add(dbstudent)
     await session.commit()
     await session.refresh(dbstudent)
