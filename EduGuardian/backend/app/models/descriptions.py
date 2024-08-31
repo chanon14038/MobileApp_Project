@@ -7,7 +7,7 @@ from sqlalchemy.types import JSON
 from pydantic import BaseModel, ConfigDict
 from sqlmodel import SQLModel, Field, Relationship
 
-from .class_rooms import ClassRoom
+from .rooms import Room
 from .students import DBStudent
 
 class BaseDescription(BaseModel):
@@ -38,7 +38,7 @@ class DBDescription(BaseDescription, SQLModel, table=True):
     
     student_id: str = Field(default=None, foreign_key="students.student_id")
     
-    classroom: ClassRoom = Field(default=None)
+    classroom: Room = Field(default=None)
 
     student: DBStudent | None = Relationship(back_populates="descriptions")
     

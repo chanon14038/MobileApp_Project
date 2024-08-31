@@ -1,6 +1,6 @@
 from enum import Enum
 
-class ClassRoom(int, Enum):
+class Room(int, Enum):
     one_one = 101
     one_two = 102
     one_three = 103

@@ -7,12 +7,13 @@ from sqlalchemy.types import JSON
 from pydantic import BaseModel, ConfigDict
 from sqlmodel import SQLModel, Field, Relationship
 
-from .class_rooms import ClassRoom
+from .rooms import Room
+from .users import *
 
 class BaseClassroom(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
-    classroom: ClassRoom
+    classroom: Room
     
 class CreatedClassroom(BaseClassroom):
     teacher_id: int
@@ -31,7 +32,7 @@ class DBClassroom(BaseClassroom, SQLModel, table=True):
     
     students_id: Optional[List[str]] = Field(default_factory=list, sa_column=Column(JSON))
     
-    user: "DBUser" = Relationship(back_populates="classrooms")
+    teacher: list["DBUser"] = Relationship(back_populates="room")
     
 
 

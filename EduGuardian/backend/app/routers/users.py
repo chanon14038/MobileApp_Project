@@ -42,7 +42,6 @@ async def create(
         select(models.DBUser).where(models.DBUser.username == user_info.username)
     )
     user = result.one_or_none()
-    
 
     if user:
         raise HTTPException(
@@ -56,11 +55,9 @@ async def create(
     dbclassroom = result.one_or_none()
 
     dbuser = models.DBUser.model_validate(user_info)
-    
-    dbuser.classrooms = dbclassroom
-    dbuser.classroom = dbclassroom.classroom
+    dbuser.room = dbclassroom
+    # dbuser.classroom = dbclassroom.classroom
     await dbuser.set_password(user_info.password)
-    
     session.add(dbuser)
     await session.commit()
     await session.refresh(dbuser)

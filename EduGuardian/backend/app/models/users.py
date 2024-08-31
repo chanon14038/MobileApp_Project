@@ -9,7 +9,7 @@ from pydantic import BaseModel, ConfigDict, EmailStr
 import sqlmodel
 from sqlmodel import SQLModel, Relationship
 
-from .class_rooms import ClassRoom
+from .rooms import Room
 from .classrooms import DBClassroom
 
 class BaseUser(BaseModel):
@@ -23,6 +23,7 @@ class BaseUser(BaseModel):
 class User(BaseUser):
     id: int
     classroom_id: int
+    classroom: Room | None
 
     
     last_login_date: datetime.datetime | None = pydantic.Field(default=None)
@@ -34,10 +35,8 @@ class UserList(BaseModel):
     
 class RegisteredUser(BaseUser):
     password: str = pydantic.Field(example="somsri")
-    classroom: ClassRoom = pydantic.Field(example=101)
-    
-# class ClassRoomInfo(BaseModel):
-#     classroom: ClassRoom
+    classroom: Room | None
+
 
 
 class Login(BaseModel):
@@ -74,9 +73,10 @@ class DBUser(User,SQLModel,table=True):
 
     password : str
 
-    classroom: ClassRoom = sqlmodel.Field(default=None)
+    classroom: Room = sqlmodel.Field(default=None)
     classroom_id: int = sqlmodel.Field(default=None, foreign_key="classrooms.id")
-    classrooms: DBClassroom = Relationship(back_populates="user")
+    room: Optional[DBClassroom] = Relationship(back_populates="teacher")
+    
     
     updated_date: datetime.datetime = sqlmodel.Field(default_factory=datetime.datetime.now)
     
