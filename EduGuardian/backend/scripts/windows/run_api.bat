@@ -1,1 +1,1 @@
-uvicorn app.main:create_app --reload
+uvicorn app.main:create_app --reload --factory
