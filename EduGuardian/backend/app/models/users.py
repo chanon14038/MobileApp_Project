@@ -73,11 +73,11 @@ class DBUser(User,SQLModel,table=True):
 
     password : str
 
-    classroom: Room = sqlmodel.Field(default=None)
-    classroom_id: int = sqlmodel.Field(default=None, foreign_key="classrooms.id")
-    room: Optional[DBClassroom] = Relationship(back_populates="teacher")
+    classroom: Room | None = sqlmodel.Field(default=None)
+    classroom_id: int | None = sqlmodel.Field(default=None, foreign_key="classrooms.id")
+    db_classroom: DBClassroom | None = Relationship(back_populates="teacher")
     
-    
+
     updated_date: datetime.datetime = sqlmodel.Field(default_factory=datetime.datetime.now)
     
     async def get_encrypted_password(self, plain_password):

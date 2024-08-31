@@ -11,6 +11,7 @@ from .students import *
 from .teachings import *
 from .descriptions import *
 from .classrooms import *
+# from .subjects import *
 
 connect_args = {}
 

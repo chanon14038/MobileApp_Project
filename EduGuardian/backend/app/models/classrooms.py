@@ -9,6 +9,7 @@ from sqlmodel import SQLModel, Field, Relationship
 
 from .rooms import Room
 from .users import *
+from .students import *
 
 class BaseClassroom(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -30,9 +31,10 @@ class DBClassroom(BaseClassroom, SQLModel, table=True):
     
     id: int = Field(default=None, primary_key=True)
     
-    students_id: Optional[List[str]] = Field(default_factory=list, sa_column=Column(JSON))
+    # students_id: Optional[List[str]] = Field(default_factory=list, sa_column=Column(JSON))
     
-    teacher: list["DBUser"] = Relationship(back_populates="room")
+    teacher: list["DBUser"] = Relationship(back_populates="db_classroom")
+    student: list["DBStudent"] = Relationship(back_populates="db_classroom")
     
 
 

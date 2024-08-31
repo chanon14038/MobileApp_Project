@@ -8,19 +8,19 @@ from pydantic import BaseModel, ConfigDict
 from sqlmodel import SQLModel, Field, Relationship
 
 from .rooms import Room
-from .classrooms import DBClassroom
 
 class BaseStudent(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     first_name: str
     last_name: str
+
+    classroom: Room | None
     
 
     
 class CreatedStudent(BaseStudent):
     student_id: str
-    classroom: Room | None
 
 class UpdatedStudent(BaseStudent):
     pass
@@ -38,11 +38,13 @@ class DBStudent(BaseStudent, SQLModel, table=True):
     
     classroom: Room = Field(default=None)
     
-    descriptions: list["DBDescription"] = Relationship(back_populates="student")
     
     classroom: Room = Field(default=None)
-    # classroom_id: int = Field(default=None, foreign_key="classrooms.id")
-    # classroom: DBClassroom = Relationship(back_populates="user")
+    
+    classroom_id: int = Field(default=None, foreign_key="classrooms.id")
+    db_classroom: Optional["DBClassroom"] = Relationship(back_populates="student")
+    
+    descriptions: list["DBDescription"] = Relationship(back_populates="student")
 
 class StudentList(BaseModel):
     model_config = ConfigDict(from_attributes=True)

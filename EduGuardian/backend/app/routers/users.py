@@ -49,14 +49,16 @@ async def create(
             detail="This username is exists.",
         )
 
-    result = await session.exec(
-        select(models.DBClassroom).where(models.DBClassroom.classroom == user_info.classroom)
-    )
-    dbclassroom = result.one_or_none()
-
     dbuser = models.DBUser.model_validate(user_info)
-    dbuser.room = dbclassroom
-    # dbuser.classroom = dbclassroom.classroom
+    if user_info.classroom:
+        result = await session.exec(
+            select(models.DBClassroom).where(models.DBClassroom.classroom == user_info.classroom)
+        )
+        dbclassroom = result.one_or_none()
+
+        dbuser.dbclassroom = dbclassroom
+        # dbuser.classroom = dbclassroom.classroom
+        
     await dbuser.set_password(user_info.password)
     session.add(dbuser)
     await session.commit()

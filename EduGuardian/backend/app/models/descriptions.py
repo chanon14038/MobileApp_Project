@@ -8,7 +8,6 @@ from pydantic import BaseModel, ConfigDict
 from sqlmodel import SQLModel, Field, Relationship
 
 from .rooms import Room
-from .students import DBStudent
 
 class BaseDescription(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -40,11 +39,9 @@ class DBDescription(BaseDescription, SQLModel, table=True):
     
     classroom: Room = Field(default=None)
 
-    student: DBStudent | None = Relationship(back_populates="descriptions")
+    student: Optional["DBStudent"] = Relationship(back_populates="descriptions")
     
 
-    
-    
 class DescriptionList(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     
