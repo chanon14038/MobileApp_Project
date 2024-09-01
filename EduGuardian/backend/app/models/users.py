@@ -55,7 +55,7 @@ class UpdatedUser(BaseModel):
     last_name: str | None = pydantic.Field(example="Lastname")
     subject: str | None = pydantic.Field(example="Thai")
     
-    classroom: str | None = pydantic.Field(example="1/1")
+    advisor_room: str | None = pydantic.Field(example="1/1")
 
 
 class Token(BaseModel):
