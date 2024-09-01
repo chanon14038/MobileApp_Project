@@ -134,6 +134,9 @@ async def example_student_1(
         return student
     
     student = models.DBStudent(
+        first_name="Somsri",
+        last_name="Somhwang",
+        classroom="1/1",
         student_id="123456",
     )
     
