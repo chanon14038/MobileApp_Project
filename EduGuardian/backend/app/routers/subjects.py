@@ -27,8 +27,7 @@ async def create_subject(
         dbsubject.subject = dbteacher.subject
         dbsubject.db_teacher = dbteacher
         dbsubject.db_student = dbstudents
-        for student in dbsubject.db_student:
-            dbsubject.all_student_id.append(student.student_id)
+        
         
         session.add(dbsubject)
         await session.commit()
