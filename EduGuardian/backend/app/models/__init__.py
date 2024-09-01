@@ -31,11 +31,7 @@ def init_db(settings):
 
 async def recreate_table():
     async with engine.begin() as conn:
-<<<<<<< HEAD
         # await conn.run_sync(SQLModel.metadata.drop_all)
-=======
-        #await conn.run_sync(SQLModel.metadata.drop_all)
->>>>>>> 79a865486f78b42d02f4b6fa9eceab2845ecf6bc
         await conn.run_sync(SQLModel.metadata.create_all)
 
 
