@@ -21,16 +21,17 @@ async def create(
     )
     dbstudent = result.one_or_none()
     
+    if dbstudent:
     
-    dbdescription = models.DBDescription.model_validate(info)
-    dbdescription.db_student = dbstudent
-    dbdescription.db_student = dbstudent.classroom
-    dbdescription.first_name = dbstudent.first_name
-    dbdescription.last_name = dbstudent.last_name
+        dbdescription = models.DBDescription.model_validate(info)
+        dbdescription.db_student = dbstudent
+        dbdescription.first_name = dbstudent.first_name
+        dbdescription.last_name = dbstudent.last_name
+        
+        session.add(dbdescription)
+        await session.commit()
+        await session.refresh(dbdescription)
+        
+        return dbdescription
     
-    session.add(dbdescription)
-    await session.commit()
-    await session.refresh(dbdescription)
-    
-
-    return dbdescription
+    raise HTTPException(status_code=404, detail="Not Found Student")
