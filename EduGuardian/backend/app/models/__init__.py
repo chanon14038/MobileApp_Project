@@ -8,10 +8,9 @@ from sqlalchemy.orm import sessionmaker
 
 from .users import *
 from .students import *
-from .teachings import *
 from .descriptions import *
 from .classrooms import *
-# from .subjects import *
+from .subjects import *
 
 connect_args = {}
 

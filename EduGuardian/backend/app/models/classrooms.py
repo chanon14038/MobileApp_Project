@@ -4,15 +4,15 @@ from sqlalchemy import Column
 from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.types import JSON
 
+import pydantic
 from pydantic import BaseModel, ConfigDict
 from sqlmodel import SQLModel, Field, Relationship
 
-from .rooms import Room
 
 class BaseClassroom(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
-    classroom: Room
+    classroom: str = pydantic.Field(example="1/1")
     
 class CreatedClassroom(BaseClassroom):
     teacher_id: int
@@ -22,17 +22,17 @@ class UpdatedClassroom(BaseClassroom):
     pass
 
 class Classroom(BaseClassroom):
-    students: list[str] | None
+    all_student_id: list[str] | None
     
 class DBClassroom(BaseClassroom, SQLModel, table=True):
     __tablename__ = "classrooms"
     
     id: int = Field(default=None, primary_key=True)
     
-    students_id: list = Field(default=[], sa_column=Column(JSON))
+    # all_student_id: list[str] = Field(default=[], sa_column=Column(JSON))
     
-    teacher: list["DBUser"] = Relationship(back_populates="db_classroom")
-    student: list["DBStudent"] = Relationship(back_populates="db_classroom")
+    teacher: list["DBUser"] = Relationship(back_populates="db_classroom", passive_deletes=True)
+    student: list["DBStudent"] = Relationship(back_populates="db_classroom", passive_deletes=True)
     
 
 

@@ -4,20 +4,22 @@ from sqlalchemy import Column, ARRAY
 from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.types import JSON
 
-from pydantic import BaseModel, ConfigDict
-from sqlmodel import SQLModel, Field
 
-from .rooms import Room
+import pydantic
+from pydantic import BaseModel, ConfigDict
+from sqlmodel import SQLModel, Field, Relationship
+
 
 
 class BaseSubject(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     subject: str
-    id_teacher: int
-    classroom: Room
+    
+    classroom: str | None= pydantic.Field(example="1/1")
+    
+    teacher_id: int
 
-    sudent_ids =  Column(MutableList.as_mutable(ARRAY(str)))
     
 class CreatedSubject(BaseSubject):
     pass
@@ -33,8 +35,13 @@ class DBSubject(BaseSubject, SQLModel, table=True):
 
     id: int = Field(default=None, primary_key=True)
     
-    # students_id: Optional[List[str]] = Field(default=None, sa_column=Column(MutableList.as_mutable(JSON)))
-    # students_id: Optional[list[str]] = Field(default_factory=list, sa_column=Column(JSON))
+    teacher_id: Optional[int] = Field(foreign_key="users.id", nullable=True)
+    all_student_id: list[str] = Field(default=[], sa_column=Column(JSON))
+
+    
+    db_student: list["DBStudent"] = Relationship(back_populates="db_subject")
+    db_teacher: Optional["DBUser"] = Relationship(back_populates="db_subject")
+    
     
 
 

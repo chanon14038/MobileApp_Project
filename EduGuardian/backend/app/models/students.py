@@ -4,10 +4,10 @@ from sqlalchemy import Column, Integer
 from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.types import JSON
 
+import pydantic
 from pydantic import BaseModel, ConfigDict
 from sqlmodel import SQLModel, Field, Relationship
 
-from .rooms import Room
 
 class BaseStudent(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -15,7 +15,7 @@ class BaseStudent(BaseModel):
     first_name: str
     last_name: str
 
-    classroom: Room | None
+    classroom: str | None = pydantic.Field(example="1/1")
     
 
     
@@ -36,15 +36,14 @@ class DBStudent(BaseStudent, SQLModel, table=True):
     
     student_id: str = Field(default=None, primary_key=True)
     
-    classroom: Room = Field(default=None)
+    advisor: str | None= Field(default=None)
     
+    classroom_id: int | None = Field(default=None, foreign_key="classrooms.id")
     
-    classroom: Room = Field(default=None)
+    db_classroom: Optional["DBClassroom"] = Relationship(back_populates="student", passive_deletes=True)
     
-    classroom_id: int = Field(default=None, foreign_key="classrooms.id")
-    db_classroom: Optional["DBClassroom"] = Relationship(back_populates="student")
-    
-    descriptions: list["DBDescription"] = Relationship(back_populates="student")
+    descriptions: list["DBDescription"] = Relationship(back_populates="student", cascade_delete=True)
+    subjects: Optional["DBSubject"] = Relationship(back_populates="student", passive_deletes=True)
 
 class StudentList(BaseModel):
     model_config = ConfigDict(from_attributes=True)
