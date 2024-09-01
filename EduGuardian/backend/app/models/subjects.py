@@ -13,7 +13,7 @@ from .link import StudentSubjectLink
 class BaseSubject(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     
-    classroom: str | None= pydantic.Field(example="1/1")
+    classroom: str | None= pydantic.Field(json_schema_extra=dict(example="1/1"))
     
     teacher_id: int
 

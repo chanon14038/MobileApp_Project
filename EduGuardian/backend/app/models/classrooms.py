@@ -12,7 +12,7 @@ from sqlmodel import SQLModel, Field, Relationship
 class BaseClassroom(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
-    classroom: str = pydantic.Field(example="1/1")
+    classroom: str = pydantic.Field(json_schema_extra=dict(example="1/1"))
     
 class CreatedClassroom(BaseClassroom):
     pass

@@ -13,12 +13,12 @@ from sqlmodel import SQLModel, Relationship
 
 class BaseUser(BaseModel):
     model_config = ConfigDict(from_attributes=True, populate_by_name=True)
-    username: str = pydantic.Field(example="somsri")
-    first_name: str = pydantic.Field(example="Firstname")
-    last_name: str = pydantic.Field(example="Lastname")
-    subject: str = pydantic.Field(example="Thai")
+    username: str = pydantic.Field(json_schema_extra=dict(example="somsri"))
+    first_name: str = pydantic.Field(json_schema_extra=dict(example="Firstname"))
+    last_name: str = pydantic.Field(json_schema_extra=dict(example="Lastname"))
+    subject: str = pydantic.Field(json_schema_extra=dict(example="Thai"))
     
-    advisor_room: str | None = pydantic.Field(example="1/1")
+    advisor_room: str | None = pydantic.Field(json_schema_extra=dict(example="1/1"))
     
 
 class User(BaseUser):
@@ -34,7 +34,7 @@ class UserList(BaseModel):
     users: list[User]
     
 class RegisteredUser(BaseUser):
-    password: str = pydantic.Field(example="somsri")
+    password: str = pydantic.Field(json_schema_extra=dict(example="somsri"))
 
 
 
@@ -51,11 +51,11 @@ class ResetedPassword(BaseModel):
     citizen_id: str
 
 class UpdatedUser(BaseModel):
-    first_name: str | None = pydantic.Field(example="Firstname")
-    last_name: str | None = pydantic.Field(example="Lastname")
-    subject: str | None = pydantic.Field(example="Thai")
+    first_name: str | None = pydantic.Field(json_schema_extra=dict(example="Firstname"))
+    last_name: str | None = pydantic.Field(json_schema_extra=dict(example="Lastname"))
+    subject: str | None = pydantic.Field(json_schema_extra=dict(example="Thai"))
     
-    advisor_room: str | None = pydantic.Field(example="1/1")
+    advisor_room: str | None = pydantic.Field(json_schema_extra=dict(example="1/1"))
 
 
 class Token(BaseModel):
