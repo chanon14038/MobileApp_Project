@@ -98,12 +98,16 @@ async def change_password(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect password",
         )
-
-    await db_user.set_password(password_update.new_password)
-    session.add(db_user)
-    await session.commit()
-    await session.refresh(db_user)
-    return db_user
+    if db_user:
+        await db_user.set_password(password_update.new_password)
+        session.add(db_user)
+        await session.commit()
+        await session.refresh(db_user)
+        raise HTTPException(
+            status_code=status.HTTP_200_OK,
+            detail="Change password successfully",
+        )
+    
 
 
 
@@ -111,7 +115,7 @@ async def change_password(
 async def update(
     request: Request,
     user_update: models.UpdatedUser,
-    password_update: models.ChangedPassword,
+    # password_update: models.ChangedPassword,
     session: Annotated[AsyncSession, Depends(models.get_session)],
     current_user: models.User = Depends(deps.get_current_user),
 ) -> models.User:
@@ -127,18 +131,21 @@ async def update(
             detail="Not found this user",
         )
 
-    if not await db_user.verify_password(password_update.current_password):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect password",
-        )
-    db_user.sqlmodel_update(user_update)
-    await db_user.set_password(password_update.new_password)
-    session.add(db_user)
-    await session.commit()
-    await session.refresh(db_user)
+    # if not await db_user.verify_password(password_update.current_password):
+    #     raise HTTPException(
+    #         status_code=status.HTTP_401_UNAUTHORIZED,
+            
+    #         detail="Incorrect password",
+        # )
+    if db_user:
+        db_user.sqlmodel_update(user_update)
+        # await db_user.set_password(password_update.new_password)
+        session.add(db_user)
+        await session.commit()
+        await session.refresh(db_user)
 
-    return db_user
+
+        return db_user
 
 
 @router.delete("/{user_id}")
