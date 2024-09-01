@@ -14,23 +14,31 @@ async def create_classroom(
     session: Annotated[AsyncSession, Depends(models.get_session)],
 ):
     result = await session.exec(
-        select(models.DBStudent).where(models.DBStudent.classroom == info.classroom)
+        select(models.DBClassroom).where(models.DBClassroom.classroom == info.classroom)
     )
-    students = result.all()
+    classroom= result.one_or_none()
+    
+    if not classroom:
+        result = await session.exec(
+            select(models.DBStudent).where(models.DBStudent.classroom == info.classroom)
+        )
+        dbstudents = result.all()
+        
+        result = await session.exec(
+            select(models.DBUser).where(models.DBUser.advisor_room == info.classroom)
+        )
+        dbteacher = result.one_or_none()
 
-    if not students:
-        raise HTTPException(status_code=404, detail="No students found for the given classroom")
-
-    student_ids = [student.student_id for student in students]
-
-    # เพิ่ม student_ids ลงใน DBClassroom (ตัวอย่างการอัพเดต)
-    Classroom = models.DBClassroom(
-        subject=info.subject,
-        id_teacher=info.id_teacher,
-        classroom=info.classroom,
-        students_id = student_ids,
-    )
-    session.add(Classroom)
-    await session.commit()
-
-    return Classroom
+        dbclassroom = models.DBClassroom.model_validate(info)
+        if dbstudents:
+            dbclassroom.db_student = dbstudents
+        if dbteacher:
+            dbclassroom.db_teacher = dbteacher
+        
+        session.add(dbclassroom)
+        await session.commit()
+        await session.refresh(dbclassroom)
+        
+        return dbclassroom
+        
+    raise HTTPException(status_code=409, detail="Classroom already exists")

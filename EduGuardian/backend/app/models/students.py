@@ -8,6 +8,7 @@ import pydantic
 from pydantic import BaseModel, ConfigDict
 from sqlmodel import SQLModel, Field, Relationship
 
+from .link import StudentSubjectLink
 
 class BaseStudent(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -28,22 +29,28 @@ class UpdatedStudent(BaseStudent):
 class Student(BaseStudent):
     student_id: str
     
+    
+ 
 class DBStudent(BaseStudent, SQLModel, table=True):
     __tablename__ = "students"
+    
+    student_id: str = Field(default=None, primary_key=True)
     
     first_name: str | None = Field(default=None)
     last_name: str | None = Field(default=None)
     
-    student_id: str = Field(default=None, primary_key=True)
-    
     advisor: str | None= Field(default=None)
+    
+    advisor_id: int | None = Field(default=None, foreign_key="users.id")
     
     classroom_id: int | None = Field(default=None, foreign_key="classrooms.id")
     
-    db_classroom: Optional["DBClassroom"] = Relationship(back_populates="student", passive_deletes=True)
+    db_classroom: Optional["DBClassroom"] = Relationship(back_populates="db_student", passive_deletes=True)
     
-    descriptions: list["DBDescription"] = Relationship(back_populates="student", cascade_delete=True)
-    subjects: Optional["DBSubject"] = Relationship(back_populates="student", passive_deletes=True)
+    db_descriptions: list["DBDescription"] = Relationship(back_populates="db_student", cascade_delete=True)
+    db_subject: list["DBSubject"] | None = Relationship(back_populates="db_student", link_model=StudentSubjectLink)
+
+    db_teacher: Optional["DBUser"] = Relationship(back_populates="db_student")
 
 class StudentList(BaseModel):
     model_config = ConfigDict(from_attributes=True)

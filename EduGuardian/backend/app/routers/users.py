@@ -43,28 +43,36 @@ async def create(
     )
     user = result.one_or_none()
 
-    if user:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="This username is exists.",
-        )
-
-    dbuser = models.DBUser.model_validate(user_info)
-    if user_info.classroom:
+    if not user:
         result = await session.exec(
-            select(models.DBClassroom).where(models.DBClassroom.classroom == user_info.classroom)
+            select(models.DBClassroom).where(models.DBClassroom.classroom == user_info.advisor_room)
         )
         dbclassroom = result.one_or_none()
-
-        dbuser.db_classroom = dbclassroom
-        # dbuser.classroom = dbclassroom.classroom
         
-    await dbuser.set_password(user_info.password)
-    session.add(dbuser)
-    await session.commit()
-    await session.refresh(dbuser)
+        result = await session.exec(
+            select(models.DBStudent).where(models.DBStudent.classroom == user_info.advisor_room)
+        )
+        dbstudents = result.all()
+        
+        
+        dbuser = models.DBUser.model_validate(user_info)
+        if dbclassroom:
+            dbuser.db_classroom = dbclassroom
+        if dbstudents:
+            dbuser.db_student = dbstudents
+            for student in dbuser.db_student:
+                student.advisor = f"{dbuser.first_name} {dbuser.last_name}"
+        
+        await dbuser.set_password(user_info.password)
+        session.add(dbuser)
+        await session.commit()
+        await session.refresh(dbuser)
 
-    return dbuser
+        return dbuser
+        
+    raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This username is exists.")
+
+   
 
 @router.put("/change_password")
 async def change_password(

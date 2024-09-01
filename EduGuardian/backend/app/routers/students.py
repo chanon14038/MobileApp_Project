@@ -10,6 +10,56 @@ from .. import models
 
 router = APIRouter(prefix="/students", tags=["students"])
 
+
+@router.post("/create")
+async def create(
+    info: models.CreatedStudent,
+    session: Annotated[AsyncSession, Depends(models.get_session)],
+    ):
+    
+    result = await session.exec(
+        select(models.DBStudent).where(models.DBStudent.student_id == info.student_id)
+    )
+    dbstudent = result.one_or_none()
+    
+    if not dbstudent:
+        result = await session.exec(
+            select(models.DBClassroom).where(models.DBClassroom.classroom == info.classroom)
+        )
+        dbclassroom = result.one_or_none()
+        
+        result = await session.exec(
+            select(models.DBUser).where(models.DBUser.advisor_room == info.classroom)
+        )
+        dbadvisor = result.one_or_none()
+        
+        result = await session.exec(
+            select(models.DBSubject).where(models.DBSubject.classroom == info.classroom)
+        )
+        dbsubject = result.all()
+    
+        dbstudent = models.DBStudent.model_validate(info)
+        if dbclassroom:
+            dbstudent.db_classroom = dbclassroom
+        if dbadvisor:
+            dbstudent.db_teacher = dbadvisor
+            dbstudent.advisor = f"{dbadvisor.first_name} {dbadvisor.last_name}"
+            
+        if dbsubject:
+            dbstudent.db_subject = dbsubject
+            # for subject in dbstudent.db_subject:
+            #     # subject.db_student = dbstudent
+            #     subject.all_student_id.append(dbstudent.student_id)
+        
+            
+        session.add(dbstudent)
+        await session.commit()
+        await session.refresh(dbstudent)
+        
+        return dbstudent
+
+    raise HTTPException(status_code=409, detail="Student ID already exists")
+
 @router.get("/", response_model=List[models.DBStudent])
 async def get_all_students(
     session: Annotated[AsyncSession, Depends(models.get_session)],
@@ -43,27 +93,6 @@ async def get_student_by_id(
     
     return student
 
-
-@router.post("/create")
-async def create(
-    student_info: models.CreatedStudent,
-    session: Annotated[AsyncSession, Depends(models.get_session)],
-):
-    
-    dbstudent = models.DBStudent.model_validate(student_info)
-    
-    result = await session.exec(
-        select(models.DBClassroom).where(models.DBClassroom.classroom == student_info.classroom)
-    )
-    dbclassroom = result.one_or_none()
-    
-    dbstudent.db_classroom = dbclassroom
-    session.add(dbstudent)
-    await session.commit()
-    await session.refresh(dbstudent)
-    
-
-    return dbstudent
 
 @router.put("/update_student")
 async def update_student(

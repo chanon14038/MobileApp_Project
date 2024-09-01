@@ -19,14 +19,14 @@ async def create(
     result = await session.exec(
         select(models.DBStudent).where(models.DBStudent.student_id == info.student_id)
     )
-    db_student = result.one_or_none()
+    dbstudent = result.one_or_none()
     
     
     dbdescription = models.DBDescription.model_validate(info)
-    dbdescription.student = db_student
-    dbdescription.classroom = db_student.classroom
-    dbdescription.first_name = db_student.first_name
-    dbdescription.last_name = db_student.last_name
+    dbdescription.db_student = dbstudent
+    dbdescription.db_student = dbstudent.classroom
+    dbdescription.first_name = dbstudent.first_name
+    dbdescription.last_name = dbstudent.last_name
     
     session.add(dbdescription)
     await session.commit()

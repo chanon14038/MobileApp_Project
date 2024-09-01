@@ -18,7 +18,7 @@ class BaseUser(BaseModel):
     last_name: str = pydantic.Field(example="Lastname")
     subject: str = pydantic.Field(example="Thai")
     
-    advisor_room: str | None = pydantic.Field(example=101)
+    advisor_room: str | None = pydantic.Field(example="1/1")
     
 
 class User(BaseUser):
@@ -78,7 +78,7 @@ class DBUser(User,SQLModel,table=True):
     
     db_classroom: Optional["DBClassroom"] = Relationship(back_populates="db_teacher", passive_deletes=True)
     db_subject: list["DBSubject"] = Relationship(back_populates="db_teacher", passive_deletes=True)
-    
+    db_student: list["DBStudent"] = Relationship(back_populates="db_teacher", passive_deletes=True)    
 
     updated_date: datetime.datetime = sqlmodel.Field(default_factory=datetime.datetime.now)
     

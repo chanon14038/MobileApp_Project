@@ -15,7 +15,6 @@ class BaseClassroom(BaseModel):
     classroom: str = pydantic.Field(example="1/1")
     
 class CreatedClassroom(BaseClassroom):
-    teacher_id: int
     pass
 
 class UpdatedClassroom(BaseClassroom):
@@ -31,8 +30,8 @@ class DBClassroom(BaseClassroom, SQLModel, table=True):
     
     # all_student_id: list[str] = Field(default=[], sa_column=Column(JSON))
     
-    teacher: list["DBUser"] = Relationship(back_populates="db_classroom", passive_deletes=True)
-    student: list["DBStudent"] = Relationship(back_populates="db_classroom", passive_deletes=True)
+    db_teacher: Optional["DBUser"] | None = Relationship(back_populates="db_classroom", passive_deletes=True)
+    db_student: list["DBStudent"] | None = Relationship(back_populates="db_classroom", passive_deletes=True)
     
 
 
