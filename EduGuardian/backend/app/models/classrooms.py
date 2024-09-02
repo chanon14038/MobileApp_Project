@@ -8,6 +8,9 @@ import pydantic
 from pydantic import BaseModel, ConfigDict
 from sqlmodel import SQLModel, Field, Relationship
 
+from . import users
+from . import students
+from . import students
 
 class BaseClassroom(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -30,8 +33,8 @@ class DBClassroom(BaseClassroom, SQLModel, table=True):
     
     # all_student_id: list[str] = Field(default=[], sa_column=Column(JSON))
     
-    db_teacher: Optional["DBUser"] | None = Relationship(back_populates="db_classroom", passive_deletes=True)
-    db_student: list["DBStudent"] | None = Relationship(back_populates="db_classroom", passive_deletes=True)
+    db_teacher: Optional["users.DBUser"] | None = Relationship(back_populates="db_classroom", passive_deletes=True)
+    db_student: list["students.DBStudent"] | None = Relationship(back_populates="db_classroom", passive_deletes=True)
     
 
 

@@ -7,6 +7,13 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import sessionmaker
 
+# from .users import DBUser, Token, User,RegisteredUser, ChangedPassword, UpdatedUser
+# from .students import DBStudent, CreatedStudent, UpdatedStudent
+# from .descriptions import DBDescription, CreatedDescription
+# from .classrooms import CreatedClassroom
+# from .subjects import CreatedSubject
+
+
 from .users import *
 from .students import *
 from .descriptions import *
@@ -28,10 +35,13 @@ def init_db(settings):
         connect_args=connect_args,
     )
 
+async def create_table():
+    async with engine.begin() as conn:
+        await conn.run_sync(SQLModel.metadata.create_all)
 
 async def recreate_table():
     async with engine.begin() as conn:
-        # await conn.run_sync(SQLModel.metadata.drop_all)
+        await conn.run_sync(SQLModel.metadata.drop_all)
         await conn.run_sync(SQLModel.metadata.create_all)
 
 
