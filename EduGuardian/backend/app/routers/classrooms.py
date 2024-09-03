@@ -8,6 +8,23 @@ from .. import models
 
 router = APIRouter(prefix="/classroom", tags=["classroom"])
 
+@router.get("/me")
+async def get_me(
+    session: Annotated[AsyncSession, Depends(models.get_session)]
+) :
+    result = await session.exec(
+        select(models.DBClassroom)
+    )
+    classrooms = result.all()
+
+    if not classrooms:
+        raise HTTPException(
+            status_code=404,
+            detail="No classrooms found",
+        )
+
+    return classrooms
+
 @router.post("/create")
 async def create_classroom(
     info: models.CreatedClassroom,
