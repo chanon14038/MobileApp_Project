@@ -40,8 +40,8 @@ class DBSubject(BaseSubject, SQLModel, table=True):
     # all_student_id: list[str] = Field(default=[], sa_column=Column(JSON))
 
     
-    db_student: list["students.DBStudent"] | None = Relationship(back_populates="db_subject", link_model=StudentSubjectLink)
-    db_teacher: Optional["users.DBUser"] = Relationship(back_populates="db_subject")
+    db_student: list["DBStudent"] | None = Relationship(back_populates="db_subject", link_model=StudentSubjectLink)
+    db_teacher: Optional["DBUser"] = Relationship(back_populates="db_subject")
     
     
 

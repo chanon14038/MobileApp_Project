@@ -49,12 +49,12 @@ class DBStudent(BaseStudent, SQLModel, table=True):
     
     classroom_id: int | None = Field(default=None, foreign_key="classrooms.id")
     
-    db_classroom: Optional["classrooms.DBClassroom"] = Relationship(back_populates="db_student", passive_deletes=True)
+    db_classroom: Optional["DBClassroom"] = Relationship(back_populates="db_student", passive_deletes=True)
     
-    db_descriptions: list["descriptions.DBDescription"] = Relationship(back_populates="db_student", cascade_delete=True)
-    db_subject: list["subjects.DBSubject"] | None = Relationship(back_populates="db_student", link_model=StudentSubjectLink)
+    db_descriptions: list["DBDescription"] = Relationship(back_populates="db_student", cascade_delete=True)
+    db_subject: list["DBSubject"] | None = Relationship(back_populates="db_student", link_model=StudentSubjectLink)
 
-    db_teacher: Optional["users.DBUser"] = Relationship(back_populates="db_student")
+    db_teacher: Optional["DBUser"] = Relationship(back_populates="db_student")
 
 class StudentList(BaseModel):
     model_config = ConfigDict(from_attributes=True)

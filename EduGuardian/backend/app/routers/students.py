@@ -113,3 +113,20 @@ async def update_student(
         
         return db_student
     raise HTTPException(status_code=404, detail="not found Student")
+
+@router.delete("/{student_id}")
+async def delete_student(
+    student_id: str,
+    # current_user: Annotated[models.User, Depends(deps.get_current_user)],
+    session: Annotated[AsyncSession, Depends(models.get_session)],
+) -> dict:
+    result = await session.exec(
+        select(models.DBStudent).where(models.DBStudent.student_id == student_id)
+    )
+    dbstudent = result.one_or_none()
+    if dbstudent :
+        await session.delete(dbstudent)
+        await session.commit()
+        
+        return dict(message="delete success")
+    raise HTTPException(status_code=404, detail=" not found")   

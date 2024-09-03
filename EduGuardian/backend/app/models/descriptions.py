@@ -37,7 +37,7 @@ class DBDescription(BaseDescription, SQLModel, table=True):
     
     student_id: str = Field(default=None, foreign_key="students.student_id")
 
-    db_student: Optional["students.DBStudent"] = Relationship(back_populates="db_descriptions")
+    db_student: Optional["DBStudent"] = Relationship(back_populates="db_descriptions")
     
 
 class DescriptionList(BaseModel):
