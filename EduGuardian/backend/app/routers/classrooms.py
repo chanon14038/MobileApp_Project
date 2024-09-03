@@ -42,3 +42,21 @@ async def create_classroom(
         return dbclassroom
         
     raise HTTPException(status_code=409, detail="Classroom already exists")
+
+
+@router.delete("/{classroom_id}")
+async def delete_classroom(
+    classroom_id: int,
+    # current_user: Annotated[models.User, Depends(deps.get_current_user)],
+    session: Annotated[AsyncSession, Depends(models.get_session)],
+) -> dict:
+    result = await session.exec(
+        select(models.DBClassroom).where(models.DBClassroom.id == classroom_id)
+    )
+    dbclassroom = result.one_or_none()
+    if dbclassroom :
+        await session.delete(dbclassroom)
+        await session.commit()
+        
+        return dict(message="delete success")
+    raise HTTPException(status_code=404, detail=" not found")   
