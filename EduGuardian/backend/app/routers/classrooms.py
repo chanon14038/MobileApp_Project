@@ -8,7 +8,7 @@ from .. import models
 
 router = APIRouter(prefix="/classroom", tags=["classroom"])
 
-@router.get("/me")
+@router.get("")
 async def get_me(
     session: Annotated[AsyncSession, Depends(models.get_session)]
 ) :
@@ -25,7 +25,7 @@ async def get_me(
 
     return classrooms
 
-@router.post("/create")
+@router.post("")
 async def create_classroom(
     info: models.CreatedClassroom,
     session: Annotated[AsyncSession, Depends(models.get_session)],

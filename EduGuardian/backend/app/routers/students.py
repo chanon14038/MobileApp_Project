@@ -11,7 +11,7 @@ from .. import models
 router = APIRouter(prefix="/students", tags=["students"])
 
 
-@router.post("/create")
+@router.post("")
 async def create(
     info: models.CreatedStudent,
     session: Annotated[AsyncSession, Depends(models.get_session)],
@@ -60,7 +60,7 @@ async def create(
 
     raise HTTPException(status_code=409, detail="Student ID already exists")
 
-@router.get("/", response_model=List[models.DBStudent])
+@router.get("", response_model=List[models.DBStudent])
 async def get_all_students(
     session: Annotated[AsyncSession, Depends(models.get_session)],
 ) -> List[models.DBStudent]:
@@ -94,10 +94,10 @@ async def get_student_by_id(
     return student
 
 
-@router.put("/update_student")
+@router.put("/{student_id}")
 async def update_student(
-    info: models.UpdatedStudent,
     student_id: str,
+    info: models.UpdatedStudent,
     session: Annotated[AsyncSession, Depends(models.get_session)],
 ):
     result = await session.exec(

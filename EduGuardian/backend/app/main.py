@@ -20,27 +20,27 @@ async def lifespan(app: FastAPI):
         await models.close_session()
 
 
-# def create_app(settings=None):
-#     if not settings:
-#         settings = config.get_settings()
+def create_app(settings=None):
+    if not settings:
+        settings = config.get_settings()
 
-#     app = FastAPI(lifespan=lifespan)
-
-#     models.init_db(settings)
-
-#     routers.init_router(app)
-#     return app
-
-def create_app():
-    settings = config.get_settings()
-    app = FastAPI()
+    app = FastAPI(lifespan=lifespan)
 
     models.init_db(settings)
 
     routers.init_router(app)
-
-    @app.on_event("startup")
-    async def on_startup():
-        await models.recreate_table()
-
     return app
+
+# def create_app():
+#     settings = config.get_settings()
+#     app = FastAPI()
+
+#     models.init_db(settings)
+
+#     routers.init_router(app)
+
+#     @app.on_event("startup")
+#     async def on_startup():
+#         await models.recreate_table()
+
+#     return app

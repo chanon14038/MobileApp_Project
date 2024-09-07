@@ -8,7 +8,7 @@ from .. import models
 
 router = APIRouter(prefix="/subject", tags=["subject"])
 
-@router.post("/create")
+@router.post("")
 async def create_subject(
     info: models.CreatedSubject,
     session: Annotated[AsyncSession, Depends(models.get_session)],

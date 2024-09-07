@@ -11,7 +11,7 @@ from .. import models
 router = APIRouter(prefix="/descriptions", tags=["descriptions"])
 
 
-@router.post("/create")
+@router.post("")
 async def create(
     info: models.CreatedDescription,
     session: Annotated[AsyncSession, Depends(models.get_session)],
