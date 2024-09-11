@@ -2,6 +2,8 @@ import 'package:app/pages/myclassroom_page/studentprofile_page.dart';
 import 'package:flutter/material.dart';
 
 class MyClassroomPage extends StatelessWidget {
+  // เลขห้องเรียน
+  final String classroomNumber = '101';
   // รายชื่อนักเรียนพร้อมรหัสประจำตัว
   final List<Map<String, String>> students = [
     {'name': 'สมชาย แซ่ลี้', 'id': '1001'},
@@ -15,7 +17,20 @@ class MyClassroomPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('รายชื่อนักเรียน'),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'ห้องเรียน: $classroomNumber', // แสดงเลขห้องเรียน
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(height: 4),
+            Text(
+              'รายชื่อนักเรียน', // หัวข้อหลักของ AppBar
+              style: TextStyle(fontSize: 18),
+            ),
+          ],
+        ),
         centerTitle: true,
       ),
       body: ListView.builder(
