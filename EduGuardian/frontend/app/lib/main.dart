@@ -1,3 +1,5 @@
+import 'package:app/main_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'pages/login_page.dart';
 
@@ -11,7 +13,11 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
-      home: LoginPage(),
+      title: 'EduGuadian',
+      theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+      home: MainScreen(),
     );
   }
 }
