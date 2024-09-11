@@ -1,5 +1,6 @@
+import 'package:app/main_screen.dart';
 import 'package:flutter/material.dart';
-import 'home_page.dart'; // เรียกใช้หน้า Home
+
 
 class LoginPage extends StatefulWidget {
   @override
@@ -39,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
                 if (username == 'user' && password == 'password') {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
+                    MaterialPageRoute(builder: (context) => MainScreen()),
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
