@@ -1,4 +1,6 @@
+import 'package:app/widgets/reportdialog_widget.dart';
 import 'package:flutter/material.dart';
+
 
 class ClassroomDetailPage extends StatelessWidget {
   final String subjectName;
@@ -79,7 +81,12 @@ class ClassroomDetailPage extends StatelessWidget {
                       icon: Icon(Icons.report),
                       color: Colors.red,
                       onPressed: () {
-                        _showReportDialog(context, studentNames[index]);
+                        showDialog(
+                          context: context,
+                          builder: (context) => ReportDialog(
+                            studentName: studentNames[index],
+                          ),
+                        );
                       },
                     ),
                   );
@@ -89,85 +96,6 @@ class ClassroomDetailPage extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  // ฟังก์ชันแสดง popup รายงานการกระทำของนักเรียน
-  void _showReportDialog(BuildContext context, String studentName) {
-    TextEditingController descriptionController = TextEditingController();
-    Map<String, bool> reasons = {
-      'ดื้อ': false,
-      'ซน': false,
-      'กินขนม': false,
-      'จีบสาว': false,
-      'หลับ': false,
-    };
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('รายงานการกระทำของ $studentName'),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                Text('โปรดเลือกสาเหตุ:'),
-                SizedBox(height: 10),
-                Column(
-                  children: reasons.keys.map((String key) {
-                    return CheckboxListTile(
-                      title: Text(key),
-                      value: reasons[key],
-                      onChanged: (bool? value) {
-                        // ใช้ setState ใน showDialog
-                        (context as Element).markNeedsBuild();
-                        reasons[key] = value ?? false;
-                      },
-                    );
-                  }).toList(),
-                ),
-                SizedBox(height: 10),
-                TextField(
-                  controller: descriptionController,
-                  decoration: InputDecoration(
-                    labelText: 'คำอธิบายเพิ่มเติม',
-                    border: OutlineInputBorder(),
-                  ),
-                  maxLines: 3,
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // ปิด popup
-              },
-              child: Text('ยกเลิก'),
-            ),
-            TextButton(
-              onPressed: () {
-                // รวบรวมข้อมูลรายงาน
-                String selectedReasons = reasons.entries
-                    .where((entry) => entry.value == true)
-                    .map((entry) => entry.key)
-                    .join(', ');
-
-                String description = descriptionController.text;
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                        'รายงาน ${studentName}\nสาเหตุ: $selectedReasons\nคำอธิบาย: $description'),
-                  ),
-                );
-                Navigator.of(context).pop(); // ปิด popup
-              },
-              child: Text('รายงาน'),
-            ),
-          ],
-        );
-      },
     );
   }
 }
