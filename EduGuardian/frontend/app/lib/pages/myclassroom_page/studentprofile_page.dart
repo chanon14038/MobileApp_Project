@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class StudentProfilePage extends StatelessWidget {
   final String studentName;
   final String studentId;
+  final String classroomNumber; // เพิ่มการรับค่าเลขห้องเรียน
 
   StudentProfilePage({
     required this.studentName,
     required this.studentId,
+    required this.classroomNumber, // กำหนดค่าให้รับห้องเรียน
   });
 
   // รายการรีพอร์ต (เหตุการณ์) ของนักเรียน
@@ -48,6 +50,11 @@ class StudentProfilePage extends StatelessWidget {
               'รหัสประจำตัว: $studentId',
               style: TextStyle(fontSize: 18),
             ),
+            SizedBox(height: 10),
+            Text(
+              'ห้องเรียน: $classroomNumber', // เพิ่มการแสดงห้องเรียนใต้รหัสประจำตัว
+              style: TextStyle(fontSize: 18),
+            ),
             SizedBox(height: 20),
             Text(
               'รีพอร์ต:',
@@ -63,7 +70,6 @@ class StudentProfilePage extends StatelessWidget {
                   return ListTile(
                     title: Text(reportList[index]),
                     onTap: () {
-                      // เมื่อกดไอเท็มสามารถเพิ่ม action หรือ popup อะไรได้ตามที่ต้องการ
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('รีพอร์ต: ${reportList[index]}')),
                       );

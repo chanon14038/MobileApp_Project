@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class MyClassroomPage extends StatelessWidget {
   // เลขห้องเรียน
   final String classroomNumber = '101';
+  
   // รายชื่อนักเรียนพร้อมรหัสประจำตัว
   final List<Map<String, String>> students = [
     {'name': 'สมชาย แซ่ลี้', 'id': '1001'},
@@ -46,17 +47,17 @@ class MyClassroomPage extends StatelessWidget {
               child: ListTile(
                 title: Text(
                   'รหัส${students[index]['id']} - ${students[index]['name']}', // รหัสนักเรียน + ชื่อ
-                  style: TextStyle(fontSize: 18,),
+                  style: TextStyle(fontSize: 18),
                 ),
-                
                 onTap: () {
-                  // กดเพื่อไปยังหน้าโปรไฟล์ของนักเรียน
+                  // กดเพื่อไปยังหน้าโปรไฟล์ของนักเรียน พร้อมส่งข้อมูล
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => StudentProfilePage(
                         studentName: students[index]['name']!,
                         studentId: students[index]['id']!,
+                        classroomNumber: classroomNumber, // ส่งเลขห้องเรียนไปยังหน้าโปรไฟล์
                       ),
                     ),
                   );
