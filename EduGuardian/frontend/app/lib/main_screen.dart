@@ -1,7 +1,7 @@
-import 'package:app/pages/myclassroom_page/myclassroom_page.dart';
-import 'package:app/pages/notification_page.dart';
-import 'package:app/pages/profile_page.dart';
-import 'package:app/pages/teaching_page/teaching_room.dart';
+import 'package:app/myclassroom_page/myclassroom_page.dart';
+import 'package:app/notification_page/notification_page.dart';
+import 'package:app/myprofile_page/profile_page.dart';
+import 'package:app/teaching_page/teaching_room.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {

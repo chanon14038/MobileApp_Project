@@ -1,4 +1,4 @@
-import 'package:app/widgets/reportdialog_widget.dart';
+import 'package:app/teaching_page/reportdialog_widget.dart';
 import 'package:flutter/material.dart';
 
 

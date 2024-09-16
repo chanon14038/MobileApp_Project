@@ -1,4 +1,4 @@
-import 'package:app/pages/myclassroom_page/studentprofile_page.dart';
+import 'package:app/myclassroom_page/studentprofile_page.dart';
 import 'package:flutter/material.dart';
 
 class MyClassroomPage extends StatelessWidget {
