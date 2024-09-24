@@ -5,7 +5,7 @@ import 'package:app/notification_page/notification_page.dart';
 import 'package:app/myprofile_page/profile_page.dart';
 import 'package:app/teaching_page/teaching_room.dart';
 
-import 'blocs/navigation_bloc_app.dart';
+import 'blocs/navigation_bloc.dart';
 
 class MainScreen extends StatelessWidget {
   static final List<Widget> _pages = <Widget>[
