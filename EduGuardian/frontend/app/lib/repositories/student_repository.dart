@@ -30,7 +30,7 @@ class StudentRepository {
 
   Future<Student> getOneStudent(String studentId) async {
     try {
-      final response = await _dioClient.dio.get('/student/$studentId');
+      final response = await _dioClient.dio.get('/students/$studentId');
       if (response.statusCode == 200) {
         return Student.fromJson(response.data); // Convert data to Student
       } else {

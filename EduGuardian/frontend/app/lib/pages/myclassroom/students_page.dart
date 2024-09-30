@@ -40,8 +40,8 @@ class StudentPage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  StudentProfilePage(student: student),
+                              builder: (context) => StudentProfilePage(
+                                  studentId: '${student.studentId}'),
                             ),
                           );
                         },
