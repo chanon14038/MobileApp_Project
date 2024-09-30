@@ -18,10 +18,60 @@ class DioClient {
           options.headers['Authorization'] = 'Bearer $token';
         }
         return handler
-            .next(options); // Continue to the next interceptor or request
+            .next(options);
       },
+      onError: (DioError error, handler) async {
+        if (error.response?.statusCode == 401) {
+          // Token expired, try refreshing the token
+          bool success = await _refreshToken();
+
+          if (success) {
+            // Retry the original request with the new token
+            String? newToken = await _storage.read(key: 'token');
+            if (newToken != null) {
+              error.requestOptions.headers['Authorization'] = 'Bearer $newToken';
+              final response = await _dio.request(
+                error.requestOptions.path,
+                options: Options(
+                  method: error.requestOptions.method,
+                  headers: error.requestOptions.headers,
+                ),
+                data: error.requestOptions.data,
+                queryParameters: error.requestOptions.queryParameters,
+              );
+              return handler.resolve(response);
+            }
+          }
+        }
+        return handler.next(error);
+      },      
     ));
   }
 
   Dio get dio => _dio;
+
+  Future<bool> _refreshToken() async {
+    try {
+      String? refreshToken = await _storage.read(key: 'refresh_token');
+      if (refreshToken == null) return false;
+
+      final response = await _dio.post('/refresh-token', data: {
+        'refresh_token': refreshToken,
+      });
+
+      if (response.statusCode == 200) {
+        String newAccessToken = response.data['access_token'];
+        String newRefreshToken = response.data['refresh_token'];
+
+        // Store the new tokens
+        await _storage.write(key: 'token', value: newAccessToken);
+        await _storage.write(key: 'refresh_token', value: newRefreshToken);
+
+        return true;
+      }
+    } catch (e) {
+      print('Error refreshing token: $e');
+    }
+    return false;
+  }
 }
