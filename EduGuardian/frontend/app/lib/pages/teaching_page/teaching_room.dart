@@ -1,4 +1,4 @@
-import 'package:app/teaching_page/report_student.dart';
+import 'package:app/pages/teaching_page/report_student.dart';
 import 'package:flutter/material.dart';
 
 class RoomsPage extends StatelessWidget {

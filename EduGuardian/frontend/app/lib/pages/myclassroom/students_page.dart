@@ -1,10 +1,10 @@
-import 'package:app/myclassroom/studentprofile_page.dart';
+import 'package:app/pages/myclassroom/studentprofile_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/students_bloc.dart';
+import '../../blocs/students_bloc.dart';
 
-import '../models/models.dart';
+import '../../models/models.dart';
 
 class StudentListPage extends StatelessWidget {
   final String classroom;

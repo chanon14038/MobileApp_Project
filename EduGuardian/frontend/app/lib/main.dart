@@ -1,22 +1,31 @@
-import 'package:app/login/login_page.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'get_me.dart';
+import 'login.dart';
+import 'blocs/login_bloc.dart';
+import 'repositories/auth_repository.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-      title: 'EduGuadian',
-      theme: ThemeData(
-          primarySwatch: Colors.blue,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(
+          create: (context) => AuthBloc(AuthRepository()),
         ),
-      home: LoginPage(),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        initialRoute: '/',
+        routes: {
+          '/': (context) => LoginPage(),
+          '/home': (context) => GetMePage(),
+        },
+      ),
     );
   }
 }

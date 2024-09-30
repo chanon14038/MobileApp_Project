@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:app/myclassroom/students_page.dart';
-import 'package:app/notification_page/notification_page.dart';
-import 'package:app/myprofile_page/profile_page.dart';
-import 'package:app/teaching_page/teaching_room.dart';
+import 'package:app/pages/myclassroom/students_page.dart';
+import 'package:app/pages/notification_page/notification_page.dart';
+import 'package:app/pages/myprofile_page/profile_page.dart';
+import 'package:app/pages/teaching_page/teaching_room.dart';
 
 import 'blocs/navigation_bloc.dart';
 
