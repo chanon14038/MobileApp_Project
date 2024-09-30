@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../blocs/login_bloc.dart';
 
 class LoginPage extends StatelessWidget {
@@ -12,24 +13,29 @@ class LoginPage extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: Column(
+            
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'Eduguadian',
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+              const Icon(Icons.all_inclusive,
+              size: 150,
+              ),
+              Text(
+                'EDUGUADIAN',
+                style: GoogleFonts.bebasNeue(
+                  fontSize: 50,
+                  fontWeight: FontWeight.w600, 
+                  color: Color.fromARGB(255, 218, 106, 238), 
                 ),
               ),
               const Text(
-                'Hoello Teacher',
+                'Hello Teacher!',
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 20,
                   fontWeight: FontWeight.normal,
                   color: Colors.black,
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 20),
               BlocListener<AuthBloc, AuthState>(
                 listener: (context, state) {
                   if (state is AuthSuccess) {
@@ -81,6 +87,7 @@ class LoginPage extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 20),
                             child: TextField(
                               controller: _passwordController,
+                              obscureText: true,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Password',
@@ -92,28 +99,44 @@ class LoginPage extends StatelessWidget {
                       SizedBox(height: 20),
 
                       // Login Button with BlocBuilder
-                      BlocBuilder<AuthBloc, AuthState>(
-                        builder: (context, state) {
-                          if (state is AuthLoading) {
-                            return CircularProgressIndicator();
-                          }
-                          return ElevatedButton(
-                            onPressed: () {
-                              // Call the login event
-                              context.read<AuthBloc>().add(
-                                    AuthLoginEvent(
-                                      _usernameController.text,
-                                      _passwordController.text,
-                                    ),
-                                  );
-                            },
-                            child: Text('Login'),
-                          );
-                        },
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: BlocBuilder<AuthBloc, AuthState>(
+                          builder: (context, state) {
+                            if (state is AuthLoading) {
+                              return CircularProgressIndicator();
+                            }
+                            return Container(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.symmetric(vertical: 15),
+                                  backgroundColor: const Color.fromARGB(255, 218, 106, 238),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
+                                ),
+                                onPressed: () {
+                                  // Call the login event
+                                  context.read<AuthBloc>().add(
+                                        AuthLoginEvent(
+                                          _usernameController.text,
+                                          _passwordController.text,
+                                        ),
+                                      );
+                                },
+                                child: Text(
+                                  'Login'
+                                   .toUpperCase(),
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,),
+                                    )
+                                ),
+                            );
+                          },
+                        ),
                       ),
                     ],
-
-
                   ),
                 ),
               ),
