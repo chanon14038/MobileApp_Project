@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../blocs/subject_bloc.dart';
-import '../../repositories/subject_repository.dart';
+import '../blocs/subject_bloc.dart';
+import '../repositories/subject_repository.dart';
 
 class RoomsPage extends StatelessWidget {
   @override

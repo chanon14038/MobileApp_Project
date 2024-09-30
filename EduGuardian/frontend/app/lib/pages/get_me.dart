@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'repositories/get_me_repository.dart';
+import '../repositories/get_me_repository.dart';
 
 class GetMePage extends StatelessWidget {
   final GetMeRepository _getMeRepository = GetMeRepository();

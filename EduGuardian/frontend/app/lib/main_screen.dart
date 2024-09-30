@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'blocs/navigation_bloc.dart';
-import 'pages/teaching_page/teaching_room.dart';
-import 'pages/myclassroom/students_page.dart';
+import 'pages/teaching_room.dart';
+import 'pages/students_page.dart';
 
 class MainScreen extends StatelessWidget {
   @override

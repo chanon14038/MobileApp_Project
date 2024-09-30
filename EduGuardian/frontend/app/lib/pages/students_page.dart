@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../blocs/students_bloc.dart';
-import '../../repositories/student_repository.dart';
+import '../blocs/students_bloc.dart';
+import '../repositories/student_repository.dart';
 import 'studentprofile_page.dart';
 
 class StudentPage extends StatelessWidget {
