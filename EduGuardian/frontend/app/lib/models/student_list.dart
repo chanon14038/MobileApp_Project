@@ -2,7 +2,7 @@ class Student {
   String? classroom;
   String? firstName;
   String? advisor;
-  String? classroomId;
+  int? classroomId;
   String? studentId;
   String? lastName;
   int? advisorId;
