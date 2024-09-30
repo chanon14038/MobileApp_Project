@@ -15,9 +15,10 @@ from . import students
 class BaseSubject(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     
-    classroom: str | None= pydantic.Field(json_schema_extra=dict(example="1/1"))
-    
-    teacher_id: int
+    subject: str = pydantic.Field(json_schema_extra=dict(example="Math"))
+    subject_id: str = pydantic.Field(json_schema_extra=dict(example="math101"))
+    classroom: str = pydantic.Field(json_schema_extra=dict(example="1/1"))
+    description: str | None = pydantic.Field(json_schema_extra=dict(example="Math for 1/1"))
 
     
 class CreatedSubject(BaseSubject):
@@ -36,7 +37,7 @@ class DBSubject(BaseSubject, SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     subject: str = Field(default=None)
     
-    teacher_id: Optional[int] = Field(foreign_key="users.id", nullable=True)
+    teacher_id: Optional[int] = Field(default=None, foreign_key="users.id")
     # all_student_id: list[str] = Field(default=[], sa_column=Column(JSON))
 
     

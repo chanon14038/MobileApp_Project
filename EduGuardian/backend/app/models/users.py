@@ -80,7 +80,7 @@ class DBUser(User,SQLModel,table=True):
     advisor_room_id: int | None = sqlmodel.Field(default=None, foreign_key="classrooms.id")
     
     db_classroom: Optional["DBClassroom"] = Relationship(back_populates="db_teacher", passive_deletes=True)
-    db_subject: list["DBSubject"] = Relationship(back_populates="db_teacher", passive_deletes=True)
+    db_subject: list["DBSubject"] = Relationship(back_populates="db_teacher", cascade_delete=True)
     db_student: list["DBStudent"] = Relationship(back_populates="db_teacher", passive_deletes=True)    
 
     updated_date: datetime.datetime = sqlmodel.Field(default_factory=datetime.datetime.now)
