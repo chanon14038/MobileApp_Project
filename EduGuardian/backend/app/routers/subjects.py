@@ -44,3 +44,14 @@ async def create_subject(
     await session.refresh(dbsubject)
     
     return dbsubject
+
+@router.get("")
+async def get_subjects(
+    session: Annotated[AsyncSession, Depends(models.get_session)],
+    current_user: models.User = Depends(deps.get_current_user)
+):
+    result = await session.exec(
+        select(models.DBSubject).where(models.DBSubject.teacher_id == current_user.id)
+    )
+    dbsubjects = result.all()
+    return dbsubjects
