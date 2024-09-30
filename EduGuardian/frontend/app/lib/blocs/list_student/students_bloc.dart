@@ -6,17 +6,16 @@ import '../../repositories/student_repository.dart';
 class StudentBloc extends Bloc<StudentEvent, StudentState> {
   final StudentRepository studentRepository;
 
-  StudentBloc(this.studentRepository) : super(StudentLoading());
-
-  Stream<StudentState> mapEventToState(StudentEvent event) async* {
-    if (event is FetchStudents) {
-      yield StudentLoading();
+  StudentBloc(this.studentRepository) : super(StudentLoading()) {
+    
+    on<FetchStudents>((event, emit) async {
+      emit(StudentLoading());
       try {
         final students = await studentRepository.getStudents();
-        yield StudentLoaded(students);
+        emit(StudentLoaded(students));
       } catch (e) {
-        yield StudentError(e.toString());
+        emit(StudentError(e.toString()));
       }
-    }
+    });
   }
 }

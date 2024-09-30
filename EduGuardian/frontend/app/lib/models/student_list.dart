@@ -5,7 +5,7 @@ class Student {
   String? classroomId;
   String? studentId;
   String? lastName;
-  String? advisorId;
+  int? advisorId;
 
   Student({
     this.classroom,
@@ -26,7 +26,6 @@ class Student {
         lastName: json['last_name'],
         advisorId: json['advisor_id'],
       );
-
 
   Map<String, dynamic> toJson() => {
         'classroom': classroom,

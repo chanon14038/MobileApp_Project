@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'blocs/navigation_bloc.dart';
 import 'pages/teaching_page/teaching_room.dart';
+import 'pages/myclassroom/students_page.dart';
 
 class MainScreen extends StatelessWidget {
   @override
@@ -21,7 +22,7 @@ class MainScreen extends StatelessWidget {
             // เปลี่ยนหน้าจอขึ้นอยู่กับ selectedIndex
             switch (state.selectedIndex) {
               case 0:
-                return RoomsPage();
+                return StudentPage();
               case 1:
                 return RoomsPage();
               case 2:
@@ -29,7 +30,7 @@ class MainScreen extends StatelessWidget {
               case 3:
                 return RoomsPage();
               default:
-                return RoomsPage();
+                return StudentPage();
             }
           },
         ),
