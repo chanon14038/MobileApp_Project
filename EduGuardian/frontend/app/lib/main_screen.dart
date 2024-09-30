@@ -1,24 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:app/pages/myclassroom/students_page.dart';
-import 'package:app/pages/notification_page/notification_page.dart';
-import 'package:app/pages/myprofile_page/profile_page.dart';
-import 'package:app/pages/teaching_page/teaching_room.dart';
-
 import 'blocs/navigation_bloc.dart';
+import 'pages/teaching_page/teaching_room.dart';
 
 class MainScreen extends StatelessWidget {
-  static final List<Widget> _pages = <Widget>[
-    StudentListPage(classroom: "1/2"),
-    RoomsPage(),
-    NotificationPage(),
-    ProfilePage(),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => NavigationBloc(),
+      create: (context) => BottomNavigationBloc(), // สร้าง BottomNavigationBloc
       child: Scaffold(
         appBar: AppBar(
           title: const Text('EduGuadian'),
@@ -27,35 +16,42 @@ class MainScreen extends StatelessWidget {
           backgroundColor: const Color.fromARGB(255, 188, 157, 241),
           shadowColor: Colors.blue.withOpacity(0.3),
         ),
-        body: BlocBuilder<NavigationBloc, NavigationState>(
+        body: BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
           builder: (context, state) {
-            if (state is PageLoaded) {
-              return AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
-                child: _pages[state.selectedIndex],
-                transitionBuilder: (child, animation) {
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
-                },
-              );
+            // เปลี่ยนหน้าจอขึ้นอยู่กับ selectedIndex
+            switch (state.selectedIndex) {
+              case 0:
+                return RoomsPage();
+              case 1:
+                return RoomsPage();
+              case 2:
+                return RoomsPage();
+              case 3:
+                return RoomsPage();
+              default:
+                return RoomsPage();
             }
-            return Container();
           },
         ),
-        bottomNavigationBar: BlocBuilder<NavigationBloc, NavigationState>(
+        bottomNavigationBar:
+            BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
           builder: (context, state) {
             return BottomNavigationBar(
+              currentIndex: state.selectedIndex,
               backgroundColor: const Color.fromARGB(255, 188, 157, 241),
-              items: const <BottomNavigationBarItem>[
+              onTap: (index) {
+                context
+                    .read<BottomNavigationBloc>()
+                    .add(ChangeBottomNavigation(index));
+              },
+              items: const [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home),
-                  label: 'My classroom',
+                  label: 'Home',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.list),
-                  label: 'Teach rooms',
+                  label: 'List',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.notifications),
@@ -66,12 +62,8 @@ class MainScreen extends StatelessWidget {
                   label: 'Profile',
                 ),
               ],
-              currentIndex: (state is PageLoaded) ? state.selectedIndex : 0,
-              unselectedItemColor: Color.fromARGB(255, 0, 0, 0),
-              selectedItemColor: Color.fromARGB(255, 125, 0, 250),
-              onTap: (index) {
-                context.read<NavigationBloc>().add(PageSelected(index));
-              },
+              unselectedItemColor: const Color.fromARGB(255, 0, 0, 0),
+              selectedItemColor: const Color.fromARGB(255, 125, 0, 250),
               iconSize: 40,
             );
           },

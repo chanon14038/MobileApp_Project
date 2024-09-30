@@ -1,15 +1,17 @@
-abstract class StudentState {}
+import '../../models/student_list.dart';
 
-class StudentInitial extends StudentState {}
+abstract class StudentState {}
 
 class StudentLoading extends StudentState {}
 
 class StudentLoaded extends StudentState {
-  final List<dynamic> students;
+  final List<Student> students;
+
   StudentLoaded(this.students);
 }
 
 class StudentError extends StudentState {
   final String message;
+
   StudentError(this.message);
 }

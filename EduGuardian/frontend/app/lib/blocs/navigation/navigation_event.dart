@@ -1,6 +1,7 @@
-abstract class NavigationEvent {}
+abstract class BottomNavigationEvent {}
 
-class PageSelected extends NavigationEvent {
+class ChangeBottomNavigation extends BottomNavigationEvent {
   final int index;
-  PageSelected(this.index);
+
+  ChangeBottomNavigation(this.index);
 }

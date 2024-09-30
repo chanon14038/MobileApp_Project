@@ -14,7 +14,7 @@ class LoginPage extends StatelessWidget {
         listener: (context, state) {
           if (state is AuthSuccess) {
             // ถ้า login สำเร็จ ไปหน้าหลัก
-            Navigator.pushReplacementNamed(context, '/home');
+            Navigator.pushReplacementNamed(context, '/main');
           } else if (state is AuthFailure) {
             // แสดงข้อความ error
             ScaffoldMessenger.of(context).showSnackBar(

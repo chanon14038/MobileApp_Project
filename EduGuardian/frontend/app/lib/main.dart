@@ -4,6 +4,8 @@ import 'get_me.dart';
 import 'login.dart';
 import 'blocs/login_bloc.dart';
 import 'repositories/auth_repository.dart';
+import 'pages/myclassroom/students_page.dart';
+import 'main_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => LoginPage(),
-          '/home': (context) => GetMePage(),
+          '/main': (context) => MainScreen(),
         },
       ),
     );

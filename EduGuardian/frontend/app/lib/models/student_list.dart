@@ -7,9 +7,6 @@ class Student {
   String? lastName;
   String? advisorId;
 
- 
-
-
   Student({
     this.classroom,
     this.firstName,
@@ -20,7 +17,6 @@ class Student {
     this.advisorId,
   });
 
-  // สร้าง factory constructor เพื่อแปลงจาก JSON เป็น Object
   factory Student.fromJson(Map<String, dynamic> json) => Student(
         classroom: json['classroom'],
         firstName: json['first_name'],
@@ -30,7 +26,8 @@ class Student {
         lastName: json['last_name'],
         advisorId: json['advisor_id'],
       );
-  // แปลง Object กลับเป็น JSON (กรณีที่ต้องการส่งข้อมูลกลับไป)
+
+
   Map<String, dynamic> toJson() => {
         'classroom': classroom,
         'first_name': firstName,
