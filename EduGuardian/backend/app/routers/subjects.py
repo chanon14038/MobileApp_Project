@@ -14,12 +14,7 @@ async def create_subject(
     info: models.CreatedSubject,
     session: Annotated[AsyncSession, Depends(models.get_session)],
     current_user: models.User = Depends(deps.get_current_user)
-):
-    result = await session.exec(
-        select(models.DBUser).where(models.DBUser.id == current_user.id)
-    )
-    dbteacher = result.one_or_none()
-        
+):      
     result = await session.exec(
         select(models.DBSubject).where(models.DBSubject.subject_id == info.subject_id)
     )
@@ -27,6 +22,13 @@ async def create_subject(
 
     if dbsubject:
         raise HTTPException(status_code=400, detail="Subject already exists")
+    
+    result = await session.exec(
+        select(models.DBUser).where(models.DBUser.id == info.teacher_id)
+    )
+    dbteacher = result.one_or_none()
+    if not dbteacher:
+        raise HTTPException(status_code=404, detail="Teacher not found")
     
     result = await session.exec(
         select(models.DBStudent).where(models.DBStudent.classroom == info.classroom)

@@ -19,6 +19,8 @@ class BaseSubject(BaseModel):
     subject_id: str = pydantic.Field(json_schema_extra=dict(example="math101"))
     classroom: str = pydantic.Field(json_schema_extra=dict(example="1/1"))
     description: str | None = pydantic.Field(json_schema_extra=dict(example="Math for 1/1"))
+    
+    teacher_id: int | None = pydantic.Field(json_schema_extra=dict(example=1))
 
     
 class CreatedSubject(BaseSubject):
