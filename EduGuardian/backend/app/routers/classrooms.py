@@ -9,7 +9,7 @@ from .. import models
 router = APIRouter(prefix="/classroom", tags=["classroom"])
 
 @router.get("")
-async def get_me(
+async def get_classroom(
     session: Annotated[AsyncSession, Depends(models.get_session)]
 ) :
     result = await session.exec(

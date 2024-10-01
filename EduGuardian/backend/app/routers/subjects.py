@@ -53,7 +53,7 @@ async def get_subjects(
     result = await session.exec(
         select(models.DBSubject).where(models.DBSubject.teacher_id == current_user.id)
     )
-    if not result.all():
+    if not result:
         raise HTTPException(status_code=404, detail="Subject not found")
     dbsubjects = result.all()
     return dbsubjects
