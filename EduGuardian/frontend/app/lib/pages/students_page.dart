@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../blocs/students_bloc.dart';
 import '../repositories/student_repository.dart';
 import 'studentprofile_page.dart';
@@ -12,7 +13,12 @@ class StudentPage extends StatelessWidget {
           StudentBloc(StudentRepository())..add(FetchStudents()),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Students'),
+          title: Text('My students',style: GoogleFonts.bebasNeue(
+                  fontSize: 30,
+                  color: Color.fromARGB(255, 96, 96, 96),
+                ),
+              ),
+          centerTitle: true,
         ),
         body: BlocBuilder<StudentBloc, StudentState>(
           builder: (context, state) {

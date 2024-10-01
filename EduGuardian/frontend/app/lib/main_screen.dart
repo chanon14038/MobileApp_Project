@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'blocs/navigation_bloc.dart';
 import 'pages/teaching_room.dart';
 import 'pages/students_page.dart';
@@ -8,18 +9,23 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => BottomNavigationBloc(), // สร้าง BottomNavigationBloc
+      create: (context) => BottomNavigationBloc(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('EduGuadian'),
-          centerTitle: true,
+          title: Text(
+                'EDUGUARDIAN',
+                style: GoogleFonts.bebasNeue(
+                  fontSize: 40,
+                  fontWeight: FontWeight.w600, 
+                  color: Color.fromARGB(255, 66, 0, 78), 
+                ),
+          ),
           elevation: 6,
           backgroundColor: const Color.fromARGB(255, 188, 157, 241),
           shadowColor: Colors.blue.withOpacity(0.3),
         ),
         body: BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
           builder: (context, state) {
-            // เปลี่ยนหน้าจอขึ้นอยู่กับ selectedIndex
             switch (state.selectedIndex) {
               case 0:
                 return StudentPage();
@@ -34,38 +40,54 @@ class MainScreen extends StatelessWidget {
             }
           },
         ),
-        bottomNavigationBar:
-            BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
-          builder: (context, state) {
-            return BottomNavigationBar(
-              currentIndex: state.selectedIndex,
-              backgroundColor: const Color.fromARGB(255, 188, 157, 241),
-              onTap: (index) {
-                context
-                    .read<BottomNavigationBloc>()
-                    .add(ChangeBottomNavigation(index));
-              },
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
+        bottomNavigationBar: BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
+            builder: (context, state) {
+              return Container(
+                margin: const EdgeInsets.all(12), // ยกขึ้นจากขอบล่าง
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 188, 157, 241),
+                  borderRadius: BorderRadius.circular(30), // ทำให้โค้งมน
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      spreadRadius: 5,
+                      blurRadius: 10,
+                    ),
+                  ],
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.list),
-                  label: 'List',
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30), // ทำให้โค้งมนที่แท็บบาร์
+                  child: BottomNavigationBar(
+                    currentIndex: state.selectedIndex,
+                    onTap: (index) {
+                      context
+                          .read<BottomNavigationBloc>()
+                          .add(ChangeBottomNavigation(index));
+                    },
+                    items: const [
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.home),
+                        label: 'Home',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.list),
+                        label: 'List',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.notifications),
+                        label: 'Notification',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.person),
+                        label: 'Profile',
+                      ),
+                    ],
+                    unselectedItemColor: const Color.fromARGB(255, 0, 0, 0),
+                    selectedItemColor: const Color.fromARGB(255, 125, 0, 250),
+                    iconSize: 40,
+                    type: BottomNavigationBarType.fixed,
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.notifications),
-                  label: 'Notification',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  label: 'Profile',
-                ),
-              ],
-              unselectedItemColor: const Color.fromARGB(255, 0, 0, 0),
-              selectedItemColor: const Color.fromARGB(255, 125, 0, 250),
-              iconSize: 40,
+              ),
             );
           },
         ),
