@@ -35,3 +35,27 @@ async def create(
         return dbdescription
     
     raise HTTPException(status_code=404, detail="Not Found Student")
+
+@router.get("/{student_id}")
+async def get_descriptions(
+    student_id: str,
+    session: Annotated[AsyncSession, Depends(models.get_session)],
+    current_user: models.User = Depends(deps.get_current_user)
+):
+    result = await session.exec(
+        select(models.DBStudent).where(models.DBStudent.student_id == student_id)
+    )
+    dbstudent = result.one_or_none()
+    if not dbstudent:
+        raise HTTPException(status_code=404, detail="Not found Student")
+    
+    if dbstudent.advisor_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not allowed")
+    
+    result = await session.exec(
+        select(models.DBDescription).where(models.DBDescription.student_id == student_id)
+    )
+    dbdescriptions = result.all()
+    if not dbdescriptions:
+        raise HTTPException(status_code=404, detail="Not found Report")
+    return dbdescriptions

@@ -9,12 +9,12 @@ class Student {
 
   Student({
     this.classroom,
+    this.advisorId,
     this.firstName,
     this.advisor,
     this.classroomId,
     this.studentId,
     this.lastName,
-    this.advisorId,
   });
 
   factory Student.fromJson(Map<String, dynamic> json) => Student(

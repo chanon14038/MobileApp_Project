@@ -47,7 +47,7 @@ class StudentPage extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => StudentProfilePage(
-                                  studentId: '${student.studentId}', descriptions:['yyyyyy'] ),
+                                  studentId: '${student.studentId}'),
                             ),
                           );
                         },

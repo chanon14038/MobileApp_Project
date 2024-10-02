@@ -1,1 +1,1 @@
-export 'student_list.dart';
+export 'student.dart';

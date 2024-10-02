@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import '../services/dio_client.dart';
-import '../models/student_list.dart';
+import '../models/student.dart';
 
 class StudentRepository {
   final DioClient _dioClient = DioClient();

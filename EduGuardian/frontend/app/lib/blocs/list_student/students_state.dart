@@ -1,4 +1,4 @@
-import '../../models/student_list.dart';
+import '../../models/student.dart';
 
 abstract class StudentState {}
 
