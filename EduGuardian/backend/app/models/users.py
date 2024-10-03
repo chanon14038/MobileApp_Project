@@ -20,7 +20,9 @@ class BaseUser(BaseModel):
     first_name: str = pydantic.Field(json_schema_extra=dict(example="Firstname"))
     last_name: str = pydantic.Field(json_schema_extra=dict(example="Lastname"))
     subject: str = pydantic.Field(json_schema_extra=dict(example="Thai"))
-    
+    phone_number: str = pydantic.Field(json_schema_extra=dict(example="0891234567"))
+    email: EmailStr = pydantic.Field(json_schema_extra=dict(example="someric@example.com"))
+
     advisor_room: str | None = pydantic.Field(json_schema_extra=dict(example="1/1"))
     
 
@@ -57,6 +59,8 @@ class UpdatedUser(BaseModel):
     first_name: str | None = pydantic.Field(json_schema_extra=dict(example="Firstname"))
     last_name: str | None = pydantic.Field(json_schema_extra=dict(example="Lastname"))
     subject: str | None = pydantic.Field(json_schema_extra=dict(example="Thai"))
+    phone_number: str | None = pydantic.Field(json_schema_extra=dict(example="0891234567"))
+    email: EmailStr | None = pydantic.Field(json_schema_extra=dict(example="someric@example.com"))
     
     advisor_room: str | None = pydantic.Field(json_schema_extra=dict(example="1/1"))
 
