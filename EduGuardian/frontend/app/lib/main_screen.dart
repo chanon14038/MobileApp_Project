@@ -14,21 +14,19 @@ class MainScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-                'EDUGUARDIAN',
-                style: GoogleFonts.bebasNeue(
-                  fontSize: 40,
-                  fontWeight: FontWeight.w600, 
-                  color: Color.fromARGB(255, 66, 0, 78), 
-                ),
+            'EDUGUARDIAN',
+            style: GoogleFonts.bebasNeue(
+              fontSize: 40,
+              fontWeight: FontWeight.w600,
+              color: Color.fromARGB(255, 66, 0, 78),
+            ),
           ),
           centerTitle: true,
           elevation: 6,
           backgroundColor: Color.fromARGB(255, 188, 157, 241),
           shadowColor: Colors.blue.withOpacity(0.2),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(20)
-            )),
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
         ),
         body: BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
           builder: (context, state) {
@@ -46,52 +44,54 @@ class MainScreen extends StatelessWidget {
             }
           },
         ),
-        bottomNavigationBar: BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
-            builder: (context, state) {
-              return Container(
-                margin: const EdgeInsets.all(12), // ยกขึ้นจากขอบล่าง
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 188, 157, 241),
-                  borderRadius: BorderRadius.circular(30), // ทำให้โค้งมน
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      spreadRadius: 5,
-                      blurRadius: 10,
+        bottomNavigationBar:
+            BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
+          builder: (context, state) {
+            return Container(
+              margin: const EdgeInsets.all(12), // ยกขึ้นจากขอบล่าง
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 188, 157, 241),
+                borderRadius: BorderRadius.circular(30), // ทำให้โค้งมน
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    spreadRadius: 5,
+                    blurRadius: 10,
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius:
+                    BorderRadius.circular(30), // ทำให้โค้งมนที่แท็บบาร์
+                child: BottomNavigationBar(
+                  currentIndex: state.selectedIndex,
+                  onTap: (index) {
+                    context
+                        .read<BottomNavigationBloc>()
+                        .add(ChangeBottomNavigation(index));
+                  },
+                  items: const [
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.home),
+                      label: 'Home',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.list),
+                      label: 'List',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.notifications),
+                      label: 'Notification',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.person),
+                      label: 'Profile',
                     ),
                   ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(30), // ทำให้โค้งมนที่แท็บบาร์
-                  child: BottomNavigationBar(
-                    currentIndex: state.selectedIndex,
-                    onTap: (index) {
-                      context
-                          .read<BottomNavigationBloc>()
-                          .add(ChangeBottomNavigation(index));
-                    },
-                    items: const [
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.home),
-                        label: 'Home',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.list),
-                        label: 'List',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.notifications),
-                        label: 'Notification',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.person),
-                        label: 'Profile',
-                      ),
-                    ],
-                    unselectedItemColor: const Color.fromARGB(255, 0, 0, 0),
-                    selectedItemColor: const Color.fromARGB(255, 125, 0, 250),
-                    iconSize: 40,
-                    type: BottomNavigationBarType.fixed,
+                  unselectedItemColor: const Color.fromARGB(255, 0, 0, 0),
+                  selectedItemColor: const Color.fromARGB(255, 125, 0, 250),
+                  iconSize: 40,
+                  type: BottomNavigationBarType.fixed,
                 ),
               ),
             );

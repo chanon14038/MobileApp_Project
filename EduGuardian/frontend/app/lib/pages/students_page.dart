@@ -6,14 +6,37 @@ import '../repositories/student_repository.dart';
 import 'studentprofile_page.dart';
 
 class StudentPage extends StatefulWidget {
+  const StudentPage({super.key});
+
   @override
   _StudentPageState createState() => _StudentPageState();
 }
 
-class _StudentPageState extends State<StudentPage> {
+class _StudentPageState extends State<StudentPage>
+    with SingleTickerProviderStateMixin {
   TextEditingController searchController = TextEditingController();
   String searchQuery = '';
   bool isSearching = false;
+  late AnimationController _controller;
+  late Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 300),
+    );
+    _slideAnimation = Tween<Offset>(
+            begin: Offset(1.0, 0.0), end: Offset(0.0, 0.0))
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,67 +45,91 @@ class _StudentPageState extends State<StudentPage> {
           StudentBloc(StudentRepository())..add(FetchStudents()),
       child: Scaffold(
         appBar: AppBar(
-          title: isSearching
-              ? Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: TextField(
-                    controller: searchController,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      hintText: 'Search students...',
-                      hintStyle: TextStyle(color: Colors.grey[600]),
-                      border: InputBorder.none,
-                      prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
-                      contentPadding: EdgeInsets.symmetric(vertical: 15),
-                    ),
-                    style: TextStyle(color: Colors.black),
-                    onChanged: (value) {
-                      setState(() {
-                        searchQuery = value;
-                      });
-                    },
-                  ),
-                )
-              : Text(
-                  'My Students',
-                  style: GoogleFonts.bebasNeue(
-                    fontSize: 27,
-                    color: Color.fromARGB(255, 96, 96, 96),
-                  ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(width: 40),
+              Expanded(
+                child: Stack(
+                  children: [
+                    // Title when not searching
+                    if (!isSearching)
+                      Center(
+                        child: Text(
+                          'My Students',
+                          key: ValueKey<bool>(!isSearching),
+                          style: GoogleFonts.bebasNeue(
+                            fontSize: 27,
+                            color: Color.fromARGB(255, 96, 96, 96),
+                          ),
+                        ),
+                      ),
+                    // Search field sliding in from right when searching
+                    if (isSearching)
+                      SlideTransition(
+                        position: _slideAnimation,
+                        child: Container(
+                          key: ValueKey<bool>(isSearching),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 240, 240, 240),
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child: TextField(
+                            controller: searchController,
+                            autofocus: true,
+                            decoration: InputDecoration(
+                              hintText: 'Search students...',
+                              hintStyle: TextStyle(color: Colors.grey[600]),
+                              border: InputBorder.none,
+                              prefixIcon:
+                                  Icon(Icons.search, color: Colors.grey[600]),
+                              contentPadding:
+                                  EdgeInsets.symmetric(vertical: 15),
+                            ),
+                            style: TextStyle(color: Colors.black),
+                            onChanged: (value) {
+                              setState(() {
+                                searchQuery = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
+              ),
+            ],
+          ),
           centerTitle: true,
           actions: [
-            isSearching
-                ? IconButton(
-                    icon: Icon(Icons.clear,
-                        color: const Color.fromARGB(255, 90, 90, 90)),
-                    onPressed: () {
-                      setState(() {
-                        isSearching = false;
-                        searchQuery = '';
-                        searchController.clear();
-                      });
-                    },
-                  )
-                : IconButton(
-                    icon: Icon(Icons.search,
-                        color: const Color.fromARGB(255, 90, 90, 90)),
-                    onPressed: () {
-                      setState(() {
-                        isSearching = true;
-                      });
-                    },
-                  ),
+            IconButton(
+              icon: Icon(
+                isSearching ? Icons.clear : Icons.search,
+                color: const Color.fromARGB(255, 90, 90, 90),
+              ),
+              onPressed: () {
+                setState(() {
+                  if (isSearching) {
+                    _controller.reverse();
+                  } else {
+                    _controller.forward();
+                  }
+                  isSearching = !isSearching;
+                  if (!isSearching) {
+                    searchQuery = '';
+                    searchController.clear();
+                  }
+                });
+              },
+            ),
           ],
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(), // เพิ่ม padding รอบ ListView
           child: Container(
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 226, 216, 244), // พื้นหลังขาวสำหรับกรอบ
+              color:
+                  Color.fromARGB(255, 226, 216, 244), // พื้นหลังขาวสำหรับกรอบ
               borderRadius: BorderRadius.circular(20), // มุมโค้งของกรอบ
               boxShadow: [
                 BoxShadow(
@@ -117,7 +164,8 @@ class _StudentPageState extends State<StudentPage> {
                         final student = students[index];
                         return Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 2.0), // เพิ่ม padding ด้านบนและล่างของการ์ด
+                              vertical:
+                                  2.0), // เพิ่ม padding ด้านบนและล่างของการ์ด
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
@@ -138,14 +186,17 @@ class _StudentPageState extends State<StudentPage> {
                               child: ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.grey[200],
-                                  child: Icon(Icons.person, color: Colors.grey[600]),
+                                  child: Icon(Icons.person,
+                                      color: Colors.grey[600]),
                                 ),
                                 title: Text(
                                   '${student.firstName} ${student.lastName}',
                                   style: TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.bold),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                subtitle: Text('Classroom: ${student.classroom}'),
+                                subtitle:
+                                    Text('Classroom: ${student.classroom}'),
                                 onTap: () {
                                   // Navigate to Student Profile Page
                                   Navigator.push(
