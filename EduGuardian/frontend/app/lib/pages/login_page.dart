@@ -13,18 +13,18 @@ class LoginPage extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: Column(
-            
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.all_inclusive,
-              size: 150,
+              const Icon(
+                Icons.school,
+                size: 150,
               ),
               Text(
                 'EDUGUADIAN',
                 style: GoogleFonts.bebasNeue(
                   fontSize: 50,
-                  fontWeight: FontWeight.w600, 
-                  color: Color.fromARGB(255, 218, 106, 238), 
+                  fontWeight: FontWeight.w600,
+                  color: Color.fromARGB(255, 218, 106, 238),
                 ),
               ),
               const Text(
@@ -109,29 +109,31 @@ class LoginPage extends StatelessWidget {
                             return Container(
                               width: double.infinity,
                               child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.symmetric(vertical: 15),
-                                  backgroundColor: const Color.fromARGB(255, 218, 106, 238),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
-                                ),
-                                onPressed: () {
-                                  // Call the login event
-                                  context.read<AuthBloc>().add(
-                                        AuthLoginEvent(
-                                          _usernameController.text,
-                                          _passwordController.text,
-                                        ),
-                                      );
-                                },
-                                child: Text(
-                                  'Login'
-                                   .toUpperCase(),
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,),
-                                    )
-                                ),
+                                  style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    backgroundColor: const Color.fromARGB(
+                                        255, 218, 106, 238),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    // Call the login event
+                                    context.read<AuthBloc>().add(
+                                          AuthLoginEvent(
+                                            _usernameController.text,
+                                            _passwordController.text,
+                                          ),
+                                        );
+                                  },
+                                  child: Text(
+                                    'Login'.toUpperCase(),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  )),
                             );
                           },
                         ),
