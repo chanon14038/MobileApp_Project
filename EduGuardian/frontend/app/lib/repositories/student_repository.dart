@@ -7,7 +7,7 @@ class StudentRepository {
 
   Future<List<Student>> getStudents() async {
     try {
-      final response = await _dioClient.dio.get('/students');
+      final response = await _dioClient.dio.get('/students/advisor');
       if (response.statusCode == 200) {
         List<dynamic> data = response.data; // Ensure this is a List
         return data.map((json) => Student.fromJson(json)).toList();

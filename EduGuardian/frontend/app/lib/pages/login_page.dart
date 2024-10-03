@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../blocs/login_bloc.dart';
+import '../blocs/auth_bloc.dart';
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();

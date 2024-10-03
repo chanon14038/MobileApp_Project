@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'blocs/navigation_bloc.dart';
+import 'pages/my_profile.dart';
 import 'pages/teaching_room.dart';
 import 'pages/students_page.dart';
 
@@ -20,9 +21,14 @@ class MainScreen extends StatelessWidget {
                   color: Color.fromARGB(255, 66, 0, 78), 
                 ),
           ),
+          centerTitle: true,
           elevation: 6,
-          backgroundColor: const Color.fromARGB(255, 188, 157, 241),
-          shadowColor: Colors.blue.withOpacity(0.3),
+          backgroundColor: Color.fromARGB(255, 188, 157, 241),
+          shadowColor: Colors.blue.withOpacity(0.2),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(20)
+            )),
         ),
         body: BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
           builder: (context, state) {
@@ -34,7 +40,7 @@ class MainScreen extends StatelessWidget {
               case 2:
                 return RoomsPage();
               case 3:
-                return RoomsPage();
+                return GetMePage();
               default:
                 return StudentPage();
             }

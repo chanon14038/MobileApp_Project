@@ -60,7 +60,7 @@ async def create(
 
     raise HTTPException(status_code=409, detail="Student ID already exists")
 
-@router.get("", response_model=List[models.DBStudent])
+@router.get("")
 async def get_all_students(
     session: Annotated[AsyncSession, Depends(models.get_session)],
 ) -> List[models.DBStudent]:
@@ -77,9 +77,51 @@ async def get_all_students(
     
     return students
 
+@router.get("/advisor")
+async def get_students_advisor(
+    current_user: Annotated[models.User, Depends(deps.get_current_user)],
+    session: Annotated[AsyncSession, Depends(models.get_session)],
+) -> List[models.DBStudent]:
+    # Select all students from the DBStudent table
+    result = await session.exec(
+        select(models.DBStudent).where(models.DBStudent.classroom == current_user.advisor_room)
+    )
+    students = result.all()
+
+    # Check if the list of students is empty
+    if not students:
+        raise HTTPException(
+            status_code=404,
+            detail="No students found",
+        )
+    
+    return students
+
+@router.get("/classroom")
+async def get_all_students_in_room(
+    classroom: str,
+    # current_user: Annotated[models.User, Depends(deps.get_current_user)],
+    session: Annotated[AsyncSession, Depends(models.get_session)],
+) -> List[models.DBStudent]:
+    # Select all students from the DBStudent table
+    result = await session.exec(
+        select(models.DBStudent).where(models.DBStudent.classroom == classroom)
+    )
+    students = result.all()
+
+    # Check if the list of students is empty
+    if not students:
+        raise HTTPException(
+            status_code=404,
+            detail="No students found",
+        )
+    
+    return students
+
 @router.get("/{student_id}", response_model=models.DBStudent)
 async def get_student_by_id(
     student_id: str,
+    current_user: Annotated[models.User, Depends(deps.get_current_user)],
     session: Annotated[AsyncSession, Depends(models.get_session)],
 ) -> models.DBStudent:
     # ค้นหานักเรียนโดย student_id
@@ -98,6 +140,7 @@ async def get_student_by_id(
 async def update_student(
     student_id: str,
     info: models.UpdatedStudent,
+    current_user: Annotated[models.User, Depends(deps.get_current_user)],
     session: Annotated[AsyncSession, Depends(models.get_session)],
 ):
     result = await session.exec(
@@ -117,7 +160,7 @@ async def update_student(
 @router.delete("/{student_id}")
 async def delete_student(
     student_id: str,
-    # current_user: Annotated[models.User, Depends(deps.get_current_user)],
+    current_user: Annotated[models.User, Depends(deps.get_current_user)],
     session: Annotated[AsyncSession, Depends(models.get_session)],
 ) -> dict:
     result = await session.exec(
