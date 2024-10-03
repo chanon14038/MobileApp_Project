@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../models/student.dart';
 import '../models/subject.dart';
 import '../services/dio_client.dart';
 
@@ -41,6 +42,26 @@ class SubjectRepository {
       }
     } catch (e) {
       throw Exception('Failed to fetch subject: $e');
+    }
+  }
+
+  Future<List<Student>> getStudentsBySubjectId(String subjectId) async {
+    try {
+      final response = await _dioClient.dio.get('/subject/$subjectId/students');
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data;
+        return data.map((json) => Student.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load students');
+      }
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 404) {
+        throw Exception('Students not found');
+      } else {
+        throw Exception('Failed to fetch students: ${e.message}');
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch students: $e');
     }
   }
 }

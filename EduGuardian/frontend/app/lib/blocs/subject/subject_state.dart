@@ -1,4 +1,5 @@
 import '../../models/subject.dart';
+import '../../models/student.dart';
 
 abstract class SubjectState {}
 
@@ -14,6 +15,12 @@ class SubjectLoadedById extends SubjectState {
   final Subject subject;
 
   SubjectLoadedById(this.subject);
+}
+
+class StudentsLoadedBySubjectId extends SubjectState {
+  final List<Student> students;
+
+  StudentsLoadedBySubjectId(this.students);
 }
 
 class SubjectError extends SubjectState {

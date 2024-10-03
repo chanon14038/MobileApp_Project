@@ -7,3 +7,9 @@ class FetchSubjectById extends SubjectEvent {
 
   FetchSubjectById(this.subjectId);
 }
+
+class FetchStudentsBySubjectId extends SubjectEvent {
+  final String subjectId;
+
+  FetchStudentsBySubjectId(this.subjectId);
+}

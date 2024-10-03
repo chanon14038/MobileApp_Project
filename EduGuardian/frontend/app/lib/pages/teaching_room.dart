@@ -76,11 +76,13 @@ class RoomsPage extends StatelessWidget {
 
                           return InkWell(
                             onTap: () {
-                              // นำทางไปยังหน้า SubjectByID
+                              // นำทางไปยังหน้า SubjectByIDPage พร้อมส่ง subjectId
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => SubjectByIDPage(subjectId: '${subject.id}'), // ใช้ subjectId ที่ต้องการ
+                                  builder: (context) => SubjectByIDPage(
+                                    subjectId: '${subject.id}', // ส่งค่า subjectId ไปยังหน้า SubjectByIDPage
+                                  ),
                                 ),
                               );
                               print('Tapped on ${subject.subject}');

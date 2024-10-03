@@ -30,3 +30,20 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
     });
   }
 }
+
+class StudentsBloc extends Bloc<SubjectEvent, SubjectState> {
+  final SubjectRepository subjectRepository;
+
+  StudentsBloc(this.subjectRepository) : super(SubjectLoading()) {
+    // Fetch students by subject ID
+    on<FetchStudentsBySubjectId>((event, emit) async {
+      emit(SubjectLoading());
+      try {
+        final students = await subjectRepository.getStudentsBySubjectId(event.subjectId);
+        emit(StudentsLoadedBySubjectId(students));
+      } catch (e) {
+        emit(SubjectError(e.toString()));
+      }
+    });
+  }
+}
