@@ -38,17 +38,21 @@ class GetMePage extends StatelessWidget {
                           ),
                           SizedBox(height: 20), // เว้นระยะห่างระหว่างรูปกับรายละเอียด
                           Text(
-                            'ชื่อผู้ใช้: ${user!['username']}',
+                            '${user!['first_name']} ${user!['last_name']}',
                             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           SizedBox(height: 10), // เว้นระยะห่างระหว่างรายละเอียด
                           Text(
-                            'อีเมล: ${user['advisor_room']}',
+                            'ครูประจำชั: ${user['advisor_room']}',
                             style: TextStyle(fontSize: 16),
                           ),
                           SizedBox(height: 10),
                           Text(
-                            'เบอร์โทรศัพท์: ${user['phone'] ?? 'N/A'}', // แสดงเบอร์โทรศัพท์จากข้อมูล
+                            'เบอร์โทรศัพท์: ${user['phone_number']}', // แสดงเบอร์โทรศัพท์จากข้อมูล
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          Text(
+                            'Email: ${user['email']}', // แสดงเบอร์โทรศัพท์จากข้อมูล
                             style: TextStyle(fontSize: 16),
                           ),
                         ],
