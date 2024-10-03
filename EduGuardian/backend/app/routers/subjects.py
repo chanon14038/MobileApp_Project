@@ -16,10 +16,9 @@ async def create_subject(
     current_user: models.User = Depends(deps.get_current_user)
 ):      
     result = await session.exec(
-        select(models.DBSubject).where(models.DBSubject.subject_id == info.subject_id)
+        select(models.DBSubject).where((models.DBSubject.subject_id == info.subject_id) & (models.DBSubject.classroom == info.classroom))
     )
     dbsubject = result.one_or_none()
-
     if dbsubject:
         raise HTTPException(status_code=400, detail="Subject already exists")
     
