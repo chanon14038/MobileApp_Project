@@ -1,8 +1,11 @@
-import 'package:app/pages/reportdialog_widget.dart';
+import 'package:app/blocs/report_bloc.dart';
+import 'package:app/pages/report_popup.dart';
+import 'package:app/repositories/report_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../blocs/subject_bloc.dart';
+import '../models/reports.dart';
 import '../repositories/subject_repository.dart';
 
 class SubjectByIDPage extends StatelessWidget {
@@ -43,6 +46,9 @@ class SubjectByIDPage extends StatelessWidget {
             create: (context) => StudentsBloc(SubjectRepository())
               ..add(FetchStudentsBySubjectId(subjectId)), // Load students
           ),
+          BlocProvider(
+            create: (context) => ReportBloc(ReportRepository()),
+          )
         ],
         child: Padding(
           padding:
@@ -143,12 +149,17 @@ class SubjectByIDPage extends StatelessWidget {
                                     fontWeight: FontWeight.bold),
                               ),
                               subtitle: Text('ID: ${student.studentId}'),
-                              onTap: () {
-                                showDialog(
+                              onTap: () async {
+                                // แสดง ReportDialog และรับค่ารายงาน
+                                final report = await showDialog<Reports>(
                                   context: context,
-                                  builder: (context) =>
-                                      ReportDialog(student: student),
+                                  builder: (context) => ReportPopup(student: student),
                                 );
+
+                                // ถ้า report ไม่เป็น null ส่ง event SubmitReport
+                                if (report != null) {
+                                  context.read<ReportBloc>().add(SubmitReport(report));
+                                }
                               },
                             ),
                           );

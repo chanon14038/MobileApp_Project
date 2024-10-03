@@ -15,6 +15,7 @@ router = APIRouter(prefix="/descriptions", tags=["descriptions"])
 async def create(
     info: models.CreatedDescription,
     session: Annotated[AsyncSession, Depends(models.get_session)],
+    current_user: models.User = Depends(deps.get_current_user),
 ):
     result = await session.exec(
         select(models.DBStudent).where(models.DBStudent.student_id == info.student_id)
@@ -27,6 +28,7 @@ async def create(
         dbdescription.db_student = dbstudent
         dbdescription.first_name = dbstudent.first_name
         dbdescription.last_name = dbstudent.last_name
+        dbdescription.reporterName = current_user.first_name + " " + current_user.last_name
         
         session.add(dbdescription)
         await session.commit()

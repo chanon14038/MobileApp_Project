@@ -12,6 +12,10 @@ class ReportLoaded extends ReportState {
   ReportLoaded(this.reports);
 }
 
+class ReportSubmitting extends ReportState {}
+
+class ReportSubmitted extends ReportState {}
+
 class ReportError extends ReportState {
   final String message;
 

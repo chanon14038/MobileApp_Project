@@ -7,7 +7,6 @@ from sqlalchemy.types import JSON
 from pydantic import BaseModel, ConfigDict
 from sqlmodel import SQLModel, Field, Relationship
 
-from . import students
 
 class BaseDescription(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -32,6 +31,7 @@ class DBDescription(BaseDescription, SQLModel, table=True):
     
     id: int = Field(default=None, primary_key=True)
     
+    reporterName: str = Field(default=None)
     first_name: str = Field(default=None)
     last_name: str = Field(default=None)
     

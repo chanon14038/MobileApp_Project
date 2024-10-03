@@ -24,4 +24,22 @@ class ReportRepository {
       throw Exception('Failed to fetch report: $e');
     }
   }
+
+  Future<void> postReport(Reports report) async {
+    try {
+      final response = await _dioClient.dio.post(
+        '/descriptions', 
+        data: report.toJson(), // Only sends studentId and description
+      );
+      if (response.statusCode == 201) {
+        print('Report posted successfully');
+      } else {
+        throw Exception('Failed to post report');
+      }
+    } on DioError catch (e) {
+      throw Exception('Failed to post report: ${e.response?.data ?? e.message}');
+    } catch (e) {
+      throw Exception('Failed to post report: $e');
+    }
+  }
 }
