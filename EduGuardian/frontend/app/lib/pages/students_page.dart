@@ -48,28 +48,32 @@ class _StudentPageState extends State<StudentPage>
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(width: 40),
               Expanded(
                 child: Stack(
                   children: [
-                    // Title when not searching
                     if (!isSearching)
-                      Center(
-                        child: Text(
-                          'My Students',
-                          key: ValueKey<bool>(!isSearching),
-                          style: GoogleFonts.bebasNeue(
-                            fontSize: 27,
-                            color: Color.fromARGB(255, 96, 96, 96),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          // เพิ่ม Padding
+                          padding:
+                              const EdgeInsets.only(left: 45), // ขยับไปทางขวา
+                          child: Text(
+                            'My Students',
+                            key: ValueKey<bool>(!isSearching),
+                            style: GoogleFonts.bebasNeue(
+                              fontSize: 27,
+                              color: Color.fromARGB(255, 96, 96, 96),
+                            ),
                           ),
                         ),
                       ),
-                    // Search field sliding in from right when searching
                     if (isSearching)
                       SlideTransition(
                         position: _slideAnimation,
                         child: Container(
                           key: ValueKey<bool>(isSearching),
+                          width: double.infinity,
                           decoration: BoxDecoration(
                             color: const Color.fromARGB(255, 240, 240, 240),
                             borderRadius: BorderRadius.circular(25),
@@ -125,15 +129,14 @@ class _StudentPageState extends State<StudentPage>
           ],
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(), // เพิ่ม padding รอบ ListView
+          padding: const EdgeInsets.symmetric(),
           child: Container(
             decoration: BoxDecoration(
-              color:
-                  Color.fromARGB(255, 226, 216, 244), // พื้นหลังขาวสำหรับกรอบ
-              borderRadius: BorderRadius.circular(20), // มุมโค้งของกรอบ
+              color: Color.fromARGB(255, 226, 216, 244),
+              borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.2), // เงารอบกรอบ
+                  color: Colors.grey.withOpacity(0.2),
                   spreadRadius: 2,
                   blurRadius: 10,
                   offset: Offset(0, 2),
@@ -141,7 +144,7 @@ class _StudentPageState extends State<StudentPage>
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.all(10.0), // เพิ่ม padding ภายในกรอบ
+              padding: const EdgeInsets.all(10.0),
               child: BlocBuilder<StudentBloc, StudentState>(
                 builder: (context, state) {
                   if (state is StudentLoading) {
@@ -163,9 +166,7 @@ class _StudentPageState extends State<StudentPage>
                       itemBuilder: (context, index) {
                         final student = students[index];
                         return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical:
-                                  2.0), // เพิ่ม padding ด้านบนและล่างของการ์ด
+                          padding: const EdgeInsets.symmetric(vertical: 2.0),
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
@@ -198,7 +199,6 @@ class _StudentPageState extends State<StudentPage>
                                 subtitle:
                                     Text('Classroom: ${student.classroom}'),
                                 onTap: () {
-                                  // Navigate to Student Profile Page
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -216,7 +216,7 @@ class _StudentPageState extends State<StudentPage>
                   } else if (state is StudentError) {
                     return Center(child: Text('Error: ${state.message}'));
                   }
-                  return Container(); // Default case
+                  return Container();
                 },
               ),
             ),

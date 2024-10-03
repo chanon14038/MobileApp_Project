@@ -44,7 +44,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
             } else if (state is SingleStudentLoaded) {
               final student = state.student;
               return Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
                     // ส่วนบน: กล่องโปรไฟล์นักเรียน
@@ -104,8 +104,8 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                                 "Reports",
                                 style: GoogleFonts.bebasNeue(
                                   fontSize: 24,
-                                  color: Color.fromARGB(255, 96, 96, 96), // สีหัวข้อ
-                                  
+                                  color: Color.fromARGB(
+                                      255, 96, 96, 96), // สีหัวข้อ
                                 ),
                               ),
                             ),
