@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../blocs/subject_bloc.dart';
 import '../repositories/subject_repository.dart';
+import 'subject_page.dart';
 
 class RoomsPage extends StatelessWidget {
   // สร้างลิสต์ของสีที่ต้องการสุ่ม
@@ -75,7 +76,13 @@ class RoomsPage extends StatelessWidget {
 
                           return InkWell(
                             onTap: () {
-                              // Handle onTap for more actions or navigation
+                              // นำทางไปยังหน้า SubjectByID
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SubjectByIDPage(subjectId: '${subject.id}'), // ใช้ subjectId ที่ต้องการ
+                                ),
+                              );
                               print('Tapped on ${subject.subject}');
                             },
                             child: Card(

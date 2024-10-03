@@ -10,6 +10,12 @@ class SubjectLoaded extends SubjectState {
   SubjectLoaded(this.subjects);
 }
 
+class SubjectLoadedById extends SubjectState {
+  final Subject subject;
+
+  SubjectLoadedById(this.subject);
+}
+
 class SubjectError extends SubjectState {
   final String message;
 

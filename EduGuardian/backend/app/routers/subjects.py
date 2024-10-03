@@ -56,3 +56,17 @@ async def get_subjects(
     if not dbsubjects:
         raise HTTPException(status_code=404, detail="Subject not found")
     return dbsubjects
+
+@router.get("/{id}")
+async def get_subjects(
+    id: int,
+    session: Annotated[AsyncSession, Depends(models.get_session)],
+    current_user: models.User = Depends(deps.get_current_user)
+):
+    result = await session.exec(
+        select(models.DBSubject).where(models.DBSubject.id == id)
+    )
+    dbsubjects = result.one_or_none()
+    if not dbsubjects:
+        raise HTTPException(status_code=404, detail="Subject not found")
+    return dbsubjects

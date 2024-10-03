@@ -24,4 +24,23 @@ class SubjectRepository {
       throw Exception('Failed to fetch subject: $e');
     }
   }
+
+  Future<Subject> getSubjectById(String subjectId) async {
+    try {
+      final response = await _dioClient.dio.get('/subject/$subjectId');
+      if (response.statusCode == 200) {
+        return Subject.fromJson(response.data);
+      } else {
+        throw Exception('Failed to load subject');
+      }
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 404) {
+        throw Exception('Subject not found');
+      } else {
+        throw Exception('Failed to fetch subject: ${e.message}');
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch subject: $e');
+    }
+  }
 }
