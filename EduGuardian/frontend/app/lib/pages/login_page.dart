@@ -100,7 +100,9 @@ class LoginPage extends StatelessWidget {
 
                       // Login Button with BlocBuilder
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 25,
+                        ),
                         child: BlocBuilder<AuthBloc, AuthState>(
                           builder: (context, state) {
                             if (state is AuthLoading) {
@@ -110,7 +112,7 @@ class LoginPage extends StatelessWidget {
                               width: double.infinity,
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    padding: EdgeInsets.symmetric(vertical: 10),
                                     backgroundColor: const Color.fromARGB(
                                         255, 218, 106, 238),
                                     shape: RoundedRectangleBorder(
@@ -128,9 +130,9 @@ class LoginPage extends StatelessWidget {
                                   },
                                   child: Text(
                                     'Login'.toUpperCase(),
-                                    style: TextStyle(
-                                      fontSize: 18,
+                                    style: GoogleFonts.dosis(
                                       fontWeight: FontWeight.bold,
+                                      fontSize: 18,
                                       color: Colors.white,
                                     ),
                                   )),
