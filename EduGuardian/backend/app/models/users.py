@@ -9,9 +9,6 @@ from pydantic import BaseModel, ConfigDict, EmailStr
 import sqlmodel
 from sqlmodel import SQLModel, Relationship
 
-from . import classrooms
-from . import subjects
-from . import students
 
 
 class BaseUser(BaseModel):
@@ -29,6 +26,7 @@ class BaseUser(BaseModel):
 class User(BaseUser):
     id: int
     advisor_room_id: int
+    imageData: bytes | None
 
     
     last_login_date: datetime.datetime | None = pydantic.Field(default=None)
@@ -85,7 +83,9 @@ class DBUser(User,SQLModel,table=True):
     
     db_classroom: Optional["DBClassroom"] = Relationship(back_populates="db_teacher", passive_deletes=True)
     db_subject: list["DBSubject"] = Relationship(back_populates="db_teacher", cascade_delete=True)
-    db_student: list["DBStudent"] = Relationship(back_populates="db_teacher", passive_deletes=True)    
+    db_student: list["DBStudent"] = Relationship(back_populates="db_teacher", passive_deletes=True)
+    
+    
 
     updated_date: datetime.datetime = sqlmodel.Field(default_factory=datetime.datetime.now)
     

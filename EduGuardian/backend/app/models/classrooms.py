@@ -8,9 +8,6 @@ import pydantic
 from pydantic import BaseModel, ConfigDict
 from sqlmodel import SQLModel, Field, Relationship
 
-from . import users
-from . import students
-from . import students
 
 class BaseClassroom(BaseModel):
     model_config = ConfigDict(from_attributes=True)

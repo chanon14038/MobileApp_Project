@@ -57,9 +57,12 @@ class GetMePage extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           CircleAvatar(
-                            radius: 60,
-                            backgroundImage:
-                                AssetImage('assets/profile_picture.png'),
+                            radius: 50,
+                            backgroundImage: user.imageData != null
+                                ? MemoryImage(user
+                                    .imageData!) // Use MemoryImage for Uint8List
+                                : AssetImage('assets/placeholder.png')
+                                    as ImageProvider, // Fallback to placeholder if no image
                           ),
                           SizedBox(height: 20),
                           Text(

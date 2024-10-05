@@ -19,6 +19,7 @@ from .students import *
 from .descriptions import *
 from .classrooms import *
 from .subjects import *
+from .images import *
 
 connect_args = {}
 

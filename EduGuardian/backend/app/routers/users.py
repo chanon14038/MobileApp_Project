@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Request, Response, UploadFile, status
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import select
+import base64
 
 from typing import Annotated
 
@@ -12,23 +13,50 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 @router.get("/me")
 def get_me(current_user: models.User = Depends(deps.get_current_user)) -> models.User:
+    if current_user.imageData:
+        current_user.imageData = base64.b64encode(current_user.imageData).decode('utf-8')
+    
     return current_user
 
 
-@router.get("/{user_id}")
-async def get(
-    user_id: int,
+@router.get("/imageProfile")
+async def get_image_profile(
+    session: Annotated[AsyncSession, Depends(models.get_session)],
+    current_user: models.DBUser = Depends(deps.get_current_user)
+):
+    if not current_user.imageData:
+        raise HTTPException(status_code=404, detail="Image data not found")
+    return Response(current_user.imageData, media_type="image/jpeg")
+    
+
+
+@router.put("imageProfile")
+async def upload_image(
+    file: UploadFile,
     session: Annotated[AsyncSession, Depends(models.get_session)],
     current_user: models.User = Depends(deps.get_current_user),
-) -> models.User:
-
-    user = await session.get(models.DBUser, user_id)
+):
+    result = await session.exec(
+        select(models.DBUser).where(models.DBUser.id == current_user.id)
+    )
+    user = result.one_or_none()
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Not found this user",
         )
-    return user
+    
+    user.imageData = await file.read()
+    
+    session.add(user)
+    await session.commit()
+    await session.refresh(user)
+    
+    raise HTTPException(
+        status_code=status.HTTP_200_OK,
+        detail="Upload Image successfully",
+    )
+    
 
 
 @router.post("/create")

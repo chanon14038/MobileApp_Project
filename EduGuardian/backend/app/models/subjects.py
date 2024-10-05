@@ -9,8 +9,7 @@ from pydantic import BaseModel, ConfigDict
 from sqlmodel import SQLModel, Field, Relationship
 
 from .link import StudentSubjectLink
-from . import users
-from . import students
+
 
 class BaseSubject(BaseModel):
     model_config = ConfigDict(from_attributes=True)

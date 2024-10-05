@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 class UserModel {
   final String? username;
   final String? firstName;
@@ -11,6 +14,8 @@ class UserModel {
   final DateTime? lastLoginDate;
   final DateTime? registerDate;
 
+  final Uint8List? imageData;
+
   UserModel({
     this.username,
     this.firstName,
@@ -23,6 +28,7 @@ class UserModel {
     this.advisorRoomId,
     this.lastLoginDate,
     this.registerDate,
+    this.imageData,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -42,6 +48,8 @@ class UserModel {
       registerDate: json['register_date'] != null
           ? DateTime.parse(json['register_date'])
           : null,
+      imageData:
+          json['imageData'] != null ? base64Decode(json['imageData']) : null,
     );
   }
 
