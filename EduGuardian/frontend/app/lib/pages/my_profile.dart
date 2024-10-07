@@ -8,186 +8,191 @@ import '../repositories/get_me_repository.dart';
 import 'login_page.dart';
 import 'update_profile.dart';
 
-class UserProfilePage extends StatelessWidget {
+class UserProfilePage extends StatefulWidget {
+  @override
+  State<UserProfilePage> createState() => _UserProfilePageState();
+}
+
+class _UserProfilePageState extends State<UserProfilePage> {
+  @override
+  void initState() {
+    super.initState();
+    // Fetch user data when the page is initialized
+    context.read<UserBloc>().add(FetchUserData());
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => UserBloc(UserRepository())..add(FetchUserData()),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'User Profile',
-            style: GoogleFonts.bebasNeue(
-              fontSize: 27,
-              color: Color.fromARGB(255, 96, 96, 96),
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'User Profile',
+          style: GoogleFonts.bebasNeue(
+            fontSize: 27,
+            color: Color.fromARGB(255, 96, 96, 96),
           ),
-          centerTitle: true,
         ),
-        body: BlocBuilder<UserBloc, UserState>(
-          builder: (context, state) {
-            if (state is UserLoading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (state is UserLoaded) {
-              final user = state.user; // ดึงข้อมูลผู้ใช้จากสถานะที่โหลดแล้ว
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(7),
-                      child: Container(
-                        padding: EdgeInsets.all(50.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: Offset(2, 2),
+        centerTitle: true,
+      ),
+      body: BlocBuilder<UserBloc, UserState>(
+        builder: (context, state) {
+          if (state is UserLoading) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state is UserLoaded) {
+            final user = state.user; // ดึงข้อมูลผู้ใช้จากสถานะที่โหลดแล้ว
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(7),
+                    child: Container(
+                      padding: EdgeInsets.all(50.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: Offset(2, 2),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircleAvatar(
+                            radius: 50,
+                            backgroundImage: user.imageData != null
+                                ? MemoryImage(user.imageData!) // ใช้ MemoryImage สำหรับ Uint8List
+                                : AssetImage('assets/placeholder.png')
+                                    as ImageProvider, // ใช้ placeholder หากไม่มีภาพ
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            '${user.firstName} ${user.lastName}',
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.deepPurple,
                             ),
-                          ],
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CircleAvatar(
-                              radius: 50,
-                              backgroundImage: user.imageData != null
-                                  ? MemoryImage(user
-                                      .imageData!) // ใช้ MemoryImage สำหรับ Uint8List
-                                  : AssetImage('assets/placeholder.png')
-                                      as ImageProvider, // ใช้ placeholder หากไม่มีภาพ
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'Advisor: ${user.advisorRoom}',
+                            style: TextStyle(
+                              fontSize: 16,
                             ),
-                            SizedBox(height: 20),
-                            Text(
-                              '${user.firstName} ${user.lastName}',
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.deepPurple,
-                              ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'Subject taught: ${user.subject}',
+                            style: TextStyle(
+                              fontSize: 16,
                             ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Advisor: ${user.advisorRoom}',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Subject taught: ${user.subject}',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Tel: ${user.phoneNumber}',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Email: ${user.email}',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'Tel: ${user.phoneNumber}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            'Email: ${user.email}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
                       ),
                     ),
-                    Spacer(),
-                    Column(
-                      children: [
-                        // ปุ่ม Edit Profile
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: ElevatedButton.icon(
-                            icon: Icon(Icons.edit),
-                            label: Text('Edit Profile'),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => UpdateProfilePage(
-                                      user:
-                                          user), // ส่ง user ไปยังหน้า UpdateProfilePage
-                                ),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 205, 188, 235),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 50,
-                                vertical: 15,
+                  ),
+                  Spacer(),
+                  Column(
+                    children: [
+                      // ปุ่ม Edit Profile
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: ElevatedButton.icon(
+                          icon: Icon(Icons.edit),
+                          label: Text('Edit Profile'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UpdateProfilePage(user: user),
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+                            ).then((value) {
+                              // รีเฟรชข้อมูลหลังจากกลับมาจากหน้า UpdateProfilePage
+                              context.read<UserBloc>().add(FetchUserData());
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 205, 188, 235),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 50,
+                              vertical: 15,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                         ),
-                        // ปุ่ม Change Password
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: ElevatedButton.icon(
-                            icon: Icon(Icons.lock),
-                            label: Text('Change Password'),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ChangePasswordPage(),
-                                ),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Color.fromARGB(255, 205, 188, 235),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 30,
-                                vertical: 15,
+                      ),
+                      // ปุ่ม Change Password
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: ElevatedButton.icon(
+                          icon: Icon(Icons.lock),
+                          label: Text('Change Password'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChangePasswordPage(),
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 205, 188, 235),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 30,
+                              vertical: 15,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                         ),
-                        // ปุ่ม Logout
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: ElevatedButton.icon(
-                            icon: Icon(Icons.logout),
-                            label: Text('Logout'),
-                            onPressed: () {
-                              _showLogoutConfirmation(context);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 65, vertical: 15),
-                              backgroundColor:
-                                  const Color.fromARGB(255, 240, 158, 158),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+                      ),
+                      // ปุ่ม Logout
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: ElevatedButton.icon(
+                          icon: Icon(Icons.logout),
+                          label: Text('Logout'),
+                          onPressed: () {
+                            _showLogoutConfirmation(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(horizontal: 65, vertical: 15),
+                            backgroundColor: const Color.fromARGB(255, 240, 158, 158),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            } else if (state is UserError) {
-              return Center(child: Text(state.message));
-            }
-            return Container();
-          },
-        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          } else if (state is UserError) {
+            return Center(child: Text(state.message));
+          }
+          return Container();
+        },
       ),
     );
   }
