@@ -1,3 +1,4 @@
+import 'package:app/pages/update_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -115,7 +116,7 @@ class GetMePage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => EditProfilePage()),
+                                  builder: (context) => UpdateProfilePage()),
                             );
                           },
                           style: ElevatedButton.styleFrom(

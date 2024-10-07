@@ -12,6 +12,8 @@ class UserLoaded extends UserState {
   UserLoaded(this.user);
 }
 
+class ProfileUpdated extends UserState {}
+
 class UserError extends UserState {
   final String message;
 
