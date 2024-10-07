@@ -1,19 +1,19 @@
 import '../../models/user_model.dart';
 
-abstract class GetMeState {}
+abstract class UserState {}
 
-class GetMeInitial extends GetMeState {}
+class UserInitial extends UserState {}
 
-class GetMeLoading extends GetMeState {}
+class UserLoading extends UserState {}
 
-class GetMeLoaded extends GetMeState {
+class UserLoaded extends UserState {
   final UserModel user;
 
-  GetMeLoaded(this.user);
+  UserLoaded(this.user);
 }
 
-class GetMeError extends GetMeState {
+class UserError extends UserState {
   final String message;
 
-  GetMeError(this.message);
+  UserError(this.message);
 }

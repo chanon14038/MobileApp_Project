@@ -1,7 +1,7 @@
 import '../services/dio_client.dart';
 import '../models/user_model.dart';
 
-class GetMeRepository {
+class UserRepository {
   final DioClient _dioClient = DioClient();
 
   Future<UserModel> getMe() async {

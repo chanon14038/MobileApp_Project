@@ -9,7 +9,7 @@ import 'change_password_page.dart'; // นำเข้า ChangePasswordPage
 import 'edit_profile_page.dart'; // นำเข้า EditProfilePage
 
 class GetMePage extends StatelessWidget {
-  final GetMeRepository _getMeRepository = GetMeRepository();
+  final UserRepository _getMeRepository = UserRepository();
 
   @override
   Widget build(BuildContext context) {

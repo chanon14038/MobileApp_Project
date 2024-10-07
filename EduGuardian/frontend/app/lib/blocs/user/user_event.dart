@@ -1,3 +1,3 @@
-abstract class GetMeEvent {}
+abstract class UserEvent {}
 
-class FetchUserData extends GetMeEvent {}
+class FetchUserData extends UserEvent {}
