@@ -18,21 +18,25 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
     });
 
+
     on<UpdateProfile>((event, emit) async {
       emit(UserLoading());
       try {
-        // เรียกฟังก์ชันใน repository เพื่ออัปเดตข้อมูล
+        // Call the repository function to update the profile
         await repository.updateProfile(
           firstName: event.firstName,
           lastName: event.lastName,
-          subject: event.subject,           // เพิ่ม subject
+          subject: event.subject,           
           phoneNumber: event.phoneNumber,
           email: event.email,
-          advisorRoom: event.advisorRoom,   // เพิ่ม advisorRoom
+          advisorRoom: event.advisorRoom,   
         );
-        emit(ProfileUpdated());
-        // หลังจากอัปเดตโปรไฟล์ เรียกข้อมูลใหม่อีกครั้ง
+
+        // After successful update, fetch the updated user data
         add(FetchUserData());
+        
+        // Optionally, you can emit a success state if needed
+        emit(ProfileUpdated());
       } catch (e) {
         emit(UserError('Failed to update profile: ${e.toString()}'));
       }

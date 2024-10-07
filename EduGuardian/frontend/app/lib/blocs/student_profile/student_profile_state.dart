@@ -1,25 +1,25 @@
 import '../../models/student.dart';
 
-abstract class StudentState {}
+abstract class StudentProfileState {}
 
-class StudentLoading extends StudentState {}
+class StudentProfileLoading extends StudentProfileState {}
 
-class StudentLoaded extends StudentState {
-  final List<Student> students;
+class StudentProfileLoaded extends StudentProfileState {
+  final List<Student> student;
 
-  StudentLoaded(this.students);
+  StudentProfileLoaded(this.student);
 }
 
-class SingleStudentLoaded extends StudentState {
+class SingleStudentProfileLoaded extends StudentProfileState {
   final Student student;
 
-  SingleStudentLoaded(this.student);
+  SingleStudentProfileLoaded(this.student);
 }
 
-class StudentError extends StudentState {
+class StudentProfileError extends StudentProfileState {
   final String message;
 
-  StudentError(this.message);
+  StudentProfileError(this.message);
 }
 
-class StudentNotFound extends StudentState {}
+class StudentProfileNotFound extends StudentProfileState {}

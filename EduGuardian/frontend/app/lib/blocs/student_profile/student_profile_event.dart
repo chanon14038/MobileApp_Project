@@ -1,9 +1,9 @@
-abstract class StudentEvent {}
+abstract class StudentProfileEvent {}
 
-class FetchStudents extends StudentEvent {}
+class FetchStudentProfile extends StudentProfileEvent {}
 
-class FetchStudentById extends StudentEvent {
+class FetchStudentProfileById extends StudentProfileEvent {
   final String studentId;
 
-  FetchStudentById(this.studentId);
+  FetchStudentProfileById(this.studentId);
 }

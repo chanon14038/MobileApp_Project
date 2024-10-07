@@ -1,7 +1,8 @@
+import 'package:app/repositories/get_me_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'blocs/blocs.dart';
 import 'pages/login_page.dart';
-import 'blocs/auth_bloc.dart';
 import 'repositories/auth_repository.dart';
 import 'main_screen.dart';
 
@@ -16,6 +17,12 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<AuthBloc>(
           create: (context) => AuthBloc(AuthRepository()),
+        ),
+        BlocProvider<UserBloc>(
+          create: (context) => UserBloc(UserRepository()),
+        ),
+        BlocProvider<BottomNavigationBloc>(
+          create: (context) => BottomNavigationBloc(),
         ),
       ],
       child: MaterialApp(

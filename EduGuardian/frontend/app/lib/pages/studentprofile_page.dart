@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../blocs/report_bloc.dart';
 import '../repositories/student_repository.dart';
-import '../blocs/student_profile.dart';
+import '../blocs/student_profile_bloc.dart';
 
 class StudentProfilePage extends StatefulWidget {
   final String studentId;
@@ -22,8 +22,8 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => StudentBloc(StudentRepository())
-        ..add(FetchStudentById(widget.studentId)),
+      create: (context) => StudentProfileBloc(StudentRepository())
+        ..add(FetchStudentProfileById(widget.studentId)),
       child: Scaffold(
         backgroundColor: Color.fromARGB(255, 226, 216, 244), // พื้นหลังสีม่วง
         appBar: AppBar(
@@ -37,11 +37,11 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
           ),
           centerTitle: true,
         ),
-        body: BlocBuilder<StudentBloc, StudentState>(
+        body: BlocBuilder<StudentProfileBloc, StudentProfileState>(
           builder: (context, state) {
-            if (state is StudentLoading) {
+            if (state is StudentProfileLoading) {
               return Center(child: CircularProgressIndicator());
-            } else if (state is SingleStudentLoaded) {
+            } else if (state is SingleStudentProfileLoaded) {
               final student = state.student;
               return Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -164,9 +164,9 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                   ],
                 ),
               );
-            } else if (state is StudentError) {
+            } else if (state is StudentProfileError) {
               return Center(child: Text('Error: ${state.message}'));
-            } else if (state is StudentNotFound) {
+            } else if (state is StudentProfileNotFound) {
               return Center(child: Text('Student not found'));
             }
             return Container();

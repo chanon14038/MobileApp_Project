@@ -3,30 +3,30 @@ import 'student_profile_event.dart';
 import 'student_profile_state.dart';
 import '../../repositories/student_repository.dart';
 
-class StudentBloc extends Bloc<StudentEvent, StudentState> {
+class StudentProfileBloc extends Bloc<StudentProfileEvent, StudentProfileState> {
   final StudentRepository studentRepository;
 
-  StudentBloc(this.studentRepository) : super(StudentLoading()) {
-    on<FetchStudents>((event, emit) async {
-      emit(StudentLoading());
+  StudentProfileBloc(this.studentRepository) : super(StudentProfileLoading()) {
+    on<FetchStudentProfile>((event, emit) async {
+      emit(StudentProfileLoading());
       try {
-        final students = await studentRepository.getStudents();
-        emit(StudentLoaded(students));
+        final student = await studentRepository.getStudents();
+        emit(StudentProfileLoaded(student));
       } catch (e) {
-        emit(StudentError(e.toString()));
+        emit(StudentProfileError(e.toString()));
       }
     });
 
-    on<FetchStudentById>((event, emit) async {
-      emit(StudentLoading());
+    on<FetchStudentProfileById>((event, emit) async {
+      emit(StudentProfileLoading());
       try {
         final student = await studentRepository.getOneStudent(event.studentId);
-        emit(SingleStudentLoaded(student));
+        emit(SingleStudentProfileLoaded(student));
       } catch (e) {
         if (e.toString().contains('Student not found')) {
-          emit(StudentNotFound());
+          emit(StudentProfileNotFound());
         } else {
-          emit(StudentError(e.toString()));
+          emit(StudentProfileError(e.toString()));
         }
       }
     });

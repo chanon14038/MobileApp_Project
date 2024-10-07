@@ -20,24 +20,24 @@ class UserRepository {
   Future<void> updateProfile({
     required String firstName,
     required String lastName,
-    required String subject,         // เพิ่ม subject
+    required String subject, // เพิ่ม subject
     required String phoneNumber,
     required String email,
-    required String advisorRoom,     // เพิ่ม advisorRoom
+    required String advisorRoom, // เพิ่ม advisorRoom
   }) async {
     try {
       final response = await _dioClient.dio.put(
-        '/users/me', // Endpoint สำหรับการอัปเดตโปรไฟล์
+        '/users/update', // Endpoint สำหรับการอัปเดตโปรไฟล์
         data: {
           'first_name': firstName,
           'last_name': lastName,
-          'subject': subject,            // ส่ง subject
+          'subject': subject, // ส่ง subject
           'phone_number': phoneNumber,
           'email': email,
-          'advisor_room': advisorRoom,   // ส่ง advisorRoom
+          'advisor_room': advisorRoom, // ส่ง advisorRoom
         },
       );
-      
+
       if (response.statusCode != 200) {
         throw Exception('Failed to update profile');
       }

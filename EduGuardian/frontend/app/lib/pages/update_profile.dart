@@ -1,28 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../blocs/user_bloc.dart';
+import '../models/user_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../blocs/user_bloc.dart';
-
 class UpdateProfilePage extends StatefulWidget {
+  final UserModel user;
+
+  UpdateProfilePage({required this.user});
+
   @override
   _UpdateProfilePageState createState() => _UpdateProfilePageState();
 }
 
 class _UpdateProfilePageState extends State<UpdateProfilePage> {
-  // Controllers สำหรับการเก็บข้อมูลในฟอร์ม
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController subjectController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController advisorRoomController = TextEditingController();
+  late TextEditingController firstNameController;
+  late TextEditingController lastNameController;
+  late TextEditingController subjectController;
+  late TextEditingController phoneNumberController;
+  late TextEditingController emailController;
+  late TextEditingController advisorRoomController;
 
   @override
   void initState() {
     super.initState();
-    // Fetch ข้อมูลผู้ใช้เมื่อหน้าโหลด
-    context.read<UserBloc>().add(FetchUserData());
+    firstNameController = TextEditingController(text: widget.user.firstName);
+    lastNameController = TextEditingController(text: widget.user.lastName);
+    subjectController = TextEditingController(text: widget.user.subject);
+    phoneNumberController =
+        TextEditingController(text: widget.user.phoneNumber);
+    emailController = TextEditingController(text: widget.user.email);
+    advisorRoomController =
+        TextEditingController(text: widget.user.advisorRoom);
+  }
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    subjectController.dispose();
+    phoneNumberController.dispose();
+    emailController.dispose();
+    advisorRoomController.dispose();
+    super.dispose();
   }
 
   @override
@@ -30,105 +50,85 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Edit Profile',
+          'Update Profile',
           style: GoogleFonts.bebasNeue(
             fontSize: 27,
             color: Color.fromARGB(255, 96, 96, 96),
           ),
         ),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 188, 157, 241), // ปรับสีของ AppBar
       ),
-      body: BlocBuilder<UserBloc, UserState>(
-        builder: (context, state) {
-          if (state is UserLoading) {
-            return Center(child: CircularProgressIndicator());
-          } else if (state is UserLoaded) {
-            // เติมข้อมูลในฟอร์มเมื่อโหลดข้อมูลสำเร็จ
-            firstNameController.text = state.user.firstName ?? '';
-            lastNameController.text = state.user.lastName ?? '';
-            subjectController.text = state.user.subject ?? '';
-            phoneNumberController.text = state.user.phoneNumber ?? '';
-            emailController.text = state.user.email ?? '';
-            advisorRoomController.text = state.user.advisorRoom ?? '';
+      body: Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: Column(
+          children: [
+            _buildTextField(
+              controller: firstNameController,
+              labelText: 'First Name',
+              icon: Icons.person,
+            ),
+            SizedBox(height: 15),
+            _buildTextField(
+              controller: lastNameController,
+              labelText: 'Last Name',
+              icon: Icons.person_outline,
+            ),
+            SizedBox(height: 15),
+            _buildTextField(
+              controller: subjectController,
+              labelText: 'Subject',
+              icon: Icons.subject,
+            ),
+            SizedBox(height: 15),
+            _buildTextField(
+              controller: phoneNumberController,
+              labelText: 'Phone Number',
+              icon: Icons.phone,
+              keyboardType: TextInputType.phone,
+            ),
+            SizedBox(height: 15),
+            _buildTextField(
+              controller: emailController,
+              labelText: 'Email',
+              icon: Icons.email,
+              keyboardType: TextInputType.emailAddress,
+            ),
+            SizedBox(height: 15),
+            _buildTextField(
+              controller: advisorRoomController,
+              labelText: 'Advisor Room',
+              icon: Icons.room,
+            ),
+            SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                // Dispatch the update profile event
+                BlocProvider.of<UserBloc>(context).add(UpdateProfile(
+                  firstName: firstNameController.text,
+                  lastName: lastNameController.text,
+                  subject: subjectController.text,
+                  phoneNumber: phoneNumberController.text,
+                  email: emailController.text,
+                  advisorRoom: advisorRoomController.text,
+                ));
 
-            return Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Column(
-                children: [
-                  _buildTextField(
-                    controller: firstNameController,
-                    labelText: 'First Name',
-                    icon: Icons.person,
-                  ),
-                  SizedBox(height: 15),
-                  _buildTextField(
-                    controller: lastNameController,
-                    labelText: 'Last Name',
-                    icon: Icons.person_outline,
-                  ),
-                  SizedBox(height: 15),
-                  _buildTextField(
-                    controller: subjectController,
-                    labelText: 'Subject',
-                    icon: Icons.book,
-                  ),
-                  SizedBox(height: 15),
-                  _buildTextField(
-                    controller: phoneNumberController,
-                    labelText: 'Phone Number',
-                    icon: Icons.phone,
-                    keyboardType: TextInputType.phone,
-                  ),
-                  SizedBox(height: 15),
-                  _buildTextField(
-                    controller: emailController,
-                    labelText: 'Email',
-                    icon: Icons.email,
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  SizedBox(height: 15),
-                  _buildTextField(
-                    controller: advisorRoomController,
-                    labelText: 'Advisor Room',
-                    icon: Icons.class_,
-                  ),
-                  SizedBox(height: 30),
-                  ElevatedButton(
-                    onPressed: () {
-                      // เรียก UpdateProfile event
-                      context.read<UserBloc>().add(
-                        UpdateProfile(
-                          firstName: firstNameController.text,
-                          lastName: lastNameController.text,
-                          subject: subjectController.text,
-                          phoneNumber: phoneNumberController.text,
-                          email: emailController.text,
-                          advisorRoom: advisorRoomController.text,
-                        ),
-                      );
-                    },
-                    child: Text(
-                      'Save Changes',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
-                      backgroundColor: Color.fromARGB(255, 188, 157, 241), // ปรับสีของปุ่ม
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(27.0),
-                      ),
-                    ),
-                  ),
-                ],
+                // Navigate back to profile page after update
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Save Changes',
+                style: TextStyle(fontSize: 18),
               ),
-            );
-          } else if (state is UserError) {
-            return Center(child: Text('Failed to load user data: ${state.message}'));
-          } else {
-            return Center(child: Text('Unexpected state'));
-          }
-        },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                backgroundColor: Color.fromARGB(255, 188, 157, 241),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(27.0),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
