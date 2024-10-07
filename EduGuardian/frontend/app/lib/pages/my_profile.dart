@@ -82,6 +82,13 @@ class GetMePage extends StatelessWidget {
                           ),
                           SizedBox(height: 10),
                           Text(
+                            'Subject taught: ${user.subject}',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
                             'Tel: ${user.phoneNumber}',
                             style: TextStyle(fontSize: 16),
                           ),
@@ -90,7 +97,7 @@ class GetMePage extends StatelessWidget {
                             'Email: ${user.email}',
                             style: TextStyle(fontSize: 16),
                           ),
-                          SizedBox(height: 20),
+                          
                         ],
                       ),
                     ),
