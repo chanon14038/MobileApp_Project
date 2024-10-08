@@ -85,7 +85,22 @@ class _LoginPageState extends State<LoginPage> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Text('Login Failed'),
+                          title: Row(
+                            children: [
+                              Icon(
+                                Icons.warning, // ใช้ไอคอน warning สำหรับสัญลักษณ์ตกใจ
+                                color: Colors.yellow,
+                                size: 40, // ขนาดของไอคอน
+                              ),
+                              SizedBox(width: 10), // ระยะห่างระหว่างไอคอนและข้อความ
+                              Expanded(
+                                child: Text(
+                                  'Login Failed',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
                           content: Text('Login failed: ${state.error}'),
                           actions: [
                             TextButton(

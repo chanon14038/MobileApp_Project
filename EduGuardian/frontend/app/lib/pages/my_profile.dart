@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../blocs/auth_bloc.dart';
 import '../blocs/user_bloc.dart';
-import '../repositories/get_me_repository.dart';
 import 'login_page.dart';
 import 'update_profile.dart';
 
