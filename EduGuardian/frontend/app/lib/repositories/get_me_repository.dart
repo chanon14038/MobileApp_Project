@@ -45,4 +45,23 @@ class UserRepository {
       throw Exception('Failed to update profile: $e');
     }
   }
+
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    // ทำการเรียก API ที่เปลี่ยนรหัสผ่าน
+    // สมมติว่าใช้แพ็กเกจ Dio หรือ Http
+    final response = await _dioClient.dio.put(
+      '/users/change_password',
+      data: {
+        "current_password": currentPassword,
+        "new_password": newPassword,
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Failed to change password");
+    }
+  }
 }

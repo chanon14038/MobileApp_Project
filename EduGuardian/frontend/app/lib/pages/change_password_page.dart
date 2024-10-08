@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../blocs/user_bloc.dart';
+import '../repositories/get_me_repository.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   @override
@@ -7,9 +10,12 @@ class ChangePasswordPage extends StatefulWidget {
 }
 
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
-  TextEditingController currentPasswordController = TextEditingController();
-  TextEditingController newPasswordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController currentPasswordController = TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+
+  bool _isNewPasswordObscured = true;
+  bool _isConfirmPasswordObscured = true;
 
   @override
   Widget build(BuildContext context) {
@@ -23,56 +29,95 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           ),
         ),
         centerTitle: true,
-        // backgroundColor: Color.fromARGB(255, 188, 157, 241), // ปรับสีของ AppBar เหมือนหน้า Edit Profile
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: Column(
-          children: [
-            _buildTextField(
-              controller: currentPasswordController,
-              labelText: 'Current Password',
-              icon: Icons.lock,
-              obscureText: true,
-            ),
-            SizedBox(height: 15),
-            _buildTextField(
-              controller: newPasswordController,
-              labelText: 'New Password',
-              icon: Icons.lock_outline,
-              obscureText: true,
-            ),
-            SizedBox(height: 15),
-            _buildTextField(
-              controller: confirmPasswordController,
-              labelText: 'Confirm New Password',
-              icon: Icons.lock_outline,
-              obscureText: true,
-            ),
-            SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                if (newPasswordController.text ==
-                    confirmPasswordController.text) {
-                  // Proceed with password change logic
-                } else {
-                  // Show error: passwords do not match
-                }
-              },
-              child: Text(
-                'Change Password',
-                style: TextStyle(fontSize: 18),
-              ),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
-                backgroundColor: Color.fromARGB(255, 188, 157,
-                    241), // ปรับสีของปุ่มให้เหมือนกับหน้า Edit Profile
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(27.0),
+      body: BlocProvider(
+        create: (context) => ChangePasswordBloc(UserRepository()),
+        child: BlocListener<ChangePasswordBloc, ChangePasswordState>(
+          listener: (context, state) {
+            if (state is ChangePasswordSuccess) {
+              _showSuccessDialog(context); // แสดง popup เมื่อสำเร็จ
+            } else if (state is ChangePasswordFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.error)),
+              );
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: Column(
+              children: [
+                _buildTextField(
+                  controller: currentPasswordController,
+                  labelText: 'Current Password',
+                  icon: Icons.lock,
+                  obscureText: true,
                 ),
-              ),
+                SizedBox(height: 15),
+                _buildTextField(
+                  controller: newPasswordController,
+                  labelText: 'New Password',
+                  icon: Icons.lock_outline,
+                  obscureText: _isNewPasswordObscured,
+                  toggleVisibility: () {
+                    setState(() {
+                      _isNewPasswordObscured = !_isNewPasswordObscured;
+                    });
+                  },
+                  isObscured: _isNewPasswordObscured,
+                ),
+                SizedBox(height: 15),
+                _buildTextField(
+                  controller: confirmPasswordController,
+                  labelText: 'Confirm New Password',
+                  icon: Icons.lock_outline,
+                  obscureText: _isConfirmPasswordObscured,
+                  toggleVisibility: () {
+                    setState(() {
+                      _isConfirmPasswordObscured = !_isConfirmPasswordObscured;
+                    });
+                  },
+                  isObscured: _isConfirmPasswordObscured,
+                ),
+                SizedBox(height: 30),
+                BlocBuilder<ChangePasswordBloc, ChangePasswordState>(
+                  builder: (context, state) {
+                    if (state is ChangePasswordLoading) {
+                      return CircularProgressIndicator(); // แสดง Loading ขณะกำลังเปลี่ยนรหัสผ่าน
+                    }
+                    return ElevatedButton(
+                      onPressed: () {
+                        if (newPasswordController.text ==
+                            confirmPasswordController.text) {
+                          context.read<ChangePasswordBloc>().add(
+                                ChangePasswordEvent(
+                                  currentPassword:
+                                      currentPasswordController.text,
+                                  newPassword: newPasswordController.text,
+                                ),
+                              );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Passwords do not match!')),
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                        backgroundColor: Color.fromARGB(255, 188, 157, 241),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(27.0),
+                        ),
+                      ),
+                      child: Text(
+                        'Change Password',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -83,17 +128,77 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     required String labelText,
     required IconData icon,
     bool obscureText = false,
+    VoidCallback? toggleVisibility,
+    bool isObscured = true,
   }) {
     return TextField(
       controller: controller,
-      obscureText: obscureText, // ใช้สำหรับฟิลด์รหัสผ่าน
+      obscureText: obscureText,
       decoration: InputDecoration(
         labelText: labelText,
         prefixIcon: Icon(icon, color: Colors.deepPurple),
+        suffixIcon: toggleVisibility != null
+            ? IconButton(
+                icon: Icon(
+                  isObscured ? Icons.visibility_off : Icons.visibility,
+                  color: Colors.deepPurple,
+                ),
+                onPressed: toggleVisibility,
+              )
+            : null,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
       ),
+    );
+  }
+
+  // ฟังก์ชันแสดง popup สำเร็จพร้อมเครื่องหมายถูก
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Column(
+            children: [
+              Icon(
+                Icons.check_circle,
+                color: Colors.green,
+                size: 60,
+              ),
+              SizedBox(height: 15),
+              Text(
+                'Password Changed!',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          content: Text(
+            'Your password has been successfully changed.',
+            textAlign: TextAlign.center,
+          ),
+          actions: [
+            Center(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // ปิด popup
+                  Navigator.of(context).pop(); // กลับไปหน้าเดิม
+                },
+                child: Text(
+                  'OK',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.blueAccent,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
