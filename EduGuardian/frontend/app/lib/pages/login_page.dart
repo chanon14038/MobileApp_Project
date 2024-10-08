@@ -3,9 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../blocs/auth_bloc.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isPasswordVisible = false; // ตัวแปรสำหรับควบคุมการมองเห็นรหัสผ่าน
 
   @override
   Widget build(BuildContext context) {
@@ -87,10 +93,23 @@ class LoginPage extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 20),
                             child: TextField(
                               controller: _passwordController,
-                              obscureText: true,
+                              obscureText: !_isPasswordVisible, // ใช้ตัวแปรควบคุม
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Password',
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _isPasswordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isPasswordVisible =
+                                          !_isPasswordVisible; // เปลี่ยนสถานะการมองเห็น
+                                    });
+                                  },
+                                ),
                               ),
                             ),
                           ),

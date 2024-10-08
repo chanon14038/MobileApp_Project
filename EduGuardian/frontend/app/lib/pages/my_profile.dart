@@ -172,7 +172,21 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           icon: Icon(Icons.logout),
                           label: Text('Logout'),
                           onPressed: () {
-                            _showLogoutConfirmation(context);
+                            _showConfirmationPopup(
+                              context,
+                              'Confirm Logout',
+                              'Are you sure you want to log out?',
+                              () {
+                                // Perform logout
+                                context.read<AuthBloc>().add(AuthLogoutEvent());
+
+                                // Navigate to login page and remove all previous routes
+                                Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(builder: (context) => LoginPage()),
+                                  (Route<dynamic> route) => false,
+                                );
+                              },
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.symmetric(horizontal: 65, vertical: 15),
@@ -197,8 +211,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
     );
   }
 
-  // Function to show logout confirmation dialog
-  void _showLogoutConfirmation(BuildContext context) {
+  // Function to show confirmation dialog
+  void _showConfirmationPopup(BuildContext context, String title, String content, VoidCallback onConfirm) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -207,7 +221,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             borderRadius: BorderRadius.circular(20),
           ),
           title: Text(
-            'Confirm Logout',
+            title,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -215,7 +229,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             ),
           ),
           content: Text(
-            'Are you sure you want to log out?',
+            content,
             style: TextStyle(fontSize: 16, color: Colors.black87),
           ),
           actions: [
@@ -236,18 +250,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
               ),
             ),
             TextButton(
-              onPressed: () {
-                // Perform logout
-                context.read<AuthBloc>().add(AuthLogoutEvent());
-
-                // Navigate to login page and remove all previous routes
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                  (Route<dynamic> route) => false,
-                );
-              },
+              onPressed: onConfirm,
               child: Text(
-                'Logout',
+                'Confirm',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
