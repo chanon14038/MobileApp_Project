@@ -16,16 +16,14 @@ class SubjectByIDPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          Color.fromARGB(255, 226, 216, 244), // Light purple background
+      backgroundColor: const Color.fromARGB(255, 226, 216, 244), // Light purple background
       appBar: AppBar(
-        backgroundColor:
-            Color.fromARGB(255, 226, 216, 244), // Match background color
+        backgroundColor: const Color.fromARGB(255, 226, 216, 244), // Match background color
         title: Text(
           'Subject Details',
           style: GoogleFonts.bebasNeue(
             fontSize: 30,
-            color: Color.fromARGB(255, 96, 96, 96),
+            color: const Color.fromARGB(255, 96, 96, 96),
           ),
         ),
         centerTitle: true,
@@ -51,70 +49,73 @@ class SubjectByIDPage extends StatelessWidget {
           )
         ],
         child: Padding(
-          padding:
-              const EdgeInsets.all(20.0), // Similar padding to the profile page
+          padding: const EdgeInsets.all(20.0), // Similar padding to the profile page
           child: Column(
             children: [
               // Subject Information Card
-              Container(
-                height: 250,
-                width: double.infinity,
-                padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: Colors.white, // White card
-                  borderRadius: BorderRadius.circular(12.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: BlocBuilder<SubjectBloc, SubjectState>(
-                  builder: (context, state) {
-                    if (state is SubjectLoading) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (state is SubjectLoadedById) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Subject ID: ${state.subject.id}',
-                            style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Subject Name: ${state.subject.subject}',
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Additional Info: ${state.subject.description ?? "No additional info"}',
-                            style: const TextStyle(
-                                fontSize: 14, fontStyle: FontStyle.italic),
-                          ),
-                        ],
-                      );
-                    } else if (state is SubjectError) {
-                      return Center(child: Text(state.message));
-                    }
-                    return const SizedBox.shrink();
-                  },
+              IntrinsicHeight(
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white, // White card
+                    borderRadius: BorderRadius.circular(12.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: BlocBuilder<SubjectBloc, SubjectState>(
+                    builder: (context, state) {
+                      if (state is SubjectLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (state is SubjectLoadedById) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Subject ID: ${state.subject.id}',
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Subject Name: ${state.subject.subject}',
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Additional Info: ${state.subject.description ?? "No additional info"}',
+                              style: const TextStyle(
+                                  fontSize: 15, fontStyle: FontStyle.italic),
+                            ),
+                          ],
+                        );
+                      } else if (state is SubjectError) {
+                        return Center(child: Text(state.message));
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
 
               // Students List Header
-              Padding(
-                padding: const EdgeInsets.symmetric(),
-                child: Text(
-                  "Students List",
-                  style: GoogleFonts.bebasNeue(
-                    fontSize: 24,
-                    color: Color.fromARGB(255, 96, 96, 96), // Header color
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Text(
+                    "Students List",
+                    style: GoogleFonts.bebasNeue(
+                      fontSize: 24,
+                      color: const Color.fromARGB(255, 96, 96, 96), // Header color
+                    ),
                   ),
                 ),
               ),
@@ -153,12 +154,15 @@ class SubjectByIDPage extends StatelessWidget {
                                 // แสดง ReportDialog และรับค่ารายงาน
                                 final report = await showDialog<Reports>(
                                   context: context,
-                                  builder: (context) => ReportPopup(student: student),
+                                  builder: (context) =>
+                                      ReportPopup(student: student),
                                 );
 
                                 // ถ้า report ไม่เป็น null ส่ง event SubmitReport
                                 if (report != null) {
-                                  context.read<ReportBloc>().add(SubmitReport(report));
+                                  context
+                                      .read<ReportBloc>()
+                                      .add(SubmitReport(report));
                                 }
                               },
                             ),

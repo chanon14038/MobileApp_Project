@@ -48,7 +48,7 @@ class ReportPopup extends StatelessWidget {
               labelText: 'Enter report details',
               border: OutlineInputBorder(), // กรอบให้กับช่องกรอก
             ),
-            maxLines: 1, // ขยายช่องกรอกได้มากสุด 3 บรรทัด
+            maxLines: 1, // จำกัดการกรอกได้มากสุด 1 บรรทัด
           ),
         ],
       ),
@@ -65,6 +65,9 @@ class ReportPopup extends StatelessWidget {
 
             // ส่งค่า report กลับไปยังหน้าที่เรียกใช้
             Navigator.of(context).pop(report);
+
+            // แสดง popup ยืนยันเมื่อส่ง report สำเร็จ
+            _showSuccessDialog(context);
           },
           child: const Text(
             'Submit',
@@ -96,6 +99,50 @@ class ReportPopup extends StatelessWidget {
         ),
       ],
       backgroundColor: Colors.white, // สีพื้นหลัง
+    );
+  }
+
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: const Text(
+            'Report Submitted',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          content: const Text(
+            'Your report has been successfully submitted.',
+            style: TextStyle(fontSize: 16, color: Colors.black87),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // ปิด popup
+              },
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
+              ),
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              ),
+            ),
+          ],
+          backgroundColor: Colors.white,
+        );
+      },
     );
   }
 }
