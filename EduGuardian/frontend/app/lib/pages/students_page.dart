@@ -197,7 +197,8 @@ class _StudentPageState extends State<StudentPage>
                                       fontWeight: FontWeight.bold),
                                 ),
                                 subtitle:
-                                    Text('Classroom: ${student.classroom}'),
+                                    Text('Classroom: ${student.classroom} Student ID: ${student.studentId}'),
+                                    
                                 onTap: () {
                                   Navigator.push(
                                     context,
