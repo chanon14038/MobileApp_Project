@@ -10,12 +10,22 @@ class ChangePasswordPage extends StatefulWidget {
 }
 
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
-  final TextEditingController currentPasswordController = TextEditingController();
+  final TextEditingController currentPasswordController =
+      TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   bool _isNewPasswordObscured = true;
   bool _isConfirmPasswordObscured = true;
+
+  @override
+  void dispose() {
+    currentPasswordController.dispose();
+    newPasswordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +41,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         centerTitle: true,
       ),
       body: BlocProvider(
-        create: (context) => ChangePasswordBloc(UserRepository()),
-        child: BlocListener<ChangePasswordBloc, ChangePasswordState>(
+        create: (context) => UserBloc(UserRepository()),
+        child: BlocConsumer<UserBloc, UserState>(
           listener: (context, state) {
             if (state is ChangePasswordSuccess) {
               _showSuccessDialog(context); // แสดง popup เมื่อสำเร็จ
@@ -42,53 +52,53 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               );
             }
           },
-          child: Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: Column(
-              children: [
-                _buildTextField(
-                  controller: currentPasswordController,
-                  labelText: 'Current Password',
-                  icon: Icons.lock,
-                  obscureText: true,
-                ),
-                SizedBox(height: 15),
-                _buildTextField(
-                  controller: newPasswordController,
-                  labelText: 'New Password',
-                  icon: Icons.lock_outline,
-                  obscureText: _isNewPasswordObscured,
-                  toggleVisibility: () {
-                    setState(() {
-                      _isNewPasswordObscured = !_isNewPasswordObscured;
-                    });
-                  },
-                  isObscured: _isNewPasswordObscured,
-                ),
-                SizedBox(height: 15),
-                _buildTextField(
-                  controller: confirmPasswordController,
-                  labelText: 'Confirm New Password',
-                  icon: Icons.lock_outline,
-                  obscureText: _isConfirmPasswordObscured,
-                  toggleVisibility: () {
-                    setState(() {
-                      _isConfirmPasswordObscured = !_isConfirmPasswordObscured;
-                    });
-                  },
-                  isObscured: _isConfirmPasswordObscured,
-                ),
-                SizedBox(height: 30),
-                BlocBuilder<ChangePasswordBloc, ChangePasswordState>(
-                  builder: (context, state) {
-                    if (state is ChangePasswordLoading) {
-                      return CircularProgressIndicator(); // แสดง Loading ขณะกำลังเปลี่ยนรหัสผ่าน
-                    }
-                    return ElevatedButton(
+          builder: (context, state) {
+            return Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: Column(
+                children: [
+                  _buildTextField(
+                    controller: currentPasswordController,
+                    labelText: 'Current Password',
+                    icon: Icons.lock,
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 15),
+                  _buildTextField(
+                    controller: newPasswordController,
+                    labelText: 'New Password',
+                    icon: Icons.lock_outline,
+                    obscureText: _isNewPasswordObscured,
+                    toggleVisibility: () {
+                      setState(() {
+                        _isNewPasswordObscured = !_isNewPasswordObscured;
+                      });
+                    },
+                    isObscured: _isNewPasswordObscured,
+                  ),
+                  SizedBox(height: 15),
+                  _buildTextField(
+                    controller: confirmPasswordController,
+                    labelText: 'Confirm New Password',
+                    icon: Icons.lock_outline,
+                    obscureText: _isConfirmPasswordObscured,
+                    toggleVisibility: () {
+                      setState(() {
+                        _isConfirmPasswordObscured =
+                            !_isConfirmPasswordObscured;
+                      });
+                    },
+                    isObscured: _isConfirmPasswordObscured,
+                  ),
+                  SizedBox(height: 30),
+                  if (state is ChangePasswordLoading)
+                    CircularProgressIndicator() // แสดง Loading ขณะกำลังเปลี่ยนรหัสผ่าน
+                  else
+                    ElevatedButton(
                       onPressed: () {
                         if (newPasswordController.text ==
                             confirmPasswordController.text) {
-                          context.read<ChangePasswordBloc>().add(
+                          context.read<UserBloc>().add(
                                 ChangePasswordEvent(
                                   currentPassword:
                                       currentPasswordController.text,
@@ -102,7 +112,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                         backgroundColor: Color.fromARGB(255, 188, 157, 241),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(27.0),
@@ -112,12 +123,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         'Change Password',
                         style: TextStyle(fontSize: 18),
                       ),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
+                    ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );

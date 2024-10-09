@@ -42,10 +42,9 @@ class UpdateProfile extends UserEvent {
       advisorRoom.hashCode;
 }
 
-class  ChangePasswordEvent{
+class ChangePasswordEvent extends UserEvent {
   final String currentPassword;
   final String newPassword;
-
 
   ChangePasswordEvent({
     required this.currentPassword,
@@ -53,15 +52,15 @@ class  ChangePasswordEvent{
   });
 
   @override
-    bool operator ==(Object other) {
-      if (identical(this, other)) return true;
-      return other is ChangePasswordEvent &&
-          other.currentPassword == currentPassword &&
-          other.newPassword == newPassword ;
-    }
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ChangePasswordEvent &&
+        other.currentPassword == currentPassword &&
+        other.newPassword == newPassword;
+  }
 
   @override
   int get hashCode =>
       currentPassword.hashCode ^
-      newPassword.hashCode ;
+      newPassword.hashCode;
 }

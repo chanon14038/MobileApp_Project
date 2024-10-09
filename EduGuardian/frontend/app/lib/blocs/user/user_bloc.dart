@@ -42,20 +42,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
     });
 
-  }
-}
 
-
-//change password bloc
-class ChangePasswordBloc extends Bloc<ChangePasswordEvent, ChangePasswordState> {
-  final UserRepository userRepository; // Repository สำหรับส่งคำขอไปยัง API
-
-  ChangePasswordBloc(this.userRepository) : super(ChangePasswordInitial()) {
     on<ChangePasswordEvent>((event, emit) async {
       emit(ChangePasswordLoading());
       try {
         // เรียกใช้ API เพื่อเปลี่ยนรหัสผ่าน
-        await userRepository.changePassword(
+        await repository.changePassword(
           currentPassword: event.currentPassword,
           newPassword: event.newPassword,
         );
@@ -64,5 +56,6 @@ class ChangePasswordBloc extends Bloc<ChangePasswordEvent, ChangePasswordState> 
         emit(ChangePasswordFailure(error.toString()));
       }
     });
+
   }
 }

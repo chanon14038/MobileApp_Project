@@ -20,16 +20,13 @@ class UserError extends UserState {
   UserError(this.message);
 }
 
-//Change password state
-abstract class ChangePasswordState {}
+class ChangePasswordInitial extends UserState {}
 
-class ChangePasswordInitial extends ChangePasswordState {}
+class ChangePasswordLoading extends UserState {}
 
-class ChangePasswordLoading extends ChangePasswordState {}
+class ChangePasswordSuccess extends UserState {}
 
-class ChangePasswordSuccess extends ChangePasswordState {}
-
-class ChangePasswordFailure extends ChangePasswordState {
+class ChangePasswordFailure extends UserState {
   final String error;
 
   ChangePasswordFailure(this.error);
