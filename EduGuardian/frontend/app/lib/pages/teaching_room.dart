@@ -38,7 +38,7 @@ class RoomsPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(), // เพิ่ม padding รอบกรอบ
           child: Container(
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 226, 216, 244), // พื้นหลังขาวสำหรับกรอบ
+              color: Color.fromARGB(166, 216, 244, 232), // พื้นหลังขาวสำหรับกรอบ
               borderRadius: BorderRadius.circular(20), // มุมโค้งของกรอบ
               boxShadow: [
                 BoxShadow(

@@ -18,12 +18,12 @@ class MainScreen extends StatelessWidget {
           style: GoogleFonts.bebasNeue(
             fontSize: 40,
             fontWeight: FontWeight.w600,
-            color: Color.fromARGB(255, 66, 0, 78),
+            color: Color.fromARGB(255, 40, 120, 63),
           ),
         ),
         centerTitle: true,
         elevation: 6,
-        backgroundColor: Color.fromARGB(255, 188, 157, 241),
+        backgroundColor: Color.fromARGB(255, 129, 234, 155),
         shadowColor: Colors.blue.withOpacity(0.2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
@@ -51,7 +51,7 @@ class MainScreen extends StatelessWidget {
           return Container(
             margin: const EdgeInsets.all(12), // ยกขึ้นจากขอบล่าง
             decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 188, 157, 241),
+              color: const Color.fromARGB(255, 48, 108, 28),
               borderRadius: BorderRadius.circular(30), // ทำให้โค้งมน
               boxShadow: [
                 BoxShadow(
@@ -89,7 +89,7 @@ class MainScreen extends StatelessWidget {
                   ),
                 ],
                 unselectedItemColor: const Color.fromARGB(255, 0, 0, 0),
-                selectedItemColor: const Color.fromARGB(255, 125, 0, 250),
+                selectedItemColor: const Color.fromARGB(255, 40, 120, 63),
                 iconSize: 40,
                 type: BottomNavigationBarType.fixed,
               ),

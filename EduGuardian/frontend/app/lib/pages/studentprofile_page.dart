@@ -1,5 +1,6 @@
 import 'package:app/repositories/report_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../blocs/report_bloc.dart';
@@ -24,9 +25,9 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
       create: (context) => StudentProfileBloc(StudentRepository())
         ..add(FetchStudentProfileById(widget.studentId)),
       child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 226, 216, 244), // พื้นหลังสีม่วง
+        backgroundColor: Color.fromARGB(249, 216, 244, 232), // พื้นหลังสีม่วง
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 226, 216, 244),
+          backgroundColor: Color.fromARGB(249, 216, 244, 232),
           title: Text(
             "Student Profile",
             style: GoogleFonts.bebasNeue(

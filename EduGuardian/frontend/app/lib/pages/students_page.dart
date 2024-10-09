@@ -132,7 +132,7 @@ class _StudentPageState extends State<StudentPage>
           padding: const EdgeInsets.symmetric(),
           child: Container(
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 226, 216, 244),
+              color: Color.fromARGB(249, 216, 244, 232),
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(

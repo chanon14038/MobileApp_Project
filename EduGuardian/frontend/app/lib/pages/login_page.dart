@@ -21,18 +21,20 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.school,
-                size: 150,
+              // เปลี่ยนจาก Icon เป็น Image.asset
+              Image.asset(
+                'assets/images/eduguardian_logo.png', // ใช้รูปภาพ PNG แทน Icon
+                width: 250,
+                height: 250,
               ),
-              Text(
-                'EDUGUADIAN',
-                style: GoogleFonts.bebasNeue(
-                  fontSize: 50,
-                  fontWeight: FontWeight.w600,
-                  color: Color.fromARGB(255, 218, 106, 238),
-                ),
-              ),
+              // Text(
+              //   'EDUGUADIAN',
+              //   style: GoogleFonts.bebasNeue(
+              //     fontSize: 50,
+              //     fontWeight: FontWeight.w600,
+              //     color: Color.fromARGB(255, 218, 106, 238),
+              //   ),
+              // ),
               const Text(
                 'Hello Teacher!',
                 style: TextStyle(
@@ -66,11 +68,12 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ],
                           ),
-                          content: Text('Welcome!',
-                          textAlign: TextAlign.center,),
+                          content: Text(
+                            'Welcome!',
+                            textAlign: TextAlign.center,
+                          ),
                           actions: [],
                         );
-
                       },
                     );
 
@@ -193,8 +196,7 @@ class _LoginPageState extends State<LoginPage> {
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     padding: EdgeInsets.symmetric(vertical: 10),
-                                    backgroundColor: const Color.fromARGB(
-                                        255, 218, 106, 238),
+                                    backgroundColor: Color.fromARGB(255, 48, 108, 28),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     ),

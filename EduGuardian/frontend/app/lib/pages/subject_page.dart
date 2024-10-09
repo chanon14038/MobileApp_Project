@@ -16,9 +16,9 @@ class SubjectByIDPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 226, 216, 244), // Light purple background
+      backgroundColor: const Color.fromARGB(249, 216, 244, 232), // Light purple background
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 226, 216, 244), // Match background color
+        backgroundColor: const Color.fromARGB(249, 216, 244, 232), // Match background color
         title: Text(
           'Subject Details',
           style: GoogleFonts.bebasNeue(

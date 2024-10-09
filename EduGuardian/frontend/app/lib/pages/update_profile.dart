@@ -117,11 +117,13 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
               },
               child: Text(
                 'Save Changes',
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(fontSize: 18,
+                color: Color.fromARGB(255, 40, 120, 63)),
+                
               ),
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
-                backgroundColor: Color.fromARGB(255, 188, 157, 241),
+                backgroundColor: Color.fromARGB(249, 216, 244, 232),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(27.0),
                 ),
@@ -143,7 +145,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
       controller: controller,
       decoration: InputDecoration(
         labelText: labelText,
-        prefixIcon: Icon(icon, color: Colors.deepPurple),
+        prefixIcon: Icon(icon, color: Color.fromARGB(255, 40, 120, 63)),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),

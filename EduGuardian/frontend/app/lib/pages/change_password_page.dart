@@ -114,14 +114,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       style: ElevatedButton.styleFrom(
                         padding:
                             EdgeInsets.symmetric(vertical: 15, horizontal: 50),
-                        backgroundColor: Color.fromARGB(255, 188, 157, 241),
+                        backgroundColor: Color.fromARGB(249, 216, 244, 232),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(27.0),
                         ),
                       ),
                       child: Text(
                         'Change Password',
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 18,
+                        color: Color.fromARGB(255, 40, 120, 63)),
                       ),
                     ),
                 ],
@@ -146,12 +147,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       obscureText: obscureText,
       decoration: InputDecoration(
         labelText: labelText,
-        prefixIcon: Icon(icon, color: Colors.deepPurple),
+        prefixIcon: Icon(icon, color: Color.fromARGB(255, 40, 120, 63)),
         suffixIcon: toggleVisibility != null
             ? IconButton(
                 icon: Icon(
                   isObscured ? Icons.visibility_off : Icons.visibility,
-                  color: Colors.deepPurple,
+                  color: Color.fromARGB(255, 40, 120, 63),
                 ),
                 onPressed: toggleVisibility,
               )

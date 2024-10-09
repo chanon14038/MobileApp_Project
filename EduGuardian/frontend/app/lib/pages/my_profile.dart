@@ -75,7 +75,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
-                              color: Colors.deepPurple,
+                              color: Color.fromARGB(255, 40, 120, 63),
                             ),
                           ),
                           SizedBox(height: 10),
@@ -113,8 +113,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: ElevatedButton.icon(
-                          icon: Icon(Icons.edit),
-                          label: Text('Edit Profile'),
+                          icon: Icon(Icons.edit,color: Color.fromARGB(255, 40, 120, 63)),
+                          label: Text('Edit Profile',style: TextStyle(color: Color.fromARGB(255, 40, 120, 63)),),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -127,7 +127,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                             });
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 205, 188, 235),
+                            backgroundColor: Color.fromARGB(249, 216, 244, 232),
                             padding: EdgeInsets.symmetric(
                               horizontal: 50,
                               vertical: 15,
@@ -142,8 +142,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: ElevatedButton.icon(
-                          icon: Icon(Icons.lock),
-                          label: Text('Change Password'),
+                          icon: Icon(Icons.lock,color: Color.fromARGB(255, 40, 120, 63)),
+                          label: Text('Change Password',style:TextStyle(color: Color.fromARGB(255, 40, 120, 63))),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -153,7 +153,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromARGB(255, 205, 188, 235),
+                            backgroundColor: Color.fromARGB(249, 216, 244, 232),
                             padding: EdgeInsets.symmetric(
                               horizontal: 30,
                               vertical: 15,
@@ -168,8 +168,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: ElevatedButton.icon(
-                          icon: Icon(Icons.logout),
-                          label: Text('Logout'),
+                          icon: Icon(Icons.logout,color: Color.fromARGB(255, 120, 40, 40)),
+                          label: Text('Logout',style: TextStyle(color: Color.fromARGB(255, 120, 40, 40))),
                           onPressed: () {
                             _showConfirmationPopup(
                               context,
