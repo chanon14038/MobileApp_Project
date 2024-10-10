@@ -58,6 +58,32 @@ async def upload_image(
     )
     
 
+@router.put("deleteProfile")
+async def delete_imageProfile(
+    
+    session: Annotated[AsyncSession, Depends(models.get_session)],
+    current_user: models.User = Depends(deps.get_current_user),
+):
+    result = await session.exec(
+        select(models.DBUser).where(models.DBUser.id == current_user.id)
+    )
+    user = result.one_or_none()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Not found this user",
+        )
+    
+    user.imageData = None
+    
+    session.add(user)
+    await session.commit()
+    await session.refresh(user)
+    
+    raise HTTPException(
+        status_code=status.HTTP_200_OK,
+        detail="Delete image profile successfully",
+    )
 
 @router.post("/create")
 async def create(
@@ -190,3 +216,4 @@ async def delete_user(
         
         return dict(message="delete success")
     raise HTTPException(status_code=404, detail="user not found")
+
