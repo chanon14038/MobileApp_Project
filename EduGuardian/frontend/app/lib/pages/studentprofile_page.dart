@@ -150,7 +150,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                                     );
                                   } else if (state is ReportError) {
                                     return Center(
-                                        child: Text('Error: ${state.message}'));
+                                        child: Text('Dont have any reports'));
                                   }
                                   return Center(
                                       child: Text('No reports available'));
