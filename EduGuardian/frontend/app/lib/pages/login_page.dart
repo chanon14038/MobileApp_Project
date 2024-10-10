@@ -47,48 +47,14 @@ class _LoginPageState extends State<LoginPage> {
               BlocListener<AuthBloc, AuthState>(
                 listener: (context, state) {
                   if (state is AuthSuccess) {
-                    // แสดง popup ว่า login สำเร็จ
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false, // ไม่ให้ปิดด้วยการคลิกที่ด้านนอก
-                      builder: (BuildContext context) {
-                        return const AlertDialog(
-                          title: Column(
-                            mainAxisSize: MainAxisSize.min, // ใช้ขนาดที่น้อยที่สุด
-                            children: [
-                              Icon(
-                                Icons.check_circle,
-                                color: Colors.green,
-                                size: 50, // ขนาดของไอคอน
-                              ),
-                              SizedBox(height: 10), // ระยะห่างระหว่างไอคอนและข้อความ
-                              Text(
-                                'Login Successful',
-                                textAlign: TextAlign.center, // จัดข้อความให้ตรงกลาง
-                              ),
-                            ],
-                          ),
-                          content: Text(
-                            'Welcome!',
-                            textAlign: TextAlign.center,
-                          ),
-                          actions: [],
-                        );
-                      },
-                    );
-
-                    // ไปหน้าหลักหลังจากแสดง popup
-                    Future.delayed(Duration(seconds: 2), () {
-                      Navigator.of(context).pop(); // ปิด popup
-                      Navigator.pushReplacementNamed(context, '/main'); // ไปหน้าหลัก
-                    });
+                    Navigator.pushReplacementNamed(context, '/main');
                   } else if (state is AuthFailure) {
                     // แสดง popup ข้อความ error
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: Row(
+                          title: const Row(
                             children: [
                               Icon(
                                 Icons.warning, // ใช้ไอคอน warning สำหรับสัญลักษณ์ตกใจ
