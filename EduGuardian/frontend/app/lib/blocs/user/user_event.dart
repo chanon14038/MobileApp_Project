@@ -1,3 +1,7 @@
+
+
+import 'dart:typed_data';
+
 abstract class UserEvent {}
 
 class FetchUserData extends UserEvent {}
@@ -63,4 +67,9 @@ class ChangePasswordEvent extends UserEvent {
   int get hashCode =>
       currentPassword.hashCode ^
       newPassword.hashCode;
+}
+
+class UploadImageEvent extends UserEvent {
+  final Uint8List imageData;
+  UploadImageEvent(this.imageData);
 }

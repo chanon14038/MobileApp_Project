@@ -31,3 +31,16 @@ class ChangePasswordFailure extends UserState {
 
   ChangePasswordFailure(this.error);
 }
+
+class ImageUploadLoading extends UserState {}
+class ImageUploaded extends UserState {}
+
+class ImageUploadSuccess extends UserState {
+  final String message;
+  ImageUploadSuccess(this.message);
+}
+
+class ImageUploadFailure extends UserState {
+  final String error;
+  ImageUploadFailure(this.error);
+}

@@ -57,5 +57,16 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
     });
 
+    on<UploadImageEvent>((event , emit) async {
+      emit(ImageUploadLoading());
+      try {
+        
+        await repository.uploadImage(event.imageData);
+        emit(ImageUploaded()); 
+        add(FetchUserData());
+      } catch (e) {
+        emit(ImageUploadFailure(e.toString())); 
+      }
+    });
   }
 }

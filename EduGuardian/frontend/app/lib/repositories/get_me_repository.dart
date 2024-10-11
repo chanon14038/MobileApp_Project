@@ -1,3 +1,7 @@
+import 'dart:typed_data';
+
+import 'package:dio/dio.dart';
+
 import '../services/dio_client.dart';
 import '../models/user_model.dart';
 
@@ -62,6 +66,26 @@ class UserRepository {
 
     if (response.statusCode != 200) {
       throw Exception("Failed to change password");
+    }
+  }
+
+  Future<void> uploadImage(Uint8List imageData) async {
+    try {
+      // Create FormData for multipart file upload
+      FormData formData = FormData.fromMap({
+        'file': MultipartFile.fromBytes(imageData, filename: 'profile_image.png'), // You can set any filename
+      });
+
+      final response = await _dioClient.dio.put(
+        '/users/imageProfile',
+        data: formData,
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception("Failed to upload image");
+      }
+    } catch (e) {
+      throw Exception("Failed to upload image: $e");
     }
   }
 }

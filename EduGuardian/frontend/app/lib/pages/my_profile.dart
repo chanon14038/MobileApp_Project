@@ -1,7 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:app/pages/change_password_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import '../blocs/auth_bloc.dart';
 import '../blocs/user_bloc.dart';
 import 'login_page.dart';
@@ -65,10 +68,36 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           CircleAvatar(
                             radius: 50,
                             backgroundImage: user.imageData != null
-                                ? MemoryImage(user.imageData!) // ใช้ MemoryImage สำหรับ Uint8List
-                                : AssetImage('assets/placeholder.png')
-                                    as ImageProvider, // ใช้ placeholder หากไม่มีภาพ
+                                ? MemoryImage(user.imageData!) // Display the image if available
+                                : null, // No image, show icon instead
+                            child: user.imageData == null
+                                ? IconButton(
+                                    icon: Icon(Icons.camera_alt, size: 30), // Show camera icon
+                                    onPressed: () async {
+                                      // Trigger the upload process when the icon is pressed
+                                      final imagePicker = ImagePicker();
+                                      final pickedFile =
+                                          await imagePicker.pickImage(source: ImageSource.gallery);
+                                      if (pickedFile != null) {
+                                        try {
+                                          Uint8List imageData = await pickedFile.readAsBytes();
+                                          BlocProvider.of<UserBloc>(context)
+                                              .add(UploadImageEvent(imageData)); // Send image to Bloc
+                                        } catch (e) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text('Error: ${e.toString()}')),
+                                          );
+                                        }
+                                      } else {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(content: Text('No image selected.')),
+                                        );
+                                      }
+                                    },
+                                  )
+                                : null,
                           ),
+
                           SizedBox(height: 20),
                           Text(
                             '${user.firstName} ${user.lastName}',

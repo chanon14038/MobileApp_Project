@@ -30,7 +30,7 @@ async def get_image_profile(
     
 
 
-@router.put("imageProfile")
+@router.put("/imageProfile")
 async def upload_image(
     file: UploadFile,
     session: Annotated[AsyncSession, Depends(models.get_session)],
@@ -58,7 +58,7 @@ async def upload_image(
     )
     
 
-@router.put("deleteProfile")
+@router.put("/deleteProfile")
 async def delete_imageProfile(
     
     session: Annotated[AsyncSession, Depends(models.get_session)],
