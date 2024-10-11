@@ -66,92 +66,139 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           CircleAvatar(
-  radius: 50,
-  backgroundImage: user.imageData != null
-      ? MemoryImage(user.imageData!) // Display the image if available
-      : null, // No image, show icon instead
-  child: user.imageData == null
-      ? IconButton(
-          icon: Icon(Icons.camera_alt, size: 30), // Show camera icon
-          onPressed: () async {
-            // Trigger the upload process when the icon is pressed
-            final imagePicker = ImagePicker();
-            final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
-            if (pickedFile != null) {
-              try {
-                Uint8List imageData = await pickedFile.readAsBytes();
-                BlocProvider.of<UserBloc>(context).add(UploadImageEvent(imageData)); // Send image to Bloc
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Error: ${e.toString()}')),
-                );
-              }
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('No image selected.')),
-              );
-            }
-          },
-        )
-      : Stack(
-          children: [
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: IconButton(
-                icon: Icon(Icons.edit, size: 20, color: Colors.white), // Pencil icon for edit/delete
-                onPressed: () {
-                  // Show dialog with options to either delete or change the image
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ListTile(
-                            leading: Icon(Icons.delete),
-                            title: Text('Delete Image'),
-                            onTap: () {
-                              // Call Bloc to delete the profile image
-                              BlocProvider.of<UserBloc>(context).add(DeleteProfileImageEvent());
-                              Navigator.of(context).pop(); // Close the modal
-                            },
+                            radius: 50,
+                            backgroundImage: user.imageData != null
+                                ? MemoryImage(user
+                                    .imageData!) // Display the image if available
+                                : null, // No image, show icon instead
+                            child: user.imageData == null
+                                ? IconButton(
+                                    icon: Icon(Icons.camera_alt,
+                                        size: 30), // Show camera icon
+                                    onPressed: () async {
+                                      // Trigger the upload process when the icon is pressed
+                                      final imagePicker = ImagePicker();
+                                      final pickedFile =
+                                          await imagePicker.pickImage(
+                                              source: ImageSource.gallery);
+                                      if (pickedFile != null) {
+                                        try {
+                                          Uint8List imageData =
+                                              await pickedFile.readAsBytes();
+                                          BlocProvider.of<UserBloc>(context)
+                                              .add(UploadImageEvent(
+                                                  imageData)); // Send image to Bloc
+                                        } catch (e) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                                content: Text(
+                                                    'Error: ${e.toString()}')),
+                                          );
+                                        }
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                              content:
+                                                  Text('No image selected.')),
+                                        );
+                                      }
+                                    },
+                                  )
+                                : Stack(
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.bottomLeft,
+                                        child: IconButton(
+                                          icon: Icon(Icons.edit,
+                                              size: 20,
+                                              color: Colors
+                                                  .white), // Pencil icon for edit/delete
+                                          onPressed: () {
+                                            // Show dialog with options to either delete or change the image
+                                            showModalBottomSheet(
+                                              context: context,
+                                              builder: (context) {
+                                                return Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    ListTile(
+                                                      leading:
+                                                          Icon(Icons.delete),
+                                                      title:
+                                                          Text('Delete Image'),
+                                                      onTap: () {
+                                                        // Call Bloc to delete the profile image
+                                                        BlocProvider.of<
+                                                                    UserBloc>(
+                                                                context)
+                                                            .add(
+                                                                DeleteProfileImageEvent());
+                                                        Navigator.of(context)
+                                                            .pop(); // Close the modal
+                                                      },
+                                                    ),
+                                                    ListTile(
+                                                      leading: Icon(
+                                                          Icons.photo_library),
+                                                      title:
+                                                          Text('Change Image'),
+                                                      onTap: () async {
+                                                        // Trigger the image picker to upload a new image
+                                                        final imagePicker =
+                                                            ImagePicker();
+                                                        final pickedFile =
+                                                            await imagePicker
+                                                                .pickImage(
+                                                                    source: ImageSource
+                                                                        .gallery);
+                                                        if (pickedFile !=
+                                                            null) {
+                                                          try {
+                                                            Uint8List
+                                                                imageData =
+                                                                await pickedFile
+                                                                    .readAsBytes();
+                                                            BlocProvider.of<
+                                                                        UserBloc>(
+                                                                    context)
+                                                                .add(UploadImageEvent(
+                                                                    imageData)); // Send image to Bloc
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(); // Close the modal
+                                                          } catch (e) {
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                              SnackBar(
+                                                                  content: Text(
+                                                                      'Error: ${e.toString()}')),
+                                                            );
+                                                          }
+                                                        } else {
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                                content: Text(
+                                                                    'No image selected.')),
+                                                          );
+                                                        }
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                           ),
-                          ListTile(
-                            leading: Icon(Icons.photo_library),
-                            title: Text('Change Image'),
-                            onTap: () async {
-                              // Trigger the image picker to upload a new image
-                              final imagePicker = ImagePicker();
-                              final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
-                              if (pickedFile != null) {
-                                try {
-                                  Uint8List imageData = await pickedFile.readAsBytes();
-                                  BlocProvider.of<UserBloc>(context).add(UploadImageEvent(imageData)); // Send image to Bloc
-                                  Navigator.of(context).pop(); // Close the modal
-                                } catch (e) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text('Error: ${e.toString()}')),
-                                  );
-                                }
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('No image selected.')),
-                                );
-                              }
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-),
-
-
                           SizedBox(height: 20),
                           Text(
                             '${user.firstName} ${user.lastName}',
@@ -196,13 +243,19 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: ElevatedButton.icon(
-                          icon: Icon(Icons.edit,color: Color.fromARGB(255, 40, 120, 63)),
-                          label: Text('Edit Profile',style: TextStyle(color: Color.fromARGB(255, 40, 120, 63)),),
+                          icon: Icon(Icons.edit,
+                              color: Color.fromARGB(255, 40, 120, 63)),
+                          label: Text(
+                            'Edit Profile',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 40, 120, 63)),
+                          ),
                           onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => UpdateProfilePage(user: user),
+                                builder: (context) =>
+                                    UpdateProfilePage(user: user),
                               ),
                             ).then((value) {
                               // รีเฟรชข้อมูลหลังจากกลับมาจากหน้า UpdateProfilePage
@@ -225,8 +278,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: ElevatedButton.icon(
-                          icon: Icon(Icons.lock,color: Color.fromARGB(255, 40, 120, 63)),
-                          label: Text('Change Password',style:TextStyle(color: Color.fromARGB(255, 40, 120, 63))),
+                          icon: Icon(Icons.lock,
+                              color: Color.fromARGB(255, 40, 120, 63)),
+                          label: Text('Change Password',
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 40, 120, 63))),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -251,8 +307,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: ElevatedButton.icon(
-                          icon: Icon(Icons.logout,color: Color.fromARGB(255, 120, 40, 40)),
-                          label: Text('Logout',style: TextStyle(color: Color.fromARGB(255, 120, 40, 40))),
+                          icon: Icon(Icons.logout,
+                              color: Color.fromARGB(255, 120, 40, 40)),
+                          label: Text('Logout',
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 120, 40, 40))),
                           onPressed: () {
                             _showConfirmationPopup(
                               context,
@@ -264,15 +323,18 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
                                 // Navigate to login page and remove all previous routes
                                 Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(builder: (context) => LoginPage()),
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginPage()),
                                   (Route<dynamic> route) => false,
                                 );
                               },
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 65, vertical: 15),
-                            backgroundColor: const Color.fromARGB(255, 240, 158, 158),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 65, vertical: 15),
+                            backgroundColor:
+                                const Color.fromARGB(255, 240, 158, 158),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -294,7 +356,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 
   // Function to show confirmation dialog
-  void _showConfirmationPopup(BuildContext context, String title, String content, VoidCallback onConfirm) {
+  void _showConfirmationPopup(BuildContext context, String title,
+      String content, VoidCallback onConfirm) {
     showDialog(
       context: context,
       builder: (BuildContext context) {

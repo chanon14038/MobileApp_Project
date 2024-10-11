@@ -1,5 +1,5 @@
 import 'package:app/blocs/report_bloc.dart';
-import 'package:app/pages/report_popup.dart';
+import 'package:app/widgets/report_popup.dart';
 import 'package:app/repositories/report_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
