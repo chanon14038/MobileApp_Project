@@ -6,6 +6,8 @@ from . import descriptions
 from . import classrooms
 from . import subjects
 from . import images
+from . import websocket
+
 
 def init_router(app):
     app.include_router(root.router)
@@ -16,3 +18,4 @@ def init_router(app):
     app.include_router(classrooms.router)
     app.include_router(subjects.router)
     app.include_router(images.router)
+    app.include_router(websocket.router)

@@ -4,6 +4,8 @@ from sqlmodel import select
 
 from typing import Annotated
 
+from app import deps
+
 from .. import models
 
 router = APIRouter(prefix="/classroom", tags=["classroom"])
@@ -64,7 +66,7 @@ async def create_classroom(
 @router.delete("/{classroom_id}")
 async def delete_classroom(
     classroom_id: int,
-    # current_user: Annotated[models.User, Depends(deps.get_current_user)],
+    current_user: Annotated[models.User, Depends(deps.get_current_user)],
     session: Annotated[AsyncSession, Depends(models.get_session)],
 ) -> dict:
     result = await session.exec(

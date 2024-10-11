@@ -31,21 +31,7 @@ async def authentication(
 
     user = result.one_or_none()
 
-    if not user:
-        result = await session.exec(
-            select(models.DBUser).where(models.DBUser.username == form_data.username)
-        )
-        user = result.one_or_none()
-
-    print("user", user)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-        )
-
-    print("userx", user, await user.verify_password(form_data.password))
-    if not await user.verify_password(form_data.password):
+    if not user or not await user.verify_password(form_data.password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",

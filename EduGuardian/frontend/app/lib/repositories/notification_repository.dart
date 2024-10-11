@@ -1,20 +1,58 @@
-import 'package:dio/dio.dart';
-import 'package:app/models/reports.dart';
+import 'package:flutter/material.dart';
+import '../services/websocket_client.dart';
 
-class NotificationRepository {
-  final Dio _dio = Dio(); // ใช้ Dio ในการเรียก API
+class NotificationPage extends StatefulWidget {
+  @override
+  _NotificationPageState createState() => _NotificationPageState();
+}
 
-  Future<List<Reports>> getNotifications() async {
-    try {
-      final response = await _dio.get('/descriptions'); // เรียก API ที่ /descriptions
-      if (response.statusCode == 200) {
-        List<dynamic> data = response.data;
-        return data.map((item) => Reports.fromJson(item)).toList();
-      } else {
-        throw Exception('Failed to load notifications');
-      }
-    } catch (e) {
-      throw Exception('Error fetching notifications: $e');
-    }
+class _NotificationPageState extends State<NotificationPage> {
+  late WebSocketClient _webSocketClient;
+  List<dynamic> _notifications = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _webSocketClient = WebSocketClient(endpoint: "ws");
+
+    // Listen to the notification stream and update UI on new notifications
+    _webSocketClient.notifyStream.listen((notification) {
+      setState(() {
+        _notifications.add(notification);
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _webSocketClient.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Notifications'),
+      ),
+      body: StreamBuilder<dynamic>(
+        stream: _webSocketClient.notifyStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            // Update notifications list
+            _notifications.add(snapshot.data);
+          }
+
+          return ListView.builder(
+            itemCount: _notifications.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(_notifications[index].toString()),
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 }

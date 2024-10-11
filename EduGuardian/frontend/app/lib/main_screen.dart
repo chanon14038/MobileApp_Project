@@ -1,3 +1,4 @@
+import 'package:app/pages/notification_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -37,7 +38,7 @@ class MainScreen extends StatelessWidget {
             case 1:
               return RoomsPage();
             case 2:
-              return RoomsPage();
+              return NotificationPage();
             case 3:
               return UserProfilePage();
             default:

@@ -21,20 +21,11 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // เปลี่ยนจาก Icon เป็น Image.asset
               Image.asset(
                 'assets/images/eduguardian_logo.png', // ใช้รูปภาพ PNG แทน Icon
                 width: 250,
                 height: 250,
               ),
-              // Text(
-              //   'EDUGUADIAN',
-              //   style: GoogleFonts.bebasNeue(
-              //     fontSize: 50,
-              //     fontWeight: FontWeight.w600,
-              //     color: Color.fromARGB(255, 218, 106, 238),
-              //   ),
-              // ),
               const Text(
                 'Hello Teacher!',
                 style: TextStyle(
@@ -57,11 +48,13 @@ class _LoginPageState extends State<LoginPage> {
                           title: const Row(
                             children: [
                               Icon(
-                                Icons.warning, // ใช้ไอคอน warning สำหรับสัญลักษณ์ตกใจ
+                                Icons
+                                    .warning, // ใช้ไอคอน warning สำหรับสัญลักษณ์ตกใจ
                                 color: Colors.yellow,
                                 size: 40, // ขนาดของไอคอน
                               ),
-                              SizedBox(width: 10), // ระยะห่างระหว่างไอคอนและข้อความ
+                              SizedBox(
+                                  width: 10), // ระยะห่างระหว่างไอคอนและข้อความ
                               Expanded(
                                 child: Text(
                                   'Login Failed',
@@ -123,7 +116,8 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.only(left: 20),
                             child: TextField(
                               controller: _passwordController,
-                              obscureText: !_isPasswordVisible, // ใช้ตัวแปรควบคุม
+                              obscureText:
+                                  !_isPasswordVisible, // ใช้ตัวแปรควบคุม
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Password',
@@ -135,8 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   onPressed: () {
                                     setState(() {
-                                      _isPasswordVisible =
-                                          !_isPasswordVisible; // เปลี่ยนสถานะการมองเห็น
+                                      _isPasswordVisible = !_isPasswordVisible;
                                     });
                                   },
                                 ),
@@ -147,7 +140,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: 20),
 
-                      // Login Button with BlocBuilder
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 25,
@@ -162,7 +154,8 @@ class _LoginPageState extends State<LoginPage> {
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     padding: EdgeInsets.symmetric(vertical: 10),
-                                    backgroundColor: Color.fromARGB(255, 48, 108, 28),
+                                    backgroundColor:
+                                        Color.fromARGB(255, 48, 108, 28),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     ),

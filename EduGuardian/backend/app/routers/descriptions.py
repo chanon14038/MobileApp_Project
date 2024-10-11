@@ -5,7 +5,7 @@ from sqlmodel import select
 from typing import Annotated, List
 
 from app import deps
-
+from . import websocket
 from .. import models
 
 router = APIRouter(prefix="/descriptions", tags=["descriptions"])
@@ -23,7 +23,6 @@ async def create(
     dbstudent = result.one_or_none()
     
     if dbstudent:
-    
         dbdescription = models.DBDescription.model_validate(info)
         dbdescription.db_student = dbstudent
         dbdescription.first_name = dbstudent.first_name
@@ -33,6 +32,10 @@ async def create(
         session.add(dbdescription)
         await session.commit()
         await session.refresh(dbdescription)
+        
+        for connection in websocket.active_connections:
+            if connection["user_id"] == dbstudent.advisor_id:
+                await connection["websocket"].send_text(f"New notification: {info}")
         
         return dbdescription
     
