@@ -73,3 +73,5 @@ class UploadImageEvent extends UserEvent {
   final Uint8List imageData;
   UploadImageEvent(this.imageData);
 }
+
+class DeleteProfileImageEvent extends UserEvent {}

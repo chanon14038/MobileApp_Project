@@ -14,11 +14,6 @@ class UserLoaded extends UserState {
 
 class ProfileUpdated extends UserState {}
 
-class UserError extends UserState {
-  final String message;
-
-  UserError(this.message);
-}
 
 class ChangePasswordInitial extends UserState {}
 
@@ -26,21 +21,23 @@ class ChangePasswordLoading extends UserState {}
 
 class ChangePasswordSuccess extends UserState {}
 
-class ChangePasswordFailure extends UserState {
-  final String error;
-
-  ChangePasswordFailure(this.error);
-}
 
 class ImageUploadLoading extends UserState {}
+
 class ImageUploaded extends UserState {}
 
 class ImageUploadSuccess extends UserState {
   final String message;
+  
   ImageUploadSuccess(this.message);
 }
 
-class ImageUploadFailure extends UserState {
+class ImageDeleteLoading extends UserState {}
+
+class ImageDeleted extends UserState {}
+
+class FailureState extends UserState {
   final String error;
-  ImageUploadFailure(this.error);
+
+  FailureState(this.error);
 }

@@ -3,69 +3,76 @@ import '../../repositories/get_me_repository.dart';
 import 'user_event.dart';
 import 'user_state.dart';
 
-
 class UserBloc extends Bloc<UserEvent, UserState> {
   final UserRepository repository;
 
   UserBloc(this.repository) : super(UserInitial()) {
+    
+    // Fetch user data
     on<FetchUserData>((event, emit) async {
       emit(UserLoading());
       try {
         final user = await repository.getMe();
         emit(UserLoaded(user));
       } catch (e) {
-        emit(UserError(e.toString()));
+        emit(FailureState(e.toString()));
       }
     });
 
-
+    // Update profile
     on<UpdateProfile>((event, emit) async {
       emit(UserLoading());
       try {
-        // Call the repository function to update the profile
         await repository.updateProfile(
           firstName: event.firstName,
           lastName: event.lastName,
-          subject: event.subject,           
+          subject: event.subject,
           phoneNumber: event.phoneNumber,
           email: event.email,
-          advisorRoom: event.advisorRoom,   
+          advisorRoom: event.advisorRoom,
         );
-
-        // After successful update, fetch the updated user data
-        add(FetchUserData());
-        
-        // Optionally, you can emit a success state if needed
+        add(FetchUserData()); // Fetch updated data
         emit(ProfileUpdated());
       } catch (e) {
-        emit(UserError('Failed to update profile: ${e.toString()}'));
+        emit(FailureState('Failed to update profile: ${e.toString()}'));
       }
     });
 
-
+    // Change password
     on<ChangePasswordEvent>((event, emit) async {
       emit(ChangePasswordLoading());
       try {
-        // เรียกใช้ API เพื่อเปลี่ยนรหัสผ่าน
         await repository.changePassword(
           currentPassword: event.currentPassword,
           newPassword: event.newPassword,
         );
         emit(ChangePasswordSuccess());
       } catch (error) {
-        emit(ChangePasswordFailure(error.toString()));
+        emit(FailureState(error.toString()));
       }
     });
 
-    on<UploadImageEvent>((event , emit) async {
+    // Upload profile image
+    on<UploadImageEvent>((event, emit) async {
       emit(ImageUploadLoading());
       try {
-        
         await repository.uploadImage(event.imageData);
-        emit(ImageUploaded()); 
-        add(FetchUserData());
+        emit(ImageUploaded());
+        add(FetchUserData()); // Fetch updated data
       } catch (e) {
-        emit(ImageUploadFailure(e.toString())); 
+        emit(FailureState(e.toString()));
+      }
+    });
+
+    // Delete profile image
+    on<DeleteProfileImageEvent>((event, emit) async {
+      emit(ImageDeleteLoading());
+      try {
+        await repository.deleteImageProfile(); // Call the repository to delete the image
+        emit(ImageDeleted());
+        add(FetchUserData()); // Fetch updated data after deletion
+      } catch (e) {
+        emit(FailureState(e.toString()));
       }
     });
   }

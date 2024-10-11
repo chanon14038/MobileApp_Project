@@ -88,4 +88,16 @@ class UserRepository {
       throw Exception("Failed to upload image: $e");
     }
   }
+
+  Future<void> deleteImageProfile() async {
+    try {
+      final response = await _dioClient.dio.put('/users/deleteProfile');
+
+      if (response.statusCode != 200) {
+        throw Exception("Failed to delete image profile");
+      }
+    } catch (e) {
+      throw Exception("Failed to delete image profile: $e");
+    }
+  }
 }

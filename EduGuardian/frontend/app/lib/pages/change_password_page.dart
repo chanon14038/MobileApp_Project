@@ -46,7 +46,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           listener: (context, state) {
             if (state is ChangePasswordSuccess) {
               _showSuccessDialog(context); // แสดง popup เมื่อสำเร็จ
-            } else if (state is ChangePasswordFailure) {
+            } else if (state is FailureState) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.error)),
               );
