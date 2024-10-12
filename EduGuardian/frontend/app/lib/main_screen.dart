@@ -14,15 +14,28 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'EDUGUARDIAN',
-          style: GoogleFonts.bebasNeue(
-            fontSize: 40,
-            fontWeight: FontWeight.w600,
-            color: Color.fromARGB(255, 40, 120, 63),
-          ),
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/images/eduguardian_logo2.png',  
+              height: 60,         
+            ),
+            SizedBox(width: 10),   
+            Expanded(              
+              child: Text(
+                'EDUGUARDIAN',
+                textAlign: TextAlign.center,  
+                style: GoogleFonts.bebasNeue(
+                  fontSize: 40,
+                  fontWeight: FontWeight.w600,
+                  color: Color.fromARGB(255, 40, 120, 63),
+                ),
+              ),
+            ),
+            SizedBox(width: 65),   
+          ],
         ),
-        centerTitle: true,
+        centerTitle: true,  
         elevation: 6,
         backgroundColor: Color.fromARGB(255, 129, 234, 155),
         shadowColor: Colors.blue.withOpacity(0.2),
@@ -30,6 +43,8 @@ class MainScreen extends StatelessWidget {
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
         ),
       ),
+
+
       body: BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
         builder: (context, state) {
           switch (state.selectedIndex) {
