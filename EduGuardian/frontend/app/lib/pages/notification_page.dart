@@ -37,54 +37,58 @@ class NotificationPage extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: BlocBuilder<NotificationBloc, NotificationState>(
               builder: (context, state) {
-                if (state is NotificationLoading) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (state is NotificationLoaded) {
-                  return ListView.builder(
-                    itemCount: state.notifications.length,
-                    itemBuilder: (context, index) {
-                      final reverseIndex = state.notifications.length - 1 - index;
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 2.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.3),
-                                spreadRadius: 2,
-                                blurRadius: 6,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Card(
-                            elevation: 2,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
+                if (!state.connected) {
+                  return Center(
+                      child:
+                          CircularProgressIndicator());
+                }
+
+                if (state.notifications.isEmpty) {
+                  return Center(child: Text('No notifications yet.'));
+                }
+
+                return ListView.builder(
+                  itemCount: state.notifications.length,
+                  itemBuilder: (context, index) {
+                    final reverseIndex = state.notifications.length - 1 - index;
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 2,
+                              blurRadius: 6,
+                              offset: Offset(0, 3),
                             ),
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.grey[200],
-                                child: Icon(Icons.notifications, color: Colors.grey[600]),
+                          ],
+                        ),
+                        child: Card(
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.grey[200],
+                              child: Icon(Icons.notifications,
+                                  color: Colors.grey[600]),
+                            ),
+                            title: Text(
+                              state.notifications[reverseIndex].toString(),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
-                              title: Text(
-                                state.notifications[reverseIndex].toString(),
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              
                             ),
                           ),
                         ),
-                      );
-                    },
-                  );
-                } else {
-                  return Center(child: Text('No notifications'));
-                }
+                      ),
+                    );
+                  },
+                );
               },
             ),
           ),

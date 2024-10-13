@@ -1,19 +1,11 @@
-import 'package:equatable/equatable.dart';
+class NotificationEvent {}
 
-abstract class NotificationEvent extends Equatable {
-  const NotificationEvent();
+class NotificationReceived extends NotificationEvent {
+  final String notification;
 
-  @override
-  List<Object> get props => [];
+  NotificationReceived(this.notification);
 }
 
-class NewNotificationEvent extends NotificationEvent {
-  final dynamic notification;
+class ConnectWebSocket extends NotificationEvent {}
 
-  const NewNotificationEvent(this.notification);
-
-  @override
-  List<Object> get props => [notification];
-}
-
-class LoadNotificationsEvent extends NotificationEvent {}
+class DisconnectWebSocket extends NotificationEvent {}

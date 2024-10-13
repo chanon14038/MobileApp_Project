@@ -1,58 +1,25 @@
-import 'package:flutter/material.dart';
 import '../services/websocket_client.dart';
 
-class NotificationPage extends StatefulWidget {
-  @override
-  _NotificationPageState createState() => _NotificationPageState();
-}
+class NotificationRepository {
+  final String endpoint = "ws";
+  final WebSocketClient _webSocketClient;
 
-class _NotificationPageState extends State<NotificationPage> {
-  late WebSocketClient _webSocketClient;
-  List<dynamic> _notifications = [];
+  NotificationRepository() : _webSocketClient = WebSocketClient("ws");
 
-  @override
-  void initState() {
-    super.initState();
-    _webSocketClient = WebSocketClient(endpoint: "ws");
-
-    // Listen to the notification stream and update UI on new notifications
-    _webSocketClient.notifyStream.listen((notification) {
-      setState(() {
-        _notifications.add(notification);
-      });
-    });
+  Future<void> connect() async {
+    await _webSocketClient.connect();
   }
 
-  @override
-  void dispose() {
-    _webSocketClient.dispose();
-    super.dispose();
+  Stream<dynamic>? getNotifications() {
+    return _webSocketClient.notificationsStream;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Notifications'),
-      ),
-      body: StreamBuilder<dynamic>(
-        stream: _webSocketClient.notifyStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            // Update notifications list
-            _notifications.add(snapshot.data);
-          }
-
-          return ListView.builder(
-            itemCount: _notifications.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(_notifications[index].toString()),
-              );
-            },
-          );
-        },
-      ),
-    );
+  void sendNotification(String message) {
+    _webSocketClient.sendMessage(message);
   }
+
+  void disconnect() {
+    _webSocketClient.disconnect();
+  }
+
 }

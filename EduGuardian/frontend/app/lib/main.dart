@@ -4,22 +4,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'blocs/blocs.dart';
 import 'blocs/notification_bloc.dart';
 import 'pages/login_page.dart';
-import 'pages/notification_page.dart';
 import 'repositories/auth_repository.dart';
 import 'main_screen.dart';
-import 'services/websocket_client.dart';
+import 'repositories/notification_repository.dart';
 
 void main() {
-  runApp(MyApp());
-}
+  final notificationRepository = NotificationRepository();
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
+  runApp(
+    MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (context) => NotificationBloc(notificationRepository),
+        ),
         BlocProvider<AuthBloc>(
-          create: (context) => AuthBloc(AuthRepository()),
+          create: (context) => AuthBloc(
+            AuthRepository(),
+            BlocProvider.of<NotificationBloc>(context),
+          ),
         ),
         BlocProvider<UserBloc>(
           create: (context) => UserBloc(UserRepository()),
@@ -27,21 +29,23 @@ class MyApp extends StatelessWidget {
         BlocProvider<BottomNavigationBloc>(
           create: (context) => BottomNavigationBloc(),
         ),
-        BlocProvider(
-          create: (context) =>
-              NotificationBloc(WebSocketClient(endpoint: 'ws')),
-          child: NotificationPage(),
-        )
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        initialRoute: '/',
-        routes: {
-          '/': (context) => LoginPage(),
-          '/main': (context) => MainScreen(),
-        },
-      ),
+      child: MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      initialRoute: '/',
+      routes: {
+        '/': (context) => LoginPage(),
+        '/main': (context) => MainScreen(),
+      },
     );
   }
 }

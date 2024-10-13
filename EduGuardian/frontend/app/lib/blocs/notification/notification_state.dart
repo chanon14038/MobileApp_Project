@@ -1,21 +1,19 @@
-import 'package:equatable/equatable.dart';
+class NotificationState {
+  final List<String> notifications;
+  final bool connected;
 
-abstract class NotificationState extends Equatable {
-  const NotificationState();
+  NotificationState({
+    required this.notifications,
+    required this.connected,
+  });
 
-  @override
-  List<Object> get props => [];
-}
-
-class NotificationInitial extends NotificationState {}
-
-class NotificationLoading extends NotificationState {}
-
-class NotificationLoaded extends NotificationState {
-  final List<dynamic> notifications;
-
-  const NotificationLoaded(this.notifications);
-
-  @override
-  List<Object> get props => [notifications];
+  NotificationState copyWith({
+    List<String>? notifications,
+    bool? connected,
+  }) {
+    return NotificationState(
+      notifications: notifications ?? this.notifications,
+      connected: connected ?? this.connected,
+    );
+  }
 }
