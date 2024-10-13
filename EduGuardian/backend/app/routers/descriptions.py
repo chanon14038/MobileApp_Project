@@ -35,7 +35,7 @@ async def create(
         
         for connection in websocket.active_connections:
             if connection["user_id"] == dbstudent.advisor_id:
-                await connection["websocket"].send_text(f"New notification: {info}")
+                await connection["websocket"].send_text(f"{current_user.first_name} records report {dbstudent.first_name} message:\"{info.description}\""),
         
         return dbdescription
     
