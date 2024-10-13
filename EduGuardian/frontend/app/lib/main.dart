@@ -7,6 +7,7 @@ import 'pages/login_page.dart';
 import 'repositories/auth_repository.dart';
 import 'main_screen.dart';
 import 'repositories/notification_repository.dart';
+import 'repositories/student_repository.dart';
 
 void main() {
   final notificationRepository = NotificationRepository();
@@ -28,6 +29,9 @@ void main() {
         ),
         BlocProvider<BottomNavigationBloc>(
           create: (context) => BottomNavigationBloc(),
+        ),
+        BlocProvider(
+          create: (context) => StudentBloc(StudentRepository())..add(FetchStudents()),
         ),
       ],
       child: MyApp(),

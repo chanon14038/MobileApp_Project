@@ -46,4 +46,27 @@ class StudentRepository {
       throw Exception('Failed to fetch student: $e');
     }
   }
+
+  // เพิ่มนักเรียนใหม่
+  Future<Student> addStudent(Student student) async {
+    try {
+      final response = await _dioClient.dio.post(
+        '/students', // Endpoint สำหรับเพิ่มนักเรียน
+        data: student.toJson(), // ส่งข้อมูลในรูปแบบ JSON
+      );
+      if (response.statusCode == 200) {
+        return Student.fromJson(response.data); // Return นักเรียนที่ถูกเพิ่ม
+      } else {
+        throw Exception('Failed to add student');
+      }
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 400) {
+        throw Exception('Invalid data provided');
+      } else {
+        throw Exception('Failed to add student: ${e.message}');
+      }
+    } catch (e) {
+      throw Exception('Failed to add student: $e');
+    }
+  }
 }

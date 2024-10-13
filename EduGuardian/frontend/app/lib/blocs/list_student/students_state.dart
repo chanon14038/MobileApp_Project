@@ -15,3 +15,12 @@ class StudentError extends StudentState {
 
   StudentError(this.message);
 }
+
+
+class StudentAdding extends StudentState {}
+
+class StudentAdded extends StudentState {
+  final Student student;
+
+  StudentAdded(this.student);
+}

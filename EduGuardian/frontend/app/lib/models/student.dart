@@ -28,12 +28,9 @@ class Student {
       );
 
   Map<String, dynamic> toJson() => {
-        'classroom': classroom,
         'first_name': firstName,
-        'advisor': advisor,
-        'classroom_id': classroomId,
-        'student_id': studentId,
         'last_name': lastName,
-        'advisor_id': advisorId,
+        'classroom': classroom,
+        'student_id': studentId,
       };
 }
