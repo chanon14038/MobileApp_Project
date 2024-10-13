@@ -10,13 +10,15 @@ from .. import models
 
 router = APIRouter(prefix="/descriptions", tags=["descriptions"])
 
-@router.post("/notifications")
+# @router.post("/notifications")
 async def send_notification(
     message: str,
+    advisor_room: str,
     session: Annotated[AsyncSession, Depends(models.get_session)],
 ):
     notifications = models.DBNotification(
                     message=message,
+                    advisor_room=advisor_room,
                 )
     session.add(notifications)
     await session.commit()
@@ -48,7 +50,7 @@ async def create(
             if connection["user_id"] == dbstudent.advisor_id:
                 message = f"{current_user.first_name} records report {dbstudent.first_name} message:\"{info.description}\""
                 await connection["websocket"].send_text(message)
-                await send_notification(message, session)
+                await send_notification(message, dbstudent.classroom, session)
         
         return dbdescription
     

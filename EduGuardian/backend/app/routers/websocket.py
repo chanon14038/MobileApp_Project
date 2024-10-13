@@ -104,15 +104,15 @@ html = """
 """
 
 
-# @router.get("/notifications")
+@router.get("/notifications")
 async def get_notification(
     session: Annotated[AsyncSession, Depends(models.get_session)],
+    current_user: models.User = Depends(deps.get_current_user),
 ):
     result = await session.exec(
-        select(models.DBNotification)
+        select(models.DBNotification).where(models.DBNotification.advisor_room == current_user.advisor_room)
     )
     notifications = result.all()
-    
     return notifications
     
     
@@ -134,7 +134,7 @@ async def get_notification(
 async def get():
     return HTMLResponse(html)
 
-active_connections: list[dict] = []  # ใช้ dict สำหรับเก็บทั้ง websocket และ user_id
+active_connections: list[dict] = []
 
 
 @router.websocket("")
@@ -153,7 +153,7 @@ async def websocket_endpoint(
 
         await websocket.accept()
 
-        notifications = await get_notification(session)
+        notifications = await get_notification(session=session)
         
         for notification in notifications:
             await websocket.send_text(notification.message)
