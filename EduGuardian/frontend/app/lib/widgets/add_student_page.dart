@@ -37,7 +37,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
             children: [
               _buildTextField(
                 labelText: 'First Name',
-                icon: Icons.person, // เปลี่ยนเป็นไอคอนคน
+                icon: Icons.person,
                 onSaved: (value) => _firstName = value!,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -49,7 +49,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
               SizedBox(height: 15),
               _buildTextField(
                 labelText: 'Last Name',
-                icon: Icons.person_outline, // ไอคอนคนแบบ outline
+                icon: Icons.person_outline,
                 onSaved: (value) => _lastName = value!,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -61,7 +61,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
               SizedBox(height: 15),
               _buildTextField(
                 labelText: 'Classroom',
-                icon: Icons.class_, // ไอคอนห้องเรียน
+                icon: Icons.class_,
                 onSaved: (value) => _classroom = value!,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -73,7 +73,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
               SizedBox(height: 15),
               _buildTextField(
                 labelText: 'Student ID',
-                icon: Icons.badge, // ไอคอนสำหรับ Student ID
+                icon: Icons.badge,
                 onSaved: (value) => _studentId = value!,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -99,8 +99,54 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     BlocProvider.of<StudentBloc>(context)
                         .add(AddStudent(newStudent));
 
-                    // กลับไปที่หน้า StudentPage และรีเฟรชหน้า
-                    Navigator.pop(context, true);
+                    // แสดง popup แสดงความสำเร็จ
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          title: const Row(
+                            children: [
+                              Icon(Icons.check_circle,
+                                  color: Color.fromARGB(255, 40, 120, 63),
+                                  size: 40),
+                              SizedBox(width: 10),
+                              Text(
+                                'Success!',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          content: const Text(
+                            'Student added successfully.',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context); // ปิด popup
+                                Navigator.pop(context,
+                                    true); // กลับไปที่หน้า StudentPage และรีเฟรช
+                              },
+                              child: const Text(
+                                'OK',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 40, 120, 63),
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -110,7 +156,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                     borderRadius: BorderRadius.circular(27.0),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'Add Student',
                   style: TextStyle(
                     fontSize: 18,

@@ -232,8 +232,17 @@ class _StudentPageState extends State<StudentPage>
             BlocProvider.of<StudentBloc>(context).add(FetchStudents());
           }
         },
-        child: Icon(Icons.add),
-        backgroundColor: Color.fromARGB(255, 129, 234, 155),
+        backgroundColor: Color.fromARGB(255, 40, 120, 63),
+        child: Icon(
+          Icons.add,
+          size: 36,
+          color: Colors.white,
+        ),
+        elevation: 6,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        mini: false,
       ),
     );
   }
