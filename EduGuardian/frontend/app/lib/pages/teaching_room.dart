@@ -1,4 +1,3 @@
-import 'dart:math'; // เพิ่ม library สำหรับสุ่ม
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,17 +6,6 @@ import '../repositories/subject_repository.dart';
 import 'subject_page.dart';
 
 class RoomsPage extends StatelessWidget {
-  // สร้างลิสต์ของสีที่ต้องการสุ่ม
-  final List<Color> cardColors = [
-    Colors.lightBlue[50]!,
-    Colors.lightGreen[50]!,
-    Colors.amber[50]!,
-    Colors.pink[50]!,
-    Colors.purple[50]!,
-    Colors.orange[50]!,
-    Colors.cyan[50]!,
-  ];
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -70,10 +58,6 @@ class RoomsPage extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final subject = subjects[index];
 
-                          // สุ่มสีจากลิสต์ของสี
-                          final random = Random();
-                          final cardColor = cardColors[random.nextInt(cardColors.length)];
-
                           return InkWell(
                             onTap: () {
                               // นำทางไปยังหน้า SubjectByIDPage พร้อมส่ง subjectId
@@ -92,7 +76,7 @@ class RoomsPage extends StatelessWidget {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              color: cardColor, // ใช้สีสุ่มเป็นพื้นหลังการ์ด
+                              color: Colors.white, // เปลี่ยนเป็นสีขาวเสมอ
                               child: Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: Column(

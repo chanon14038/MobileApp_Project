@@ -135,13 +135,19 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  report.description ??
-                                                      'No Description',
+                                                  '${report.description}',  
                                                   style: TextStyle(
-                                                    fontSize: 16,
+                                                    fontSize: 20,
                                                     fontWeight: FontWeight.w500,
                                                   ),
                                                 ),
+                                                Text(
+                                                  'Teacher : ${report.reporterName}',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    // fontWeight: FontWeight.bold,
+                                                    )),
+                                                
                                               ],
                                             ),
                                           ),
