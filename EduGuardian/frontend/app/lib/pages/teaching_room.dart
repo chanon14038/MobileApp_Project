@@ -14,7 +14,7 @@ class RoomsPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Teaching room',
+            'Teaching rooms',
             style: GoogleFonts.bebasNeue(
               fontSize: 27,
               color: Color.fromARGB(255, 96, 96, 96),

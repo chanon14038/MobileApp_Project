@@ -93,7 +93,7 @@ class MainScreen extends StatelessWidget {
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.list),
-                    label: 'List',
+                    label: 'Classrooms',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.notifications),
