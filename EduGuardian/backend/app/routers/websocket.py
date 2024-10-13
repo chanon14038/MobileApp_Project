@@ -14,6 +14,7 @@ from fastapi import (
     status,
 )
 from fastapi.responses import HTMLResponse
+from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from .. import models
@@ -103,17 +104,44 @@ html = """
 """
 
 
+# @router.get("/notifications")
+async def get_notification(
+    session: Annotated[AsyncSession, Depends(models.get_session)],
+):
+    result = await session.exec(
+        select(models.DBNotification)
+    )
+    notifications = result.all()
+    
+    return notifications
+    
+    
 @router.get("")
 async def get():
     return HTMLResponse(html)
 
 active_connections: list[WebSocket] = []
 
+async def get_notification(
+    session: Annotated[AsyncSession, Depends(models.get_session)],
+):
+    result = await session.exec(select(models.DBNotification))
+    notifications = result.all()
+    return notifications
+
+
+@router.get("")
+async def get():
+    return HTMLResponse(html)
+
+active_connections: list[dict] = []  # ใช้ dict สำหรับเก็บทั้ง websocket และ user_id
+
+
 @router.websocket("")
 async def websocket_endpoint(
     websocket: WebSocket,
     session: Annotated[AsyncSession, Depends(models.get_session)]
-    ):
+):
     token = websocket.query_params.get("token")
 
     if not token:
@@ -122,16 +150,26 @@ async def websocket_endpoint(
 
     try:
         current_user = await deps.get_current_user(token=token, session=session)
+
+        await websocket.accept()
+
+        notifications = await get_notification(session)
+        
+        for notification in notifications:
+            await websocket.send_text(notification.message)
+        
     except HTTPException:
         await websocket.close(code=1008)
         return
 
-    await websocket.accept()
     active_connections.append({"websocket": websocket, "user_id": current_user.id})
 
     try:
         while True:
             await websocket.receive_text()
     except WebSocketDisconnect:
-        active_connections.remove({"websocket": websocket, "user_id": current_user.id})
+        active_connections[:] = [
+            conn for conn in active_connections 
+            if conn["websocket"] != websocket or conn["user_id"] != current_user.id
+        ]
         print(f"Client {current_user.id} disconnected")

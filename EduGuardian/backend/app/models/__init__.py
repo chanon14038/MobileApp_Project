@@ -20,6 +20,7 @@ from .descriptions import *
 from .classrooms import *
 from .subjects import *
 from .images import *
+from .notification import *
 
 connect_args = {}
 
