@@ -14,7 +14,7 @@ class RoomsPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'My subjects',
+            'Teaching room',
             style: GoogleFonts.bebasNeue(
               fontSize: 27,
               color: Color.fromARGB(255, 96, 96, 96),
@@ -83,24 +83,24 @@ class RoomsPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      '${subject.subject}',
+                                      'Classroom: ${subject.classroom}',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
                                       ),
                                     ),
-                                    SizedBox(height: 10),
+                                    
                                     Text(
-                                      'รหัสวิชา: ${subject.subjectId}',
+                                      'Subject: ${subject.subject}',
                                       style: TextStyle(color: Colors.grey[600]),
                                     ),
                                     Text(
-                                      'ห้องที่สอน: ${subject.classroom}',
+                                      'Subject ID: ${subject.subjectId}',
                                       style: TextStyle(color: Colors.grey[600]),
                                     ),
                                     SizedBox(height: 10),
                                     Text(
-                                      'คำอธิบาย:',
+                                      'Description:',
                                       style: TextStyle(fontWeight: FontWeight.bold),
                                     ),
                                     Expanded(

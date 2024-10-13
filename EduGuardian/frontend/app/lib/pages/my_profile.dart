@@ -28,7 +28,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'User Profile',
+          'My Profile',
           style: GoogleFonts.bebasNeue(
             fontSize: 27,
             color: Color.fromARGB(255, 96, 96, 96),
