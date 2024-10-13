@@ -173,21 +173,14 @@ class _StudentPageState extends State<StudentPage>
                     itemBuilder: (context, index) {
                       final student = students[index];
                       return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                        padding: const EdgeInsets.symmetric(vertical: 1),
                         child: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.3),
-                                spreadRadius: 2,
-                                blurRadius: 6,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
+                            color: Color.fromARGB(166, 216, 244, 232),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           child: Card(
-                            elevation: 2,
+                            elevation: 3,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
@@ -240,7 +233,7 @@ class _StudentPageState extends State<StudentPage>
           }
         },
         child: Icon(Icons.add),
-        backgroundColor: Colors.blue,
+        backgroundColor: Color.fromARGB(255, 129, 234, 155),
       ),
     );
   }
