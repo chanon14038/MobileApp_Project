@@ -30,5 +30,31 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
         emit(StudentError('Failed to add student: ${e.toString()}'));
       }
     });
+
+    on<FetchStudentProfile>((event, emit) async {
+      emit(StudentProfileLoading());
+      try {
+        final student = await studentRepository.getOneStudent(event.studentId);
+        emit(StudentProfileLoaded(student));
+      } catch (e) {
+        if (e.toString().contains('Student not found')) {
+          emit(StudentProfileNotFound());
+        } else {
+          emit(StudentError(e.toString()));
+        }
+      }
+    });
+
+    on<UpdateStudentProfile>((event, emit) async {
+      emit(StudentUpdating());
+      try {
+        await studentRepository.updateStudent(
+            event.studentId, event.firstName, event.lastName, event.classroom);
+        emit(StudentUpdated());
+        add(FetchStudents());
+      } catch (e) {
+        emit(StudentError(e.toString()));
+      }
+    });
   }
 }

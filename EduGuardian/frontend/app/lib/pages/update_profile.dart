@@ -4,6 +4,8 @@ import '../blocs/user_bloc.dart';
 import '../models/user_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../widgets/success_update_dialog.dart';
+
 class UpdateProfilePage extends StatefulWidget {
   final UserModel user;
 
@@ -113,7 +115,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                 ));
 
                 // แสดง popup เมื่อบันทึกสำเร็จ
-                _showSuccessDialog(context);
+                showSuccessDialog(context);
               },
               child: Text(
                 'Save Changes',
@@ -151,55 +153,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
         ),
       ),
       keyboardType: keyboardType,
-    );
-  }
-
-  // ฟังก์ชันแสดง popup สำเร็จพร้อมข้อความ
-  void _showSuccessDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          title: Column(
-            children: [
-              Icon(
-                Icons.check_circle,
-                color: Colors.green,
-                size: 60,
-              ),
-              SizedBox(height: 15),
-              Text(
-                'Profile Updated!',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          content: Text(
-            'Your profile has been successfully updated.',
-            textAlign: TextAlign.center,
-          ),
-          actions: [
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // ปิด popup
-                  Navigator.of(context).pop(); // กลับไปหน้าเดิม
-                },
-                child: Text(
-                  'OK',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.blueAccent,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 }

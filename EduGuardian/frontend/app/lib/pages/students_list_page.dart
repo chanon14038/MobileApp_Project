@@ -46,7 +46,6 @@ class _StudentPageState extends State<StudentPage>
 
   @override
   void dispose() {
-    // อย่าลืมเรียก dispose() ของ _controller ด้วย
     _controller.dispose();
     super.dispose();
   }

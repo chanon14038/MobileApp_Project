@@ -69,4 +69,28 @@ class StudentRepository {
       throw Exception('Failed to add student: $e');
     }
   }
+
+  Future<void> updateStudent(String studentId, String firstName, String lastName, String classroom) async {
+    try {
+      final response = await _dioClient.dio.put(
+        '/students/$studentId',
+        data: {
+          "first_name": firstName,
+          "last_name": lastName,
+          "classroom": classroom,
+        },
+      );
+      if (response.statusCode != 200) {
+        throw Exception('Failed to update student');
+      }
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 404) {
+        throw Exception('Student not found');
+      } else {
+        throw Exception('Failed to update student: ${e.message}');
+      }
+    } catch (e) {
+      throw Exception('Failed to update student: $e');
+    }
+  }
 }

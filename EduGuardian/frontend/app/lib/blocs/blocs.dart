@@ -4,4 +4,3 @@ export 'navigation_bloc.dart';
 export 'report_bloc.dart';
 export 'subject_bloc.dart';
 export 'user_bloc.dart';
-export 'student_profile_bloc.dart';

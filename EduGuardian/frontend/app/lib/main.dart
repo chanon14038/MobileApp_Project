@@ -10,13 +10,11 @@ import 'repositories/notification_repository.dart';
 import 'repositories/student_repository.dart';
 
 void main() {
-  final notificationRepository = NotificationRepository();
-
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => NotificationBloc(notificationRepository),
+          create: (context) => NotificationBloc(NotificationRepository()),
         ),
         BlocProvider<AuthBloc>(
           create: (context) => AuthBloc(
@@ -31,7 +29,7 @@ void main() {
           create: (context) => BottomNavigationBloc(),
         ),
         BlocProvider(
-          create: (context) => StudentBloc(StudentRepository())..add(FetchStudents()),
+          create: (context) => StudentBloc(StudentRepository()),
         ),
       ],
       child: MyApp(),

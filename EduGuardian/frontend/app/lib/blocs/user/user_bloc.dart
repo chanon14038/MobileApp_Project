@@ -7,7 +7,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final UserRepository repository;
 
   UserBloc(this.repository) : super(UserInitial()) {
-    
     // Fetch user data
     on<FetchUserData>((event, emit) async {
       emit(UserLoading());
@@ -31,7 +30,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           email: event.email,
           advisorRoom: event.advisorRoom,
         );
-        add(FetchUserData()); // Fetch updated data
         emit(ProfileUpdated());
       } catch (e) {
         emit(FailureState('Failed to update profile: ${e.toString()}'));
@@ -58,7 +56,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       try {
         await repository.uploadImage(event.imageData);
         emit(ImageUploaded());
-        add(FetchUserData()); // Fetch updated data
       } catch (e) {
         emit(FailureState(e.toString()));
       }
@@ -68,9 +65,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<DeleteProfileImageEvent>((event, emit) async {
       emit(ImageDeleteLoading());
       try {
-        await repository.deleteImageProfile(); // Call the repository to delete the image
+        await repository
+            .deleteImageProfile(); // Call the repository to delete the image
         emit(ImageDeleted());
-        add(FetchUserData()); // Fetch updated data after deletion
+        // add(FetchUserData()); // Fetch updated data after deletion
       } catch (e) {
         emit(FailureState(e.toString()));
       }

@@ -1,11 +1,11 @@
 import 'package:app/repositories/report_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../blocs/report_bloc.dart';
+import '../blocs/students_bloc.dart';
 import '../repositories/student_repository.dart';
-import '../blocs/student_profile_bloc.dart';
+import '../widgets/edit_student_page.dart';
 
 class StudentProfilePage extends StatefulWidget {
   final String studentId;
@@ -22,8 +22,8 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => StudentProfileBloc(StudentRepository())
-        ..add(FetchStudentProfileById(widget.studentId)),
+      create: (context) => StudentBloc(StudentRepository())
+        ..add(FetchStudentProfile(widget.studentId)),
       child: Scaffold(
         backgroundColor: Color.fromARGB(249, 216, 244, 232), // พื้นหลังสีม่วง
         appBar: AppBar(
@@ -37,11 +37,11 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
           ),
           centerTitle: true,
         ),
-        body: BlocBuilder<StudentProfileBloc, StudentProfileState>(
+        body: BlocBuilder<StudentBloc, StudentState>(
           builder: (context, state) {
             if (state is StudentProfileLoading) {
               return Center(child: CircularProgressIndicator());
-            } else if (state is SingleStudentProfileLoaded) {
+            } else if (state is StudentProfileLoaded) {
               final student = state.student;
               return Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -80,17 +80,22 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                           //Edit Profile Button
                           ElevatedButton.icon(
                             onPressed: () {
-                              // ใช้งานการนำทางไปหน้าแก้ไขโปรไฟล์
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => EditProfilePage(student: student),
-                              //   ),
-                              // );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      EditStudentProfilePage(student: student),
+                                ),
+                              ).then((value) {
+                                context
+                                    .read<StudentBloc>()
+                                    .add(FetchStudentProfile(widget.studentId));
+                              });
                             },
                             icon: Icon(
                               Icons.edit,
-                              color: Color.fromARGB(255, 141, 142, 141), // สีไอคอนเป็นสีขาว
+                              color: Color.fromARGB(
+                                  255, 141, 142, 141), // สีไอคอนเป็นสีขาว
                               size: 20, // ขนาดไอคอน
                             ),
                             label: Text(
@@ -104,9 +109,10 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 18, vertical: 10), // ขนาด padding
-                              backgroundColor: Color.fromARGB(249, 216, 244, 232), // สีพื้นหลังของปุ่ม
-                              foregroundColor:
-                                  Color.fromARGB(255, 141, 142, 141), // สีของข้อความและไอคอนในปุ่ม
+                              backgroundColor: Color.fromARGB(
+                                  249, 216, 244, 232), // สีพื้นหลังของปุ่ม
+                              foregroundColor: Color.fromARGB(255, 141, 142,
+                                  141), // สีของข้อความและไอคอนในปุ่ม
                               shape: RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.circular(10), // มุมโค้งของปุ่ม
@@ -215,7 +221,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                   ],
                 ),
               );
-            } else if (state is StudentProfileError) {
+            } else if (state is StudentError) {
               return Center(child: Text('Error: ${state.message}'));
             } else if (state is StudentProfileNotFound) {
               return Center(child: Text('Student not found'));

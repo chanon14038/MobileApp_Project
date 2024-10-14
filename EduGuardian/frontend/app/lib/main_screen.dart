@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'blocs/navigation_bloc.dart';
 import 'pages/my_profile.dart';
 import 'pages/teaching_room.dart';
-import 'pages/students_page.dart';
+import 'pages/students_list_page.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
