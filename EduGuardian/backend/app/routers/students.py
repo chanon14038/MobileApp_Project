@@ -148,8 +148,14 @@ async def update_student(
     )
     db_student = result.one_or_none()
     
+    result = await session.exec(
+        select(models.DBUser).where(models.DBUser.advisor_room == info.classroom)
+    )
+    db_advisor = result.one_or_none()
+    
     if db_student:
         db_student.sqlmodel_update(info)
+        db_student.advisor = f"{db_advisor.first_name} {db_advisor.last_name}"
         session.add(db_student)
         await session.commit()
         await session.refresh(db_student)
