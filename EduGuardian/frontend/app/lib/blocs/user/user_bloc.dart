@@ -56,6 +56,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       try {
         await repository.uploadImage(event.imageData);
         emit(ImageUploaded());
+        add(FetchUserData());
       } catch (e) {
         emit(FailureState(e.toString()));
       }
@@ -68,7 +69,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         await repository
             .deleteImageProfile(); // Call the repository to delete the image
         emit(ImageDeleted());
-        // add(FetchUserData()); // Fetch updated data after deletion
+        add(FetchUserData()); // Fetch updated data after deletion
       } catch (e) {
         emit(FailureState(e.toString()));
       }
