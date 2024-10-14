@@ -22,19 +22,13 @@ async def create_subject(
     if dbsubject:
         raise HTTPException(status_code=400, detail="Subject already exists")
     
-    result = await session.exec(
-        select(models.DBUser).where(models.DBUser.id == info.teacher_id)
-    )
-    dbteacher = result.one_or_none()
-    if not dbteacher:
-        raise HTTPException(status_code=404, detail="Teacher not found")
     
     result = await session.exec(
         select(models.DBStudent).where(models.DBStudent.classroom == info.classroom)
     )
     dbstudents = result.all()
     dbsubject = models.DBSubject.model_validate(info)
-    dbsubject.db_teacher = dbteacher
+    dbsubject.db_teacher = current_user
     dbsubject.db_student = dbstudents
     
     

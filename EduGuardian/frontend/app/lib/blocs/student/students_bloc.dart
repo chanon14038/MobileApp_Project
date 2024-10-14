@@ -22,10 +22,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       try {
         final addedStudent = await studentRepository.addStudent(event.student);
         emit(StudentAdded(addedStudent));
-
-        // ดึงข้อมูลนักเรียนทั้งหมดอีกครั้งหลังจากเพิ่มสำเร็จ
-        final students = await studentRepository.getStudents();
-        emit(StudentLoaded(students));
+        add(FetchStudents());
       } catch (e) {
         emit(StudentError('Failed to add student: ${e.toString()}'));
       }

@@ -7,7 +7,9 @@ import 'pages/login_page.dart';
 import 'repositories/auth_repository.dart';
 import 'main_screen.dart';
 import 'repositories/notification_repository.dart';
+import 'repositories/report_repository.dart';
 import 'repositories/student_repository.dart';
+import 'repositories/subject_repository.dart';
 
 void main() {
   runApp(
@@ -30,6 +32,12 @@ void main() {
         ),
         BlocProvider(
           create: (context) => StudentBloc(StudentRepository()),
+        ),
+        BlocProvider(
+          create: (context) => SubjectBloc(SubjectRepository()),
+        ),
+        BlocProvider(
+          create: (context) => ReportBloc(ReportRepository()),
         ),
       ],
       child: MyApp(),

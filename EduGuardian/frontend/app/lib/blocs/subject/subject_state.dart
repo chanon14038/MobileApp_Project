@@ -23,6 +23,8 @@ class StudentsLoadedBySubjectId extends SubjectState {
   StudentsLoadedBySubjectId(this.students);
 }
 
+class SubjectAdded extends SubjectState {}
+
 class SubjectError extends SubjectState {
   final String message;
 

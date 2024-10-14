@@ -1,3 +1,5 @@
+import '../../models/subject.dart';
+
 abstract class SubjectEvent {}
 
 class FetchSubjects extends SubjectEvent {}
@@ -12,4 +14,10 @@ class FetchStudentsBySubjectId extends SubjectEvent {
   final String subjectId;
 
   FetchStudentsBySubjectId(this.subjectId);
+}
+
+class AddSubject extends SubjectEvent {
+  final Subject subject;
+
+  AddSubject(this.subject);
 }

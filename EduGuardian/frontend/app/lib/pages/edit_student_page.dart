@@ -82,7 +82,7 @@ class _EditStudentProfilePageState extends State<EditStudentProfilePage> {
                             _classroomController.text,
                           ),
                         );
-                    showSuccessDialog(context);
+                    showUpdateSuccessDialog(context);
                   }
                 },
                 child: Text(

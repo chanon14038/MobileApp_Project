@@ -28,6 +28,16 @@ class SubjectBloc extends Bloc<SubjectEvent, SubjectState> {
         emit(SubjectError(e.toString()));
       }
     });
+
+    on<AddSubject>((event, emit) async {
+      try {
+        await subjectRepository.addSubject(event.subject);
+        emit(SubjectAdded());
+        add(FetchSubjects());
+      } catch (e) {
+        emit(SubjectError(e.toString()));
+      }
+    });
   }
 }
 
@@ -39,7 +49,8 @@ class StudentsBloc extends Bloc<SubjectEvent, SubjectState> {
     on<FetchStudentsBySubjectId>((event, emit) async {
       emit(SubjectLoading());
       try {
-        final students = await subjectRepository.getStudentsBySubjectId(event.subjectId);
+        final students =
+            await subjectRepository.getStudentsBySubjectId(event.subjectId);
         emit(StudentsLoadedBySubjectId(students));
       } catch (e) {
         emit(SubjectError(e.toString()));

@@ -25,4 +25,13 @@ class Subject {
       teacherId: json['teacher_id'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'classroom': classroom,
+      'subject': subject,
+      'subject_id': subjectId,
+      'description': description,
+    };
+  }
 }

@@ -64,4 +64,26 @@ class SubjectRepository {
       throw Exception('Failed to fetch students: $e');
     }
   }
+
+  Future<void> addSubject(Subject subject) async {
+    try {
+      final response = await _dioClient.dio.post(
+        '/subject',
+        data: subject.toJson(),
+      );
+      if (response.statusCode == 200) {
+        print('Subject added successfully');
+      } else {
+        throw Exception('Failed to add subject');
+      }
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 400) {
+        throw Exception('Bad request: ${e.message}');
+      } else {
+        throw Exception('Failed to add subject: ${e.message}');
+      }
+    } catch (e) {
+      throw Exception('Failed to add subject: $e');
+    }
+  }
 }

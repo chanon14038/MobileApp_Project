@@ -1,6 +1,5 @@
 import 'package:app/blocs/report_bloc.dart';
 import 'package:app/widgets/report_popup.dart';
-import 'package:app/repositories/report_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,9 +15,11 @@ class SubjectByIDPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(249, 216, 244, 232), // Light purple background
+      backgroundColor:
+          const Color.fromARGB(249, 216, 244, 232), // Light purple background
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(249, 216, 244, 232), // Match background color
+        backgroundColor:
+            const Color.fromARGB(249, 216, 244, 232), // Match background color
         title: Text(
           'Subject Details',
           style: GoogleFonts.bebasNeue(
@@ -44,12 +45,10 @@ class SubjectByIDPage extends StatelessWidget {
             create: (context) => StudentsBloc(SubjectRepository())
               ..add(FetchStudentsBySubjectId(subjectId)), // Load students
           ),
-          BlocProvider(
-            create: (context) => ReportBloc(ReportRepository()),
-          )
         ],
         child: Padding(
-          padding: const EdgeInsets.all(20.0), // Similar padding to the profile page
+          padding:
+              const EdgeInsets.all(20.0), // Similar padding to the profile page
           child: Column(
             children: [
               // Subject Information Card
@@ -78,13 +77,13 @@ class SubjectByIDPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Subject name: ${state.subject.subject}',
+                              'Subject ID: ${state.subject.subjectId}',
                               style: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Subject ID: ${state.subject.subjectId}',
+                              'Subject Name: ${state.subject.subject}',
                               style: const TextStyle(fontSize: 16),
                             ),
                             const SizedBox(height: 8),
@@ -114,7 +113,8 @@ class SubjectByIDPage extends StatelessWidget {
                     "Students List",
                     style: GoogleFonts.bebasNeue(
                       fontSize: 24,
-                      color: const Color.fromARGB(255, 96, 96, 96), // Header color
+                      color:
+                          const Color.fromARGB(255, 96, 96, 96), // Header color
                     ),
                   ),
                 ),

@@ -105,7 +105,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                 ));
 
                 // แสดง popup เมื่อบันทึกสำเร็จ
-                showSuccessDialog(context);
+                showUpdateSuccessDialog(context);
               },
               child: Text(
                 'Save Changes',

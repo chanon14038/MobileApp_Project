@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../blocs/students_bloc.dart';
-import '../models/student.dart';
+import '../blocs/subject_bloc.dart';
+import '../models/subject.dart';
 import '../widgets/add_success_dialog.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class AddStudentPage extends StatefulWidget {
+class AddSubjectPage extends StatefulWidget {
   @override
-  _AddStudentPageState createState() => _AddStudentPageState();
+  _AddSubjectPageState createState() => _AddSubjectPageState();
 }
 
-class _AddStudentPageState extends State<AddStudentPage> {
+class _AddSubjectPageState extends State<AddSubjectPage> {
   final _formKey = GlobalKey<FormState>();
-  String _firstName = '';
-  String _lastName = '';
-  String _classroom = '';
-  String _studentId = '';
+  String? _classroom;
+  String? _subject;
+  String? _subjectId;
+  String? _description;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add Student',
+          'Add Subject',
           style: GoogleFonts.bebasNeue(
             fontSize: 27,
             color: Color.fromARGB(255, 96, 96, 96),
@@ -37,30 +37,6 @@ class _AddStudentPageState extends State<AddStudentPage> {
           child: Column(
             children: [
               _buildTextField(
-                labelText: 'First Name',
-                icon: Icons.person,
-                onSaved: (value) => _firstName = value!,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter first name';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 15),
-              _buildTextField(
-                labelText: 'Last Name',
-                icon: Icons.person_outline,
-                onSaved: (value) => _lastName = value!,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter last name';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 15),
-              _buildTextField(
                 labelText: 'Classroom',
                 icon: Icons.class_,
                 onSaved: (value) => _classroom = value!,
@@ -73,34 +49,50 @@ class _AddStudentPageState extends State<AddStudentPage> {
               ),
               SizedBox(height: 15),
               _buildTextField(
-                labelText: 'Student ID',
-                icon: Icons.badge,
-                onSaved: (value) => _studentId = value!,
+                labelText: 'Subject',
+                icon: Icons.book,
+                onSaved: (value) => _subject = value!,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter student ID';
+                    return 'Please enter subject';
                   }
                   return null;
                 },
+              ),
+              SizedBox(height: 15),
+              _buildTextField(
+                labelText: 'Subject ID',
+                icon: Icons.badge,
+                onSaved: (value) => _subjectId = value!,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter subject ID';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 15),
+              _buildTextField(
+                labelText: 'Description (optional)', // Indicate it's optional
+                icon: Icons.description,
+                maxLines: 3,
+                onSaved: (value) => _description = value, // Allow empty string
+                validator: null, // Change this line to handle optional
               ),
               SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-
-                    final newStudent = Student(
-                      firstName: _firstName,
-                      lastName: _lastName,
-                      classroom: _classroom,
-                      studentId: _studentId,
+                    final newSubject = Subject(
+                      classroom: _classroom!,
+                      subject: _subject!,
+                      subjectId: _subjectId!,
+                      description: _description ??
+                          '', // If description is null, assign empty string
                     );
-
-                    // เรียกใช้ Bloc เพื่อเพิ่มนักเรียนใหม่
-                    BlocProvider.of<StudentBloc>(context)
-                        .add(AddStudent(newStudent));
-
-                    // แสดง popup แสดงความสำเร็จ
+                    BlocProvider.of<SubjectBloc>(context)
+                        .add(AddSubject(newSubject));
                     showAddSuccessDialog(context);
                   }
                 },
@@ -112,7 +104,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
                   ),
                 ),
                 child: const Text(
-                  'Add Student',
+                  'Add Subject',
                   style: TextStyle(
                     fontSize: 18,
                     color: Color.fromARGB(255, 40, 120, 63),
@@ -130,9 +122,11 @@ class _AddStudentPageState extends State<AddStudentPage> {
     required String labelText,
     required IconData icon,
     required FormFieldSetter<String> onSaved,
-    required FormFieldValidator<String> validator,
+    FormFieldValidator<String>? validator, // Make validator optional
+    int maxLines = 1,
   }) {
     return TextFormField(
+      maxLines: maxLines,
       decoration: InputDecoration(
         labelText: labelText,
         prefixIcon: Icon(icon, color: Color.fromARGB(255, 40, 120, 63)),
