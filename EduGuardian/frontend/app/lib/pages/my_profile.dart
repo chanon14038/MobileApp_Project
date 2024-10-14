@@ -112,9 +112,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                         alignment: Alignment.bottomLeft,
                                         child: IconButton(
                                           icon: Icon(Icons.edit,
-                                              size: 20,
-                                              color: Colors
-                                                  .white), // Pencil icon for edit/delete
+                                              size: 25,
+                                              color: Color.fromARGB(255, 108, 162, 105)),
+                                              
                                           onPressed: () {
                                             // Show dialog with options to either delete or change the image
                                             showModalBottomSheet(
