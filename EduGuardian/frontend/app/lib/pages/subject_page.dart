@@ -78,13 +78,13 @@ class SubjectByIDPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Subject ID: ${state.subject.id}',
+                              'Subject name: ${state.subject.subject}',
                               style: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Subject Name: ${state.subject.subject}',
+                              'Subject ID: ${state.subject.subjectId}',
                               style: const TextStyle(fontSize: 16),
                             ),
                             const SizedBox(height: 8),
