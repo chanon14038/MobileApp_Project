@@ -4,6 +4,7 @@ import '../blocs/user_bloc.dart';
 import '../models/user_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../widgets/buildtextfield.dart';
 import '../widgets/success_update_dialog.dart';
 
 class UpdateProfilePage extends StatefulWidget {
@@ -37,17 +38,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   }
 
   @override
-  void dispose() {
-    firstNameController.dispose();
-    lastNameController.dispose();
-    subjectController.dispose();
-    phoneNumberController.dispose();
-    emailController.dispose();
-    advisorRoomController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -64,39 +54,39 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
         padding: const EdgeInsets.all(30.0),
         child: Column(
           children: [
-            _buildTextField(
+            buildTextField(
               controller: firstNameController,
               labelText: 'First Name',
               icon: Icons.person,
             ),
             SizedBox(height: 15),
-            _buildTextField(
+            buildTextField(
               controller: lastNameController,
               labelText: 'Last Name',
               icon: Icons.person_outline,
             ),
             SizedBox(height: 15),
-            _buildTextField(
+            buildTextField(
               controller: subjectController,
               labelText: 'Subject',
               icon: Icons.subject,
             ),
             SizedBox(height: 15),
-            _buildTextField(
+            buildTextField(
               controller: phoneNumberController,
               labelText: 'Phone Number',
               icon: Icons.phone,
               keyboardType: TextInputType.phone,
             ),
             SizedBox(height: 15),
-            _buildTextField(
+            buildTextField(
               controller: emailController,
               labelText: 'Email',
               icon: Icons.email,
               keyboardType: TextInputType.emailAddress,
             ),
             SizedBox(height: 15),
-            _buildTextField(
+            buildTextField(
               controller: advisorRoomController,
               labelText: 'Advisor Room',
               icon: Icons.room,
@@ -119,9 +109,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
               },
               child: Text(
                 'Save Changes',
-                style: TextStyle(fontSize: 18,
-                color: Color.fromARGB(255, 40, 120, 63)),
-                
+                style: TextStyle(
+                    fontSize: 18, color: Color.fromARGB(255, 40, 120, 63)),
               ),
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
@@ -137,22 +126,14 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     );
   }
 
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String labelText,
-    required IconData icon,
-    TextInputType keyboardType = TextInputType.text,
-  }) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: labelText,
-        prefixIcon: Icon(icon, color: Color.fromARGB(255, 40, 120, 63)),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-      ),
-      keyboardType: keyboardType,
-    );
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    subjectController.dispose();
+    phoneNumberController.dispose();
+    emailController.dispose();
+    advisorRoomController.dispose();
+    super.dispose();
   }
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../blocs/students_bloc.dart';
 import '../models/student.dart';
-import 'success_update_dialog.dart';
+import '../widgets/buildtextfield.dart';
+import '../widgets/success_update_dialog.dart';
 
 class EditStudentProfilePage extends StatefulWidget {
   final Student student;
@@ -35,45 +37,39 @@ class _EditStudentProfilePageState extends State<EditStudentProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit Student Profile"),
+        title: Text(
+          'Edit Student Profile',
+          style: GoogleFonts.bebasNeue(
+            fontSize: 27,
+            color: Color.fromARGB(255, 96, 96, 96),
+          ),
+        ),
+        centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(30.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
-              TextFormField(
+              buildTextField(
                 controller: _firstNameController,
-                decoration: InputDecoration(labelText: 'First Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the first name';
-                  }
-                  return null;
-                },
+                labelText: 'First Name',
+                icon: Icons.person,
               ),
-              TextFormField(
+              SizedBox(height: 15),
+              buildTextField(
                 controller: _lastNameController,
-                decoration: InputDecoration(labelText: 'Last Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the last name';
-                  }
-                  return null;
-                },
+                labelText: 'Last Name',
+                icon: Icons.person_outline,
               ),
-              TextFormField(
+              SizedBox(height: 15),
+              buildTextField(
                 controller: _classroomController,
-                decoration: InputDecoration(labelText: 'Classroom'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the classroom';
-                  }
-                  return null;
-                },
+                labelText: 'Classroom',
+                icon: Icons.class_,
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -89,7 +85,20 @@ class _EditStudentProfilePageState extends State<EditStudentProfilePage> {
                     showSuccessDialog(context);
                   }
                 },
-                child: Text('Save Changes'),
+                child: Text(
+                  'Save Changes',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Color.fromARGB(255, 40, 120, 63),
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                  backgroundColor: Color.fromARGB(249, 216, 244, 232),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(27.0),
+                  ),
+                ),
               ),
             ],
           ),

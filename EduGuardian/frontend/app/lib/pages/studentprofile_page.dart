@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../blocs/report_bloc.dart';
 import '../blocs/students_bloc.dart';
 import '../repositories/student_repository.dart';
-import '../widgets/edit_student_page.dart';
+import 'edit_student_page.dart';
 
 class StudentProfilePage extends StatefulWidget {
   final String studentId;
