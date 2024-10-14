@@ -49,7 +49,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                   children: [
                     // ส่วนบน: กล่องโปรไฟล์นักเรียน
                     Container(
-                      height: 290,
+                      height: 360,
                       width: double.infinity,
                       padding: const EdgeInsets.all(16.0),
                       decoration: BoxDecoration(
@@ -69,7 +69,52 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                         children: [
                           CircleAvatar(
                             radius: 50,
+                            backgroundColor: Colors.grey[200],
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.grey[600],
+                              size: 50,
+                            ),
                           ),
+                          SizedBox(height: 16),
+                          //Edit Profile Button
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              // ใช้งานการนำทางไปหน้าแก้ไขโปรไฟล์
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => EditProfilePage(student: student),
+                              //   ),
+                              // );
+                            },
+                            icon: Icon(
+                              Icons.edit,
+                              color: Color.fromARGB(255, 141, 142, 141), // สีไอคอนเป็นสีขาว
+                              size: 20, // ขนาดไอคอน
+                            ),
+                            label: Text(
+                              'Edit Profile',
+                              style: TextStyle(
+                                fontSize: 16, // ขนาดตัวอักษร
+                                fontWeight:
+                                    FontWeight.bold, // เพิ่มความหนาของข้อความ
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 18, vertical: 10), // ขนาด padding
+                              backgroundColor: Color.fromARGB(249, 216, 244, 232), // สีพื้นหลังของปุ่ม
+                              foregroundColor:
+                                  Color.fromARGB(255, 141, 142, 141), // สีของข้อความและไอคอนในปุ่ม
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(10), // มุมโค้งของปุ่ม
+                              ),
+                              elevation: 5, // เงาให้ปุ่มยกขึ้น
+                            ),
+                          ),
+
                           SizedBox(height: 16),
                           Text(
                             "${student.firstName} ${student.lastName}",
@@ -85,6 +130,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                           SizedBox(height: 10),
                           Text("Advisor: ${student.advisor}",
                               style: TextStyle(fontSize: 16)),
+                          SizedBox(height: 10),
                         ],
                       ),
                     ),
@@ -135,19 +181,18 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  '${report.description}',  
+                                                  '${report.description}',
                                                   style: TextStyle(
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.w500,
                                                   ),
                                                 ),
                                                 Text(
-                                                  'Teacher : ${report.reporterName}',
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    // fontWeight: FontWeight.bold,
+                                                    'Teacher : ${report.reporterName}',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      // fontWeight: FontWeight.bold,
                                                     )),
-                                                
                                               ],
                                             ),
                                           ),
