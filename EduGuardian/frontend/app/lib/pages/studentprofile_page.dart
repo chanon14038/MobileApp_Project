@@ -173,6 +173,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                                       itemBuilder: (context, index) {
                                         final report = state.reports[index];
                                         return Card(
+                                          color: Colors.white,
                                           margin: EdgeInsets.symmetric(
                                               vertical: 8.0, horizontal: 10.0),
                                           elevation: 4,
@@ -190,7 +191,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                                                   '${report.description}',
                                                   style: TextStyle(
                                                     fontSize: 20,
-                                                    fontWeight: FontWeight.w500,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
                                                 Text(
