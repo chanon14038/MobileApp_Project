@@ -38,8 +38,8 @@ pipeline {
         }
         stage('Test SonarScanner') {
             steps {
-                withSonarQubeEnv('SonarScaner') {
-                    dir('pytest-intro-vs') {
+                withSonarQubeEnv('sonarscaner') {
+                    dir('MobileApp_Project/EduGuardian/backend/tests') {
                         sh """
                         sonar-scanner \
                           -Dsonar.projectKey=Mobile_App \
