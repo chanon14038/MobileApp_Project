@@ -1,0 +1,66 @@
+pipeline {
+    agent {
+        docker {
+            image 'python:3.12'
+        }
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                sh 'rm -rf MobileApp_Project'
+                sh 'git clone https://github.com/chanon14038/MobileApp_Project.git'
+            }
+        }
+        
+        stage('Setup Python Environment') {
+            steps {
+                dir('MobileApp_Project/EduGuardian/backend') {
+                    sh """
+                    python3.12 -m venv venv
+                    . venv/bin/activate
+                    pip install poetry
+                    poetry install --no-root
+                    """
+                }
+            }
+        } 
+        
+        stage('Create Env file') {
+            steps {
+                dir('MobileApp_Project/EduGuardian/backend') {
+                    sh """
+                    echo "SQLDB_URL=sqlite+aiosqlite:///./test-data/test-sqlalchemy.db" > .testing.env
+                    echo "Server_URL=http://localhost:8000" >> .testing.env
+                    """
+                }
+            }
+        }
+        stage('Test SonarScanner') {
+            steps {
+                withSonarQubeEnv('SonarScaner') {
+                    dir('pytest-intro-vs') {
+                        sh """
+                        sonar-scanner \
+                          -Dsonar.projectKey=Mobile_App \
+                          -Dsonar.sources=. \
+                          -Dsonar.host.url=http://172.17.0.3:9000 \
+                          -Dsonar.token=sqp_03dfd355898d407f9e33e0e65bb3a1ec6ccfd39a
+                        """
+                    }
+                }
+            }
+        }
+        stage('PyTest') {
+            steps {
+                dir('MobileApp_Project/EduGuardian/backend') {
+                    sh """
+                    . venv/bin/activate
+                    export \$(cat .testing.env | xargs)
+                    poetry run pytest -v
+                    """
+                }
+            }
+        }
+    }
+}
